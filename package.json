@@ -5,7 +5,6 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js --exec babel-node --presets es2015,stage-2",
-    "clean": "./setdb.sh",
     "test": "mocha --compilers js:babel-core/register test/server",
     "seed": "babel-node ./seed/seed.js --presets es2015,stage-2",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
@@ -45,6 +44,7 @@
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "jsonwebtoken": "^7.1.9",
+    "mongoose": "^4.6.7",
     "morgan": "^1.7.0"
   }
 }
