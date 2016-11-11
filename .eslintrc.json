@@ -19,7 +19,7 @@
     "curly": 2,
     "quotes": [
       2,
-      2
+      "single"
     ]
   }
 }
