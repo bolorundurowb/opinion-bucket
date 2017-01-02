@@ -5,7 +5,6 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js --exec babel-node --presets es2015,stage-2",
-    "clean": "./setdb.sh",
     "test": "mocha --compilers js:babel-core/register test/server",
     "seed": "babel-node ./seed/seed.js --presets es2015,stage-2",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
@@ -26,25 +25,29 @@
   },
   "homepage": "https://github.com/bolorundurowb/opinion-bucket#readme",
   "devDependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-core": "^6.18.2",
-    "babel-istanbul": "^0.11.0",
     "babel-preset-es2015": "^6.18.0",
-    "babel-preset-stage-2": "^6.18.0",
     "chai": "^3.5.0",
     "coveralls": "^2.11.14",
+    "del": "^2.2.2",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.2",
+    "gulp-sourcemaps": "^1.9.1",
+    "gulp-typescript": "^3.1.3",
     "istanbul": "^0.4.5",
     "mocha": "^3.1.0",
     "should": "^11.1.0",
     "supertest": "^2.0.0"
   },
   "dependencies": {
+    "angular2": "^2.0.0-beta.17",
     "async": "^2.1.2",
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
+    "gulp": "^3.9.1",
     "jsonwebtoken": "^7.1.9",
+    "mongoose": "^4.6.7",
     "morgan": "^1.7.0"
   }
 }
