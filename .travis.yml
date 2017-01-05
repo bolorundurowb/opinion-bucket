@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "7.0"
+services:
+  - mongodb
+script:
+  - npm run clean
+  - npm run init
+  - npm run seed
+  - npm run coverage
+after_success:
+  - npm run coveralls
