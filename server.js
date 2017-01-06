@@ -6,6 +6,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
+import routes from './src/server/routes/routes';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 if (process.env.NODE_ENV === 'development') {
@@ -17,6 +18,9 @@ const server = express();
 
 // create a router object
 const router = express.Router();
+
+// direct the router to our routes first
+routes(router);
 
 // log requests with morgan
 server.use(morgan('dev'));
