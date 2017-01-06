@@ -2,11 +2,11 @@
  * Created by bolorundurowb on 11/11/16.
  */
 
-import express from 'express';
-import dotenv from 'dotenv';
-import bodyParser from 'body-parser';
-import morgan from 'morgan';
-import routes from './src/server/routes/routes';
+const express = require('express');
+const dotenv = require('dotenv');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const routes = require('./src/server/routes/routes');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 if (process.env.NODE_ENV === 'development') {
@@ -51,5 +51,5 @@ server.listen(port);
 console.log('Server started on port: ' + port);
 
 // expose server to test
-export default server;
+module.exports = server;
 
