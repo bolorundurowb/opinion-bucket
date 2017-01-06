@@ -4,13 +4,7 @@
   "description": "A RESTful API and App code for Opinion Bucket",
   "main": "server.js",
   "scripts": {
-    "clean": "echo 'clean'",
-    "init": "echo 'init'",
-    "start": "nodemon server.js --exec babel-node --presets es2015,stage-2",
-    "test": "mocha --compilers js:babel-core/register test/server",
-    "seed": "echo 'seed'",
-    "coveralls": "echo 'coveralls'",
-    "coverage": "echo 'coverage'"
+    "test": "echo 'test'"
   },
   "repository": {
     "type": "git",
