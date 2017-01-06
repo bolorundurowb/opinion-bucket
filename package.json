@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha tests/server",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "coverage": "rm -rf /coverage && istanbul cover node_modules/.bin/_mocha tests/server"
   },
   "repository": {
     "type": "git",
