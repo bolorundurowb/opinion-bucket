@@ -5,4 +5,4 @@ const routes = (router) => {
     });
 };
 
-export default routes;
+module.exports = routes;
