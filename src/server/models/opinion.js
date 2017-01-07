@@ -5,8 +5,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const commentSchema = new Schema({
-  author: String,
+const opinionSchema = new Schema({
+  authorName: String,
+  authorUsername: String,
+  showName: Boolean,
   details: String,
   date: {
     type: Date,
@@ -16,4 +18,4 @@ const commentSchema = new Schema({
   dislikes: Number
 });
 
-module.exports = commentSchema;
+module.exports = opinionSchema;
