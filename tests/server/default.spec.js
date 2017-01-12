@@ -12,5 +12,5 @@ const server = supertest.agent(app);
 describe('Test', () => {
   it('works', () => {
     (true).should.equal(true);
-  }
+  });
 });
