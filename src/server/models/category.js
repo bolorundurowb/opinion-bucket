@@ -8,7 +8,7 @@ const Schema = mongoose.Schema;
 const categorySchema = new Schema({
   title: String,
   topics: [{
-    type: ObjectId
+    type: Schema.ObjectId
   }]
 });
 

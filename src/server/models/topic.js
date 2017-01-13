@@ -17,7 +17,7 @@ const topicSchema = new Schema({
   },
   opinions: [commentSchema],
   categories: [{
-    type: ObjectId
+    type: Schema.ObjectId
   }]
 });
 
