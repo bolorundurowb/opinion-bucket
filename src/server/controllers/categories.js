@@ -20,13 +20,14 @@ const categoriesCtrl = {
   },
 
   getOne: function (req, res) {
-    Categories.find({_id: req.params.id}, function (err, category) {
+    Categories.findOne({_id: req.params.id}, function (err, category) {
       if (err) {
         res.status(500).send(err);
       } else if (!category) {
         res.status(400).send({message: 'No category exists with that id'});
+      } else {
+        res.status(200).send(category);
       }
-      res.status(200).send(category);
     });
   },
 

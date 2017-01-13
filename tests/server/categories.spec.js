@@ -25,6 +25,30 @@ describe('Categories', () => {
       });
   });
 
+  it('doesnt allow for categories to be duplicated', (done) => {
+    server
+      .post('/api/v1/categories')
+      .send({title: 'Tech'})
+      .expect(409)
+      .end(function (err, res) {
+        res.status.should.equal(409);
+        res.body.message.should.equal('A category exists with that title');
+        done();
+      });
+  });
+
+  it('doesnt allow for categories to be title-less', (done) => {
+    server
+      .post('/api/v1/categories')
+      .send({})
+      .expect(400)
+      .end(function (err, res) {
+        res.status.should.equal(400);
+        res.body.message.should.equal('The category requires a title');
+        done();
+      });
+  });
+
   it('allows for all categories to be retrieved', (done) => {
     server
       .get('/api/v1/categories')
@@ -48,6 +72,28 @@ describe('Categories', () => {
       });
   });
 
+  it('doesnt allow a non-existent category to be retrieved', (done) => {
+    server
+      .get('/api/v1/categories/507f1f77bcf86cd799439011')
+      .expect(400)
+      .end(function (err, res) {
+        res.status.should.equal(400);
+        res.body.message.should.equal('No category exists with that id');
+        done();
+      });
+  });
+
+  it('handles errors with ids', (done) => {
+    server
+      .get('/api/v1/categories/11')
+      .expect(500)
+      .end(function (err, res) {
+        res.status.should.equal(500);
+        res.body.should.be.type('object');
+        done();
+      });
+  });
+
   it('allows for categories to be updated', (done) => {
     server
       .put('/api/v1/categories/' + id)
@@ -57,6 +103,18 @@ describe('Categories', () => {
         res.status.should.equal(200);
         res.body.should.be.type('object');
         res.body.title.should.equal('Technology');
+        done();
+      });
+  });
+
+  it('doesnt allow for categories to be title-less', (done) => {
+    server
+      .put('/api/v1/categories/' + id)
+      .send({})
+      .expect(400)
+      .end(function (err, res) {
+        res.status.should.equal(400);
+        res.body.message.should.equal('The category requires a title');
         done();
       });
   });
