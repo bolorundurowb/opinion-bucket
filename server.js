@@ -21,6 +21,7 @@ server.use(morgan('dev'));
 
 // parse the payload
 server.use(bodyParser.urlencoded({ extended : true }));
+server.use(bodyParser.json());
 
 // prefix the path with /api/v{version}
 server.use('/api/v1', router);

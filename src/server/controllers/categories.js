@@ -45,7 +45,7 @@ const categoriesCtrl = {
             if (err) {
               res.status(500).send(err);
             }
-            res.status(200).send(category);
+            res.status(201).send(category);
           });
         }
       });
