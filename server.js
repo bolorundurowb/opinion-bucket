@@ -3,15 +3,9 @@
  */
 
 const express = require('express');
-const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./src/server/routes/routes');
-
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-if (process.env.NODE_ENV === 'development') {
-  dotenv.config({silent: true});
-}
 
 // initialize an express object
 const server = express();
