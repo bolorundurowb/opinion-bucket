@@ -4,7 +4,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const commentSchema = require('./comment');
+const opinionSchema = require('./opinion');
 
 const topicSchema = new Schema({
   title: {
@@ -15,7 +15,7 @@ const topicSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  opinions: [commentSchema],
+  opinions: [opinionSchema],
   categories: [{
     type: Schema.ObjectId
   }]

@@ -2,10 +2,15 @@
  * Created by bolorundurowb on 11/11/16.
  */
 
+const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./src/server/routes/routes');
+const config = require('./config/config');
+
+// Connect to MongoDB
+mongoose.connect(config.database);
 
 // initialize an express object
 const server = express();
