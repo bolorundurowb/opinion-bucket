@@ -2,12 +2,7 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-const mongoose = require('mongoose');
 const Categories = require('./../models/category');
-const config = require('./../../../config/config');
-
-// Connect to MongoDB
-mongoose.connect(config.database);
 
 const categoriesCtrl = {
   getAll: function (req, res) {
