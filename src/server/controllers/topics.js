@@ -71,8 +71,9 @@ const topicsCtrl = {
     Topics.findByIdAndRemove(req.params.id, function (err) {
       if (err) {
         res.status(500).send(err);
+      } else {
+        res.status(200).send({message: 'Topic successfully removed'});
       }
-      res.status(200).send({message: 'Topic successfully removed'});
     });
   }
 };
