@@ -89,22 +89,13 @@ describe('Categories', () => {
       .expect(500)
       .end(function (err, res) {
         res.status.should.equal(500);
+        res.body.should.be.type('object');
         res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "Category"');
         done();
       });
   });
 
-  it('handles errors with ids', (done) => {
-    server
-      .get('/api/v1/categories/11')
-      .expect(500)
-      .end(function (err, res) {
-        res.status.should.equal(500);
-        res.body.should.be.type('object');
-        done();
-      });
-  });
-
+  // Update Tests
   it('allows for categories to be updated', (done) => {
     server
       .put('/api/v1/categories/' + id)
@@ -130,6 +121,18 @@ describe('Categories', () => {
       });
   });
 
+  it('throws an error when an invalid id is updated', (done) => {
+    server
+      .delete('/api/v1/categories/507f1')
+      .expect(500)
+      .end(function (err, res) {
+        res.status.should.equal(500);
+        res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "Category"');
+        done();
+      });
+  });
+
+  // Delete Tests
   it('allows for categories to be deleted', (done) => {
     server
       .delete('/api/v1/categories/' + id)
