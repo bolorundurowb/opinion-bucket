@@ -11,6 +11,7 @@ const server = supertest.agent(app);
 let id = '';
 
 describe('Categories', () => {
+  // Creation Tests
   it('allows for categories to be created', (done) => {
     server
       .post('/api/v1/categories')
@@ -49,6 +50,7 @@ describe('Categories', () => {
       });
   });
 
+  // Retrieval Tests
   it('allows for all categories to be retrieved', (done) => {
     server
       .get('/api/v1/categories')
@@ -123,10 +125,11 @@ describe('Categories', () => {
 
   it('throws an error when an invalid id is updated', (done) => {
     server
-      .delete('/api/v1/categories/507f1')
+      .put('/api/v1/categories/507f1')
       .expect(500)
       .end(function (err, res) {
         res.status.should.equal(500);
+        res.body.should.be.type('object');
         res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "Category"');
         done();
       });
