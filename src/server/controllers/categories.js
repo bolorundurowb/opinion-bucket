@@ -71,8 +71,9 @@ const categoriesCtrl = {
     Categories.findByIdAndRemove(req.params.id, function (err) {
       if (err) {
         res.status(500).send(err);
+      } else {
+        res.status(200).send({message: 'Category successfully removed'});
       }
-      res.status(200).send({message: 'Category successfully removed'});
     });
   }
 };

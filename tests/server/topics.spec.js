@@ -83,6 +83,17 @@ describe('Topics', () => {
       });
   });
 
+  it('throws an error when a wrong id is given', (done) => {
+    server
+      .get('/api/v1/topics/507f1')
+      .expect(500)
+      .end(function (err, res) {
+        res.status.should.equal(500);
+        res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "Topic"');
+        done();
+      });
+  });
+
   it('handles errors with ids', (done) => {
     server
       .get('/api/v1/topics/11')
@@ -126,6 +137,17 @@ describe('Topics', () => {
       .end(function (err, res) {
         res.status.should.equal(200);
         res.body.message.should.equal('Topic successfully removed');
+        done();
+      });
+  });
+
+  it('throws an error when an invalid id is deleted', (done) => {
+    server
+      .delete('/api/v1/topics/507f1')
+      .expect(500)
+      .end(function (err, res) {
+        res.status.should.equal(500);
+        res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "Topic"');
         done();
       });
   });
