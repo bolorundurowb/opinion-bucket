@@ -54,14 +54,16 @@ const categoriesCtrl = {
         res.status(500).send(err);
       } else if (!req.body.title) {
         res.status(400).send({message: 'The category requires a title'});
+      } else {
+        category.title = req.body.title;
+        category.save(function (err, _category) {
+          if (err) {
+            res.status(500).send(err);
+          } else {
+            res.status(200).send(_category);
+          }
+        });
       }
-      category.title = req.body.title;
-      category.save(function (err, _category) {
-        if (err) {
-          res.status(500).send(err);
-        }
-        res.status(200).send(_category);
-      });
     });
   },
 

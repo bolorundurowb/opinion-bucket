@@ -54,14 +54,16 @@ const topicsCtrl = {
         res.status(500).send(err);
       } else if (!req.body.title) {
         res.status(400).send({message: 'The topic requires a title'});
+      } else {
+        topic.title = req.body.title;
+        topic.save(function (err, _topic) {
+          if (err) {
+            res.status(500).send(err);
+          } else {
+            res.status(200).send(_topic);
+          }
+        });
       }
-      topic.title = req.body.title;
-      topic.save(function (err, _topic) {
-        if (err) {
-          res.status(500).send(err);
-        }
-        res.status(200).send(_topic);
-      });
     });
   },
 
