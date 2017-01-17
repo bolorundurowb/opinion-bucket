@@ -9,8 +9,9 @@ const categoriesCtrl = {
     Categories.find(function (err, categories) {
       if (err) {
         res.status(500).send(err);
+      } else {
+        res.status(200).send(categories);
       }
-      res.status(200).send(categories);
     });
   },
 

@@ -11,7 +11,8 @@ const userSchema = new Schema({
   lastName: String,
   username: String,
   dateOfBirth: {
-    type: Date
+    type: Date,
+    default: Date.now
   },
   gender: {
     type: String,
