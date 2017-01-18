@@ -5,13 +5,15 @@
 const authRoutes = require('./auth');
 const userRoutes = require('./users');
 const categoryRoutes = require('./categories');
-const topicRoutes = require('./topics')
+const topicRoutes = require('./topics');
+const opinionRoutes = require('./opinion');
 
 const routes = (router) => {
   authRoutes(router);
   categoryRoutes(router);
-  userRoutes(router);
+  opinionRoutes(router);
   topicRoutes(router);
+  userRoutes(router);
 };
 
 module.exports = routes;
