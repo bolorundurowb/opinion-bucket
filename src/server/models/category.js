@@ -8,7 +8,8 @@ const Schema = mongoose.Schema;
 const categorySchema = new Schema({
   title: String,
   topics: [{
-    type: Schema.ObjectId
+    type: Schema.ObjectId,
+    ref: 'Topic'
   }]
 });
 

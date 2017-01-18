@@ -56,6 +56,7 @@ const topicsCtrl = {
         res.status(400).send({message: 'The topic requires a title'});
       } else {
         topic.title = req.body.title;
+        topic.opinions = req.body.opinions;
         topic.save(function (err, _topic) {
           if (err) {
             res.status(500).send(err);
