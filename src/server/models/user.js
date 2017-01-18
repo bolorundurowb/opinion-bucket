@@ -26,7 +26,10 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  profilePhoto: String
+  profilePhoto: String,
+  joined: {
+    type: Date
+  }
 });
 
 userSchema.virtual('name').get(function () {

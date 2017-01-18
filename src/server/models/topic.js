@@ -11,6 +11,9 @@ const topicSchema = new Schema({
     type: String,
     required: true
   },
+  content: {
+    type: String
+  },
   date: {
     type: Date,
     default: Date.now
