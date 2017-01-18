@@ -9,7 +9,12 @@ const authCtrl = {
   signin: function (req, res) {
 
   },
+  
   signup: function (req, res) {
+
+  },
+
+  signout: function (req, res) {
 
   }
 };
