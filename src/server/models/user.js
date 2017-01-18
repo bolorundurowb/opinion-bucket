@@ -29,7 +29,11 @@ const userSchema = new Schema({
   profilePhoto: String,
   joined: {
     type: Date
-  }
+  },
+  topics: [{
+    type: Schema.ObjectId,
+    ref: 'Topic'
+  }]
 });
 
 userSchema.virtual('name').get(function () {

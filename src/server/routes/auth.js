@@ -10,6 +10,9 @@ const authRoutes = (router) => {
 
   router.route('/auth/signup')
     .post(auth.signup);
+
+  router.route('/auth/signout')
+    .post(auth.signout);
 };
 
 module.exports = authRoutes;
