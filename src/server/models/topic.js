@@ -15,9 +15,13 @@ const topicSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  opinions: [opinionSchema],
+  opinions: [{
+    type: Schema.ObjectId,
+    ref: 'Opinion'
+  }],
   categories: [{
-    type: Schema.ObjectId
+    type: Schema.ObjectId,
+    ref: 'Category'
   }]
 });
 

@@ -6,9 +6,15 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const opinionSchema = new Schema({
-  authorName: String,
-  authorUsername: String,
-  showName: Boolean,
+  author: {
+    type: Schema.ObjectId,
+    required: true,
+    ref: 'User'
+  },
+  showName: {
+    type: Boolean,
+    default: false
+  },
   details: String,
   date: {
     type: Date,
@@ -18,4 +24,6 @@ const opinionSchema = new Schema({
   dislikes: Number
 });
 
-module.exports = opinionSchema;
+const opinionModel = mongoose.model('Opinion', opinionSchema);
+
+module.exports = opinionModel;
