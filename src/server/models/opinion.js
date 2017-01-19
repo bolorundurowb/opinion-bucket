@@ -15,13 +15,21 @@ const opinionSchema = new Schema({
     type: Boolean,
     default: false
   },
-  details: String,
+  content: {
+    type: String
+  },
   date: {
     type: Date,
     default: Date.now
   },
-  likes: Number,
-  dislikes: Number
+  likes: {
+    type: Number,
+    default: 0
+  },
+  dislikes: {
+    type: Number,
+    default: 0
+  }
 });
 
 const opinionModel = mongoose.model('Opinion', opinionSchema);
