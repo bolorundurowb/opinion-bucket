@@ -15,11 +15,11 @@ const authCtrl = {
       Users.findOne({username: req.body.username}, function (err, user) {
         if (err) {
           res.status(500).send(err);
+        } else if (!user) {
+          res.status(404).send({message: 'A user with that username does not exist'});
         } else {
           if (verifyPassword(req.body.password, user.hashedPassword)) {
             res.status(200).send(tokenify(user));
-          } else if (!user) {
-            res.status(404).send({message: 'A user with that usernamme does not exist'});
           } else {
             res.status(403).send({message: 'The passwords did not match'});
           }

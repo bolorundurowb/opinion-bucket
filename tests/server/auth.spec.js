@@ -10,8 +10,8 @@ const app = require('./../../server');
 const server = supertest.agent(app);
 
 describe('Auth', () => {
-  // Creation Tests
-  it('allows for categories to be created', (done) => {
+  // Sign out
+  it('allows for users to be signed out', (done) => {
     server
       .post('/api/v1/auth/signout')
       .expect(200)
@@ -19,6 +19,89 @@ describe('Auth', () => {
         res.status.should.equal(200);
         res.body.should.be.type('object');
         res.body.message.should.equal('signout successful');
+        done();
+      });
+  });
+
+  // Sign up
+  it('allows for users to be created', (done) => {
+    server
+      .post('/api/v1/auth/signup')
+      .send({
+        username: 'john.doe',
+        email: 'john.doe@gmail.com',
+        password: 'john.doe'
+      })
+      .expect(201)
+      .end(function (err, res) {
+        res.status.should.equal(201);
+        res.body.should.be.type('object');
+        res.body.user.should.be.type('object');
+        res.body.user.username.should.equal('john.doe');
+        res.body.token.should.be.type('string');
+        done();
+      });
+  });
+
+  // Sign in
+  it('allows for users to be signed in', (done) => {
+    server
+      .post('/api/v1/auth/signin')
+      .send({
+        username: 'john.doe',
+        password: 'john.doe'
+      })
+      .expect(200)
+      .end(function (err, res) {
+        res.status.should.equal(200);
+        res.body.should.be.type('object');
+        res.body.user.should.be.type('object');
+        res.body.user.username.should.equal('john.doe');
+        res.body.token.should.be.type('string');
+        done();
+      });
+  });
+
+  it('does not allow for invalid users to be signed in', (done) => {
+    server
+      .post('/api/v1/auth/signin')
+      .send({
+        username: 'jane.doe',
+        password: 'john.doe'
+      })
+      .expect(404)
+      .end(function (err, res) {
+        res.status.should.equal(404);
+        res.body.message.should.equal('A user with that username does not exist');
+        done();
+      });
+  });
+
+  it('does not allow for users without password to be signed in', (done) => {
+    server
+      .post('/api/v1/auth/signin')
+      .send({
+        username: 'jane.doe'
+      })
+      .expect(400)
+      .end(function (err, res) {
+        res.status.should.equal(400);
+        res.body.message.should.equal('A username and password are required');
+        done();
+      });
+  });
+
+  it('does not allow for users with a wrong password to be signed in', (done) => {
+    server
+      .post('/api/v1/auth/signin')
+      .send({
+        username: 'john.doe',
+        password: 'john.do'
+      })
+      .expect(403)
+      .end(function (err, res) {
+        res.status.should.equal(403);
+        res.body.message.should.equal('The passwords did not match');
         done();
       });
   });
