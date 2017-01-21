@@ -43,6 +43,39 @@ describe('Auth', () => {
       });
   });
 
+  it('does not allow for users with incomplete details to be created', (done) => {
+    server
+      .post('/api/v1/auth/signup')
+      .send({
+        username: 'john.doe',
+        password: 'john.doe'
+      })
+      .expect(400)
+      .end(function (err, res) {
+        res.status.should.equal(400);
+        res.body.should.be.type('object');
+        res.body.message.should.equal('A user must have an email address, username and password defined');
+        done();
+      });
+  });
+
+  it('does not allow for duplicate users to be created', (done) => {
+    server
+      .post('/api/v1/auth/signup')
+      .send({
+        username: 'john.doe',
+        email: 'john.doe@yahoo.org',
+        password: 'john.doe'
+      })
+      .expect(409)
+      .end(function (err, res) {
+        res.status.should.equal(409);
+        res.body.should.be.type('object');
+        res.body.message.should.equal('A user exists with that username or email address');
+        done();
+      });
+  });
+
   // Sign in
   it('allows for users to be signed in', (done) => {
     server
