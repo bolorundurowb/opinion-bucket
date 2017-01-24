@@ -2,16 +2,15 @@
  * Created by bolorundurowb on 11/11/16.
  */
 
+const mongoose = require('mongoose');
 const express = require('express');
-const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./src/server/routes/routes');
+const config = require('./config/config');
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-if (process.env.NODE_ENV === 'development') {
-  dotenv.config({silent: true});
-}
+// Connect to MongoDB
+mongoose.connect(config.database);
 
 // initialize an express object
 const server = express();
@@ -27,6 +26,7 @@ server.use(morgan('dev'));
 
 // parse the payload
 server.use(bodyParser.urlencoded({ extended : true }));
+server.use(bodyParser.json());
 
 // prefix the path with /api/v{version}
 server.use('/api/v1', router);
