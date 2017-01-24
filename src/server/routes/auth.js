@@ -3,6 +3,7 @@
  */
 
 const auth = require('./../controllers/auth');
+const authentication = require('./../middleware/authentication');
 
 const authRoutes = (router) => {
   router.route('/auth/signin')
@@ -12,7 +13,7 @@ const authRoutes = (router) => {
     .post(auth.signup);
 
   router.route('/auth/signout')
-    .post(auth.signout);
+    .post(authentication, auth.signout);
 };
 
 module.exports = authRoutes;
