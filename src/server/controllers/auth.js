@@ -58,7 +58,7 @@ const authCtrl = {
 
 function tokenify(user) {
   let response = {user: user};
-  response.token = jwt.sign(user, config.secret, {
+  response.token = jwt.sign(user._doc, config.secret, {
     expiresIn: '72h'
   });
   return response;
