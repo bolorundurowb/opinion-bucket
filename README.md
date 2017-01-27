@@ -23,10 +23,10 @@ RESTful API and App for the upcoming site http://opinionbucket.io
 | /api/v1/topics/:tid         | `DELETE` | yes    | yes    | Remove a specified topic        |
 | /api/v1/opinions              | `GET`    | yes    | no     | Get all opinions        |
 | /api/v1/opinions/:oid         | `GET`    | yes    | no     | Get a specific opinion        |
-| /api/v1/opinions              | `POST`   | yes    | yes    | Create a new opinion        |
-| /api/v1/opinions/:oid         | `PUT`    | yes    | yes    | Update a specified opinion        |
-| /api/v1/opinions/:oid         | `DELETE` | yes    | yes    | Remove a specified opinion        |
-| /api/v1/categories             | `GET`    | yes    | yes    | Get all categories        |
+| /api/v1/opinions              | `POST`   | yes    | no    | Create a new opinion        |
+| /api/v1/opinions/:oid         | `PUT`    | yes    | no    | Update a specified opinion        |
+| /api/v1/opinions/:oid         | `DELETE` | yes    | no    | Remove a specified opinion        |
+| /api/v1/categories             | `GET`    | yes    | no    | Get all categories        |
 | /api/v1/categories/:cid        | `GET`    | yes    | no     | Get a specific category        |
 | /api/v1/categories             | `POST`   | yes    | yes    | Create a new category        |
 | /api/v1/categories/:cid        | `PUT`    | yes    | yes    | Update a specified category        |

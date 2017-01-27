@@ -11,9 +11,14 @@ const app = require('./../../server');
 const server = supertest.agent(app);
 var id = '';
 var userToken;
+var adminToken;
 
 before(function () {
   userToken = jwt.sign({username: 'john.doe', email: 'john.doe@doe.org'}, '765105877C8DF471AC2B3E58801E8099', {
+    expiresIn: '24h'
+  });
+
+  adminToken = jwt.sign({username: 'admin', type: 'Admin'}, '765105877C8DF471AC2B3E58801E8099', {
     expiresIn: '24h'
   });
 });
@@ -23,7 +28,7 @@ describe('Topics', function () {
   it('allows for topics to be created', function (done) {
     server
       .post('/api/v1/topics')
-      .set('x-access-token', userToken)
+      .set('x-access-token', adminToken)
       .send({title: 'Tech'})
       .expect(201)
       .end(function (err, res) {
@@ -38,7 +43,7 @@ describe('Topics', function () {
   it('doesnt allow for topics to be duplicated', function (done) {
     server
       .post('/api/v1/topics')
-      .set('x-access-token', userToken)
+      .set('x-access-token', adminToken)
       .send({title: 'Tech'})
       .expect(409)
       .end(function (err, res) {
@@ -51,7 +56,7 @@ describe('Topics', function () {
   it('doesnt allow for topics to be title-less', function (done) {
     server
       .post('/api/v1/topics')
-      .set('x-access-token', userToken)
+      .set('x-access-token', adminToken)
       .send({})
       .expect(400)
       .end(function (err, res) {
@@ -116,7 +121,7 @@ describe('Topics', function () {
   it('allows for topics to be updated', function (done) {
     server
       .put('/api/v1/topics/' + id)
-      .set('x-access-token', userToken)
+      .set('x-access-token', adminToken)
       .send({title: 'Technology'})
       .expect(200)
       .end(function (err, res) {
@@ -130,7 +135,7 @@ describe('Topics', function () {
   it('doesnt allow for topics to be title-less', function (done) {
     server
       .put('/api/v1/topics/' + id)
-      .set('x-access-token', userToken)
+      .set('x-access-token', adminToken)
       .send({})
       .expect(400)
       .end(function (err, res) {
@@ -143,7 +148,7 @@ describe('Topics', function () {
   it('throws an error when an invalid id is updated', function (done) {
     server
       .put('/api/v1/topics/507f1')
-      .set('x-access-token', userToken)
+      .set('x-access-token', adminToken)
       .expect(500)
       .end(function (err, res) {
         res.status.should.equal(500);
@@ -157,7 +162,7 @@ describe('Topics', function () {
   it('allows for topics to be deleted', function (done) {
     server
       .delete('/api/v1/topics/' + id)
-      .set('x-access-token', userToken)
+      .set('x-access-token', adminToken)
       .expect(200)
       .end(function (err, res) {
         res.status.should.equal(200);
@@ -169,7 +174,7 @@ describe('Topics', function () {
   it('throws an error when an invalid id is deleted', function (done) {
     server
       .delete('/api/v1/topics/507f1')
-      .set('x-access-token', userToken)
+      .set('x-access-token', adminToken)
       .expect(500)
       .end(function (err, res) {
         res.status.should.equal(500);

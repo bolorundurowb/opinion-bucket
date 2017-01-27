@@ -36,12 +36,18 @@ const userSchema = new Schema({
   },
   profilePhoto: String,
   joined: {
-    type: Date
+    type: Date,
+    default: Date.noww
   },
   topics: [{
     type: Schema.ObjectId,
     ref: 'Topic'
-  }]
+  }],
+  type: {
+    type: String,
+    enum: ['User', 'Admin'],
+    default: 'User'
+  }
 });
 
 userSchema.virtual('name').get(function () {

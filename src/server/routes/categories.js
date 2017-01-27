@@ -4,16 +4,17 @@
 
 const categories = require('./../controllers/categories');
 const authentication = require('./../middleware/authentication');
+const authorization = require('./../middleware/authorization');
 
-const categoryRoutes = (router) => {
+const categoryRoutes = function (router) {
   router.route('/categories')
     .get(categories.getAll)
-    .post(authentication, categories.create);
+    .post(authentication, authorization, categories.create);
 
   router.route('/categories/:id')
     .get(categories.getOne)
-    .put(authentication, categories.update)
-    .delete(authentication, categories.delete);
+    .put(authentication, authorization, categories.update)
+    .delete(authentication, authorization, categories.delete);
 };
 
 module.exports = categoryRoutes;

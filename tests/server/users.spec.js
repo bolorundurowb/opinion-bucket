@@ -11,9 +11,14 @@ const app = require('./../../server');
 const server = supertest.agent(app);
 var id = '';
 var userToken;
+var adminToken;
 
 before(function () {
   userToken = jwt.sign({username: 'john.doe', email: 'john.doe@doe.org'}, '765105877C8DF471AC2B3E58801E8099', {
+    expiresIn: '24h'
+  });
+
+  adminToken = jwt.sign({username: 'admin', type: 'Admin'}, '765105877C8DF471AC2B3E58801E8099', {
     expiresIn: '24h'
   });
 });
@@ -23,7 +28,7 @@ describe('Users', function () {
   it('allows for all users to be retrieved', function (done) {
     server
       .get('/api/v1/users')
-      .set('x-access-token', userToken)
+      .set('x-access-token', adminToken)
       .expect(200)
       .end(function (err, res) {
         res.status.should.equal(200);
@@ -33,12 +38,14 @@ describe('Users', function () {
       });
   });
 
+  //TODO: id is empty
   it('allows for a user to be retrieved', function (done) {
     server
       .get('/api/v1/users/' + id)
-      .set('x-access-token', userToken)
+      .set('x-access-token', adminToken)
       .expect(200)
       .end(function (err, res) {
+        console.log(res);
         res.status.should.equal(200);
         res.body.should.be.type('object');
         done();
