@@ -5,7 +5,7 @@
 const auth = require('./../controllers/auth');
 const authentication = require('./../middleware/authentication');
 
-const authRoutes = (router) => {
+const authRoutes = function (router) {
   router.route('/auth/signin')
     .post(auth.signin);
 

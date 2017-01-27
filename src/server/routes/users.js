@@ -4,10 +4,11 @@
 
 const users = require('./../controllers/users');
 const authentication = require('./../middleware/authentication');
+const authorization = require('./../middleware/authorization');
 
-const userRoutes = (router) => {
+const userRoutes = function (router) {
   router.route('/users')
-    .get(authentication, users.getAll);
+    .get(authentication, authorization, users.getAll);
 
   router.route('/users/:id')
     .get(authentication, users.getOne)
