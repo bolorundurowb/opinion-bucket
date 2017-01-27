@@ -3,16 +3,17 @@
  */
 
 const topics = require('./../controllers/topics');
+const authentication = require('./../middleware/authentication');
 
 const topicRoutes = (router) => {
   router.route('/topics')
     .get(topics.getAll)
-    .post(topics.create);
+    .post(authentication, topics.create);
 
   router.route('/topics/:id')
     .get(topics.getOne)
-    .put(topics.update)
-    .delete(topics.delete);
+    .put(authentication, topics.update)
+    .delete(authentication, topics.delete);
 };
 
 module.exports = topicRoutes;

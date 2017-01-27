@@ -5,16 +5,25 @@
 const supertest = require('supertest');
 // eslint-disable-next-line
 const should = require('should');
+const jwt = require('jsonwebtoken');
 const app = require('./../../server');
 
 const server = supertest.agent(app);
-let id = '';
+var id = '';
+var userToken;
 
-describe('Users', () => {
+before(function () {
+  userToken = jwt.sign({username: 'john.doe', email: 'john.doe@doe.org'}, '765105877C8DF471AC2B3E58801E8099', {
+    expiresIn: '24h'
+  });
+});
+
+describe('Users', function () {
   // Retrieval Tests
-  it('allows for all users to be retrieved', (done) => {
+  it('allows for all users to be retrieved', function (done) {
     server
       .get('/api/v1/users')
+      .set('x-access-token', userToken)
       .expect(200)
       .end(function (err, res) {
         res.status.should.equal(200);
@@ -24,9 +33,10 @@ describe('Users', () => {
       });
   });
 
-  it('allows for a user to be retrieved', (done) => {
+  it('allows for a user to be retrieved', function (done) {
     server
       .get('/api/v1/users/' + id)
+      .set('x-access-token', userToken)
       .expect(200)
       .end(function (err, res) {
         res.status.should.equal(200);
@@ -35,9 +45,10 @@ describe('Users', () => {
       });
   });
 
-  it('doesnt allow a non-existent user to be retrieved', (done) => {
+  it('doesnt allow a non-existent user to be retrieved', function (done) {
     server
       .get('/api/v1/users/507f1f77bcf86cd799439011')
+      .set('x-access-token', userToken)
       .expect(400)
       .end(function (err, res) {
         res.status.should.equal(400);
@@ -46,9 +57,10 @@ describe('Users', () => {
       });
   });
 
-  it('throws an error when a wrong id is given', (done) => {
+  it('throws an error when a wrong id is given', function (done) {
     server
       .get('/api/v1/users/507f1')
+      .set('x-access-token', userToken)
       .expect(500)
       .end(function (err, res) {
         res.status.should.equal(500);
@@ -72,9 +84,10 @@ describe('Users', () => {
   //     });
   // });
 
-  it('doesnt allow for users to have incomplete data', (done) => {
+  it('doesnt allow for users to have incomplete data', function (done) {
     server
       .put('/api/v1/users/507f1f77bcf86cd799439011')
+      .set('x-access-token', userToken)
       .send({})
       .expect(400)
       .end(function (err, res) {
@@ -84,9 +97,10 @@ describe('Users', () => {
       });
   });
 
-  it('throws an error when an invalid id is updated', (done) => {
+  it('throws an error when an invalid id is updated', function (done) {
     server
       .put('/api/v1/users/507f1')
+      .set('x-access-token', userToken)
       .expect(500)
       .end(function (err, res) {
         res.status.should.equal(500);
@@ -108,9 +122,10 @@ describe('Users', () => {
   //     });
   // });
 
-  it('throws an error when an invalid id is deleted', (done) => {
+  it('throws an error when an invalid id is deleted', function (done) {
     server
       .delete('/api/v1/users/507f1')
+      .set('x-access-token', userToken)
       .expect(500)
       .end(function (err, res) {
         res.status.should.equal(500);

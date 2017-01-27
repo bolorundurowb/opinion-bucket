@@ -3,6 +3,7 @@
  */
 
 const opinions = require('./../controllers/opinions');
+const authentication = require('./../middleware/authentication');
 
 const opinionRoutes = function (router) {
   router.route('/opinions')

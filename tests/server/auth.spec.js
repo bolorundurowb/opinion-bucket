@@ -5,15 +5,24 @@
 const supertest = require('supertest');
 // eslint-disable-next-line
 const should = require('should');
+const jwt = require('jsonwebtoken');
 const app = require('./../../server');
 
 const server = supertest.agent(app);
+var userToken;
 
-describe('Auth', () => {
+before(function () {
+  userToken = jwt.sign({username: 'john.doe', email: 'john.doe@doe.org'}, '765105877C8DF471AC2B3E58801E8099', {
+    expiresIn: '24h'
+  });
+});
+
+describe('Auth', function () {
   // Sign out
-  it('allows for users to be signed out', (done) => {
+  it('allows for users to be signed out', function (done) {
     server
       .post('/api/v1/auth/signout')
+      .set('x-access-token', userToken)
       .expect(200)
       .end(function (err, res) {
         res.status.should.equal(200);
@@ -24,7 +33,7 @@ describe('Auth', () => {
   });
 
   // Sign up
-  it('allows for users to be created', (done) => {
+  it('allows for users to be created', function (done) {
     server
       .post('/api/v1/auth/signup')
       .send({
@@ -43,7 +52,7 @@ describe('Auth', () => {
       });
   });
 
-  it('does not allow for users with incomplete details to be created', (done) => {
+  it('does not allow for users with incomplete details to be created', function (done) {
     server
       .post('/api/v1/auth/signup')
       .send({
@@ -59,7 +68,7 @@ describe('Auth', () => {
       });
   });
 
-  it('does not allow for duplicate users to be created', (done) => {
+  it('does not allow for duplicate users to be created', function (done) {
     server
       .post('/api/v1/auth/signup')
       .send({
@@ -77,7 +86,7 @@ describe('Auth', () => {
   });
 
   // Sign in
-  it('allows for users to be signed in', (done) => {
+  it('allows for users to be signed in', function (done) {
     server
       .post('/api/v1/auth/signin')
       .send({
@@ -95,7 +104,7 @@ describe('Auth', () => {
       });
   });
 
-  it('does not allow for invalid users to be signed in', (done) => {
+  it('does not allow for invalid users to be signed in', function (done) {
     server
       .post('/api/v1/auth/signin')
       .send({
@@ -110,7 +119,7 @@ describe('Auth', () => {
       });
   });
 
-  it('does not allow for users without password to be signed in', (done) => {
+  it('does not allow for users without password to be signed in', function (done) {
     server
       .post('/api/v1/auth/signin')
       .send({
@@ -124,7 +133,7 @@ describe('Auth', () => {
       });
   });
 
-  it('does not allow for users with a wrong password to be signed in', (done) => {
+  it('does not allow for users with a wrong password to be signed in', function (done) {
     server
       .post('/api/v1/auth/signin')
       .send({
