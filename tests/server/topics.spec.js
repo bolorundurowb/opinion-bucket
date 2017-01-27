@@ -10,7 +10,6 @@ const app = require('./../../server');
 
 const server = supertest.agent(app);
 var id = '';
-
 var userToken;
 
 before(function () {
@@ -24,6 +23,7 @@ describe('Topics', function () {
   it('allows for topics to be created', function (done) {
     server
       .post('/api/v1/topics')
+      .set('x-access-token', userToken)
       .send({title: 'Tech'})
       .expect(201)
       .end(function (err, res) {
