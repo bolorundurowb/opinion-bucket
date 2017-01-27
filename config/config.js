@@ -4,12 +4,12 @@
 
 const dotenv = require('dotenv');
 
-let env = process.env.NODE_ENV || 'development';
+var env = process.env.NODE_ENV || 'development';
 if (env !== 'production') {
   dotenv.config({silent: true});
 }
 
-let config = {
+var config = {
   database: '',
   secret: process.env.SECRET
 };

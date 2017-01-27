@@ -39,6 +39,7 @@ const authCtrl = {
           res.status(409).send({message: 'A user exists with that username or email address'});
         } else {
           const user = new Users(req.body);
+          user.joined = Date.now;
           user.save(function (err, _user) {
             if (err) {
               res.status(500).send(err);
@@ -57,7 +58,7 @@ const authCtrl = {
 };
 
 function tokenify(user) {
-  let response = {user: user};
+  var response = {user: user};
   response.token = jwt.sign(user._doc, config.secret, {
     expiresIn: '72h'
   });
