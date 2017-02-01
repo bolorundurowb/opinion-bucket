@@ -9,11 +9,11 @@ const authorization = require('./../middleware/authorization');
 const topicRoutes = function (router) {
   router.route('/topics')
     .get(topics.getAll)
-    .post(authentication, authorization, topics.create);
+    .post(authentication, topics.create);
 
   router.route('/topics/:id')
     .get(topics.getOne)
-    .put(authentication, authorization, topics.update)
+    .put(authentication, topics.update)
     .delete(authentication, authorization, topics.delete);
 
   router.route('/topics/:id/full')
