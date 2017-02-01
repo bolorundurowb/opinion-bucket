@@ -45,7 +45,6 @@ describe('Users', function () {
       .set('x-access-token', adminToken)
       .expect(200)
       .end(function (err, res) {
-        console.log(res);
         res.status.should.equal(200);
         res.body.should.be.type('object');
         done();
