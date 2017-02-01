@@ -36,8 +36,7 @@ const userSchema = new Schema({
   },
   profilePhoto: String,
   joined: {
-    type: Date,
-    default: Date.noww
+    type: Date
   },
   topics: [{
     type: Schema.ObjectId,

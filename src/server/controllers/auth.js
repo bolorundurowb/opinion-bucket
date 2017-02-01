@@ -39,6 +39,7 @@ const authCtrl = {
           res.status(409).send({message: 'A user exists with that username or email address'});
         } else {
           const user = new Users(req.body);
+          user.joined = new Date();
           user.save(function (err, _user) {
             if (err) {
               res.status(500).send(err);
