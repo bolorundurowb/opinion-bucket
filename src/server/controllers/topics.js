@@ -26,6 +26,18 @@ const topicsCtrl = {
     });
   },
 
+  getOneFull: function (req, res) {
+    Topics.findOne({_id: req.params.id}, function (err, topic) {
+      if (err) {
+        res.status(500).send(err);
+      } else if (!topic) {
+        res.status(400).send({message: 'No topic exists with that id'});
+      } else {
+        res.status(200).send(topic);
+      }
+    });
+  },
+
   create: function (req, res) {
     if (!req.body.title) {
       res.status(400).send({message: 'The topic requires a title'});
