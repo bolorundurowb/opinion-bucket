@@ -6,11 +6,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const categorySchema = new Schema({
-  title: String,
-  topics: [{
-    type: Schema.ObjectId,
-    ref: 'Topic'
-  }]
+  title: {
+    type: String
+  }
 });
 
 const categoryModel = mongoose.model('Category', categorySchema);
