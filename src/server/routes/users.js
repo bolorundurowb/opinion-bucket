@@ -14,6 +14,9 @@ const userRoutes = function (router) {
     .get(authentication, users.getOne)
     .put(authentication, users.update)
     .delete(authentication, users.delete);
+
+  router.route('/users/:id/full')
+    .get(authentication, users.getOneFull);
 };
 
 module.exports = userRoutes;

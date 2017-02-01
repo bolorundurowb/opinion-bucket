@@ -15,6 +15,9 @@ const topicRoutes = function (router) {
     .get(topics.getOne)
     .put(authentication, authorization, topics.update)
     .delete(authentication, authorization, topics.delete);
+
+  router.route('/topics/:id/full')
+    .get(topics.getOneFull);
 };
 
 module.exports = topicRoutes;
