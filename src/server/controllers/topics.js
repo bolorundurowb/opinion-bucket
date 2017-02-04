@@ -77,14 +77,21 @@ const topicsCtrl = {
         }
         if (req.body.categories) {
           if (Array.isArray(req.body.categories)) {
-
+            req.body.categories.forEach(function (cat_id) {
+              if (typeof cat_id == 'string') {
+                var id = mongoose.Types.ObjectId(cat_id);
+                topic.categories.push(id);
+              } else {
+                topic.categories.push(cat_id);
+              }
+            });
           } else {
             var id = mongoose.Types.ObjectId(req.body.categories);
             topic.categories.push(id);
           }
         }
+        topic.categories = Array.from(new Set(topic.categories));
         topic.save(function (err, _topic) {
-          console.log(topic);
           if (err) {
             res.status(500).send(err);
           } else {
