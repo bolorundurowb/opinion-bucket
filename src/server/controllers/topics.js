@@ -65,6 +65,8 @@ const topicsCtrl = {
     Topics.findById(req.params.id, function (err, topic) {
       if (err) {
         res.status(500).send(err);
+      } else if (!topic) {
+        res.status(404).send({message: 'A topic with that id doesn\'t exist'});
       } else {
         if (req.body.content) {
           topic.content = req.body.content;

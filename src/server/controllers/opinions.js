@@ -3,6 +3,8 @@
  */
 
 const Opinions = require('./../models/opinion');
+const Topics = require('./../models/topic');
+const Users = require('./../models/user');
 
 const opinionsCtrl = {
   getAll: function (req, res) {
@@ -30,14 +32,44 @@ const opinionsCtrl = {
   create: function (req, res) {
     if (!(req.body.author && req.body.details)) {
       res.status(400).send({message: 'An opinion must have an author and content'});
+    } else if (!req.body.topicId) {
+      res.status(400).send({message: 'An opinion must have a topic'});
     } else {
-      const opinion = new Opinions(req.body);
-      opinion.save(function (err, _opinion) {
+      Topics.findById(req.body.topicId, function (err, topic) {
         if (err) {
           res.status(500).send(err);
+        } else if (!topic) {
+          res.status(404).send({message: 'A topic with that id doesn\'t exist'});
+        } else {
+          const opinion = new Opinions(req.body);
+          opinion.save(function (err, _opinion) {
+            if (err) {
+              res.status(500).send(err);
+            } else {
+              topic.opinions.push(_opinion._id);
+              topic.save(function (err, result) {
+                if (err) {
+                  console.log('Error updating topic with opinion', err, message);
+                } else {
+                  console.log('Successfully updated topic with opinion');
+                }
+              });
+              Users.findById(req.user._id, function (err, user) {
+                user.topics.push(topic._id);
+                user.save(function (err, result) {
+                  if (err) {
+                    console.log('Error updating user with topic', err.message);
+                  } else {
+                    console.log('Successfully updated user with topic');
+                  }
+                });
+              });
+              res.status(201).send(_opinion);
+            }
+          });
         }
-        res.status(201).send(_opinion);
       });
+
     }
   },
 
