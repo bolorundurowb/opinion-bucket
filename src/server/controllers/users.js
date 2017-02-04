@@ -43,15 +43,68 @@ const usersCtrl = {
     Users.findById(req.params.id, function (err, user) {
       if (err) {
         res.status(500).send(err);
-      } else if (!(req.body.username && req.body.password && req.body.email && req.body)) {
-        res.status(400).send({message: 'The user details are not complete'});
       } else {
-        user = req.body;
-        user.save(function (err, _user) {
+        if (req.body.password) {
+          user.password = req.body.password;
+        }
+        if (req.body.firstName) {
+          user.firstName = req.body.firstName;
+        }
+        if (req.body.lastName) {
+          user.lastName = req.body.lastName;
+        }
+        if (req.body.gender) {
+          user.gender = req.body.gender;
+        }
+        if (req.body.dateOfBirth) {
+          user.dateOfBirth = new Date(req.body.dateOfBirth);
+        }
+        if (req.body.profilePhoto) {
+          user.profilePhoto = req.body.profilePhoto;
+        }
+        if (req.body.topics) {
+          if (Array.isArray(req.body.topics)) {
+            req.body.topics.forEach(function (topic_id) {
+              if (typeof topic_id == 'string') {
+                var id = mongoose.Types.ObjectId(topic_id);
+                user.topics.push(id);
+              } else {
+                user.topics.push(topic_id);
+              }
+            });
+          } else {
+            var id = mongoose.Types.ObjectId(req.body.topics);
+            user.topics.push(id);
+          }
+        }
+        user.topics = Array.from(new Set(user.topics));
+        // Critical details
+        var queryOptions = [];
+        if (req.body.email) {
+          queryOptions.push({email: req.body.email});
+        }
+        if (req.body.username) {
+          queryOptions.push({username: req.body.username});
+        }
+        Users.find({$or: queryOptions}, function (err, result) {
           if (err) {
             res.status(500).send(err);
+          } else if (result.length != 0) {
+            res.status(409).send({message: 'A user exists with that username or email address'});
           } else {
-            res.status(200).send(_user);
+            if (req.body.email) {
+              user.email = req.body.email;
+            }
+            if (req.body.username) {
+              user.username = req.body.username;
+            }
+            user.save(function (err, _user) {
+              if (err) {
+                res.status(500).send(err);
+              } else {
+                res.status(200).send(_user);
+              }
+            });
           }
         });
       }
