@@ -2,6 +2,7 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
+const mongoose = require('mongoose');
 const Topics = require('./../models/topic');
 
 const topicsCtrl = {
@@ -64,12 +65,26 @@ const topicsCtrl = {
     Topics.findById(req.params.id, function (err, topic) {
       if (err) {
         res.status(500).send(err);
-      } else if (!req.body.title) {
-        res.status(400).send({message: 'The topic requires a title'});
       } else {
-        topic.title = req.body.title;
-        topic.opinions = req.body.opinions;
+        if (req.body.title) {
+          topic.title = req.body.title;
+        }
+        if (req.body.content) {
+          topic.content = req.body.content;
+        }
+        if (req.body.date) {
+          topic.date = new Date(req.body.date);
+        }
+        if (req.body.categories) {
+          if (Array.isArray(req.body.categories)) {
+
+          } else {
+            var id = mongoose.Types.ObjectId(req.body.categories);
+            topic.categories.push(id);
+          }
+        }
         topic.save(function (err, _topic) {
+          console.log(topic);
           if (err) {
             res.status(500).send(err);
           } else {

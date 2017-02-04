@@ -4,7 +4,6 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const opinionSchema = require('./opinion');
 
 const topicSchema = new Schema({
   title: {
