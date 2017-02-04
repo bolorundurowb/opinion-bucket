@@ -6,7 +6,7 @@ const auth = function (req, res, next) {
   if (req.user.type === 'Admin') {
     next();
   } else {
-    res.status(403).send({message: 'You need to be an admin to access that information'})
+    res.status(403).send({message: 'You need to be an admin to access that information'});
   }
 };
 

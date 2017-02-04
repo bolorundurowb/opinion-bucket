@@ -17,7 +17,7 @@ const auth = function (req, res, next) {
       }
     });
   } else {
-    res.status(403).send({mesage: 'You need to be logged in to access that information.'});
+    res.status(403).send({message: 'You need to be logged in to access that information.'});
   }
 };
 
