@@ -66,9 +66,6 @@ const topicsCtrl = {
       if (err) {
         res.status(500).send(err);
       } else {
-        if (req.body.title) {
-          topic.title = req.body.title;
-        }
         if (req.body.content) {
           topic.content = req.body.content;
         }
