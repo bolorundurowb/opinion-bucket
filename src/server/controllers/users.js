@@ -28,15 +28,17 @@ const usersCtrl = {
   },
 
   getOneFull: function (req, res) {
-    Users.findOne({_id: req.params.id}, function (err, user) {
-      if (err) {
-        res.status(500).send(err);
-      } else if (!user) {
-        res.status(400).send({message: 'No user exists with that id'});
-      } else {
-        res.status(200).send(user);
-      }
-    });
+    Users.findOne({_id: req.params.id})
+      .populate('topics')
+      .exec(function (err, user) {
+        if (err) {
+          res.status(500).send(err);
+        } else if (!user) {
+          res.status(400).send({message: 'No user exists with that id'});
+        } else {
+          res.status(200).send(user);
+        }
+      });
   },
 
   update: function (req, res) {

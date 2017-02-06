@@ -8,7 +8,7 @@ const categoryRoutes = require('./categories');
 const topicRoutes = require('./topics');
 const opinionRoutes = require('./opinion');
 
-const routes = (router) => {
+const routes = function (router) {
   authRoutes(router);
   categoryRoutes(router);
   opinionRoutes(router);

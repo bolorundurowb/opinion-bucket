@@ -47,15 +47,17 @@ const topicsCtrl = {
   },
 
   getOneFull: function (req, res) {
-    Topics.findOne({_id: req.params.id}, function (err, topic) {
-      if (err) {
-        res.status(500).send(err);
-      } else if (!topic) {
-        res.status(400).send({message: 'No topic exists with that id'});
-      } else {
-        res.status(200).send(topic);
-      }
-    });
+    Topics.findOne({_id: req.params.id})
+      .populate('opinions categories')
+      .exec(function (err, topic) {
+        if (err) {
+          res.status(500).send(err);
+        } else if (!topic) {
+          res.status(400).send({message: 'No topic exists with that id'});
+        } else {
+          res.status(200).send(topic);
+        }
+      });
   },
 
   create: function (req, res) {
