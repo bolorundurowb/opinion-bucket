@@ -30,6 +30,7 @@ const opinionsCtrl = {
   },
 
   create: function (req, res) {
+    req.body.author = req.user._id;
     if (!(req.body.author && req.body.details)) {
       res.status(400).send({message: 'An opinion must have an author and content'});
     } else if (!req.body.topicId) {
@@ -93,10 +94,12 @@ const opinionsCtrl = {
   },
 
   delete: function (req, res) {
-    Opinions.findByIdAndRemove(req.params.id, function (err) {
+    Opinions.findOneAndRemove({_id: req.params.id})
+      .exec(function (err, removed) {
       if (err) {
         res.status(500).send(err);
       } else {
+
         res.status(200).send({message: 'Opinion successfully removed'});
       }
     });
@@ -106,8 +109,6 @@ const opinionsCtrl = {
     Opinions.findById(req.params.id, function (err, opinion) {
       if (err) {
         res.status(500).send(err);
-      } else if (!req.body.content) {
-        res.status(400).send({message: 'The opinion must have content'});
       } else {
         opinion.likes += 1;
         opinion.save(function (err, _opinion) {
@@ -125,8 +126,6 @@ const opinionsCtrl = {
     Opinions.findById(req.params.id, function (err, opinion) {
       if (err) {
         res.status(500).send(err);
-      } else if (!req.body.content) {
-        res.status(400).send({message: 'The opinion must have content'});
       } else {
         opinion.dislikes += 1;
         opinion.save(function (err, _opinion) {
