@@ -30,7 +30,8 @@ const opinionsCtrl = {
   },
 
   create: function (req, res) {
-    if (!(req.body.author && req.body.details)) {
+    req.body.author = req.user._id;
+    if (!(req.body.author && req.body.content)) {
       res.status(400).send({message: 'An opinion must have an author and content'});
     } else if (!req.body.topicId) {
       res.status(400).send({message: 'An opinion must have a topic'});
@@ -47,6 +48,7 @@ const opinionsCtrl = {
               res.status(500).send(err);
             } else {
               topic.opinions.push(_opinion._id);
+              topic.opinionsLength++;
               topic.save(function (err, result) {
                 if (err) {
                   console.log('Error updating topic with opinion', err, message);

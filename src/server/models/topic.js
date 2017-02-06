@@ -24,7 +24,11 @@ const topicSchema = new Schema({
   categories: [{
     type: Schema.ObjectId,
     ref: 'Category'
-  }]
+  }],
+  opinionsLength: {
+    type: Number,
+    default: 0
+  }
 });
 
 const topicModel = mongoose.model('Topic', topicSchema);

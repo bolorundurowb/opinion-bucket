@@ -7,25 +7,36 @@ const Topics = require('./../models/topic');
 
 const topicsCtrl = {
   getAll: function (req, res) {
-    var limit = req.query.limit || 15;
+    var limit = req.query.limit || 0;
     limit = parseInt(limit);
+
+    var skip = req.query.offset || 0;
+    skip = parseInt(skip);
+
     var filter = {};
-    if (req.query.pagination) {
-
-    }
     if (req.query.category) {
-      filter.categories = {
-        '$in': [mongoose.Types.ObjectId(req.query.category)]
-      };
+      try {
+        filter.categories = {
+          '$in': [mongoose.Types.ObjectId(req.query.category)]
+        };
+      } catch (err) {
+        console.log('The mongo id supplied is invalid');
+      }
     }
+
+    var sort = {};
     if (req.query.order) {
-
-    } else {
-
+      if (req.query.order === 'date') {
+        sort.date = -1;
+      } else if (req.query.order === 'opinion') {
+        sort.opinionsLength = -1;
+      }
     }
-    console.log(filter)
+
     Topics.find(filter)
       .limit(limit)
+      .sort(sort)
+      .skip(skip)
       .exec(function (err, topics) {
         if (err) {
           res.status(500).send(err);
