@@ -15,7 +15,7 @@ const opinionSchema = new Schema({
     type: Boolean,
     default: false
   },
-  details: {
+  content: {
     type: String
   },
   date: {
