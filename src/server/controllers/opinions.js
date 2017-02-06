@@ -2,6 +2,7 @@
  * Created by bolorundurowb on 1/18/17.
  */
 
+const mongoose = require('mongoose');
 const Opinions = require('./../models/opinion');
 const Topics = require('./../models/topic');
 const Users = require('./../models/user');
@@ -100,9 +101,42 @@ const opinionsCtrl = {
       if (err) {
         res.status(500).send(err);
       } else {
-
         res.status(200).send({message: 'Opinion successfully removed'});
       }
+    });
+
+    Topics.find({
+      opinions: {
+        '$in': [mongoose.Types.ObjectId(req.params._id)]
+      }
+    }).exec(function (err, topics) {
+      topics.forEach(function (topic) {
+        var index = topic.opinions.indexOf(req.params._id);
+        if (index != -1) {
+          topic.opinions.splice(index, 1);
+        }
+        topic.save(function (err, result) {
+          if (err) {
+            console.log('Cannot remove opinion from topic', err);
+          } else {
+            console.log('Successfully removed opinion from topic');
+          }
+        });
+
+        Users.findById(req.user._id, function (err, user) {
+          var index = user.topics.indexOf(topic._id);
+          if (index != -1) {
+            user.topics.splice(index, 1);
+          }
+          user.save(function (err, result) {
+            if (err) {
+              console.log('Cannot remove topic from user', err);
+            } else {
+              console.log('Successfully removed topic from user');
+            }
+          });
+        });
+      });
     });
   },
 
