@@ -7,12 +7,31 @@ const Topics = require('./../models/topic');
 
 const topicsCtrl = {
   getAll: function (req, res) {
-    Topics.find(function (err, topics) {
-      if (err) {
-        res.status(500).send(err);
-      }
-      res.status(200).send(topics);
-    });
+    var limit = req.query.limit || 15;
+    limit = parseInt(limit);
+    var filter = {};
+    if (req.query.pagination) {
+
+    }
+    if (req.query.category) {
+      filter.categories = {
+        '$in': [mongoose.Types.ObjectId(req.query.category)]
+      };
+    }
+    if (req.query.order) {
+
+    } else {
+
+    }
+    console.log(filter)
+    Topics.find(filter)
+      .limit(limit)
+      .exec(function (err, topics) {
+        if (err) {
+          res.status(500).send(err);
+        }
+        res.status(200).send(topics);
+      });
   },
 
   getOne: function (req, res) {
