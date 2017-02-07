@@ -2,6 +2,7 @@
  * Created by bolorundurowb on 1/18/17.
  */
 
+const mongoose = require('mongoose');
 const Opinions = require('./../models/opinion');
 const Topics = require('./../models/topic');
 const Users = require('./../models/user');
@@ -49,19 +50,23 @@ const opinionsCtrl = {
             } else {
               topic.opinions.push(_opinion._id);
               topic.opinionsLength++;
-              topic.save(function (err, result) {
+              topic.save(function (err) {
                 if (err) {
-                  console.log('Error updating topic with opinion', err, message);
+                    //eslint-disable-next-line
+                  console.log('Error updating topic with opinion', err);
                 } else {
+                    //eslint-disable-next-line
                   console.log('Successfully updated topic with opinion');
                 }
               });
               Users.findById(req.user._id, function (err, user) {
                 user.topics.push(topic._id);
-                user.save(function (err, result) {
+                user.save(function (err) {
                   if (err) {
+                    //eslint-disable-next-line
                     console.log('Error updating user with topic', err.message);
                   } else {
+                    //eslint-disable-next-line
                     console.log('Successfully updated user with topic');
                   }
                 });
@@ -95,12 +100,51 @@ const opinionsCtrl = {
   },
 
   delete: function (req, res) {
-    Opinions.findByIdAndRemove(req.params.id, function (err) {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.status(200).send({message: 'Opinion successfully removed'});
+    Opinions.findOneAndRemove({_id: req.params.id})
+      .exec(function (err) {
+        if (err) {
+          res.status(500).send(err);
+        } else {
+          res.status(200).send({message: 'Opinion successfully removed'});
+        }
+      });
+
+    Topics.find({
+      opinions: {
+        '$in': [mongoose.Types.ObjectId(req.params.id)]
       }
+    }).exec(function (err, topics) {
+      topics.forEach(function (topic) {
+        var index = topic.opinions.indexOf(req.params.id);
+        if (index !== -1) {
+          topic.opinions.splice(index, 1);
+        }
+        topic.save(function (err) {
+          if (err) {
+            //eslint-disable-next-line
+            console.log('Cannot remove opinion from topic', err);
+          } else {
+            //eslint-disable-next-line
+            console.log('Successfully removed opinion from topic');
+          }
+        });
+
+        Users.findById(req.user._id, function (err, user) {
+          var index = user.topics.indexOf(topic._id);
+          if (index !== -1) {
+            user.topics.splice(index, 1);
+          }
+          user.save(function (err) {
+            if (err) {
+              //eslint-disable-next-line
+              console.log('Cannot remove topic from user', err);
+            } else {
+              //eslint-disable-next-line
+              console.log('Successfully removed topic from user');
+            }
+          });
+        });
+      });
     });
   },
 
@@ -108,8 +152,6 @@ const opinionsCtrl = {
     Opinions.findById(req.params.id, function (err, opinion) {
       if (err) {
         res.status(500).send(err);
-      } else if (!req.body.content) {
-        res.status(400).send({message: 'The opinion must have content'});
       } else {
         opinion.likes += 1;
         opinion.save(function (err, _opinion) {
@@ -127,8 +169,6 @@ const opinionsCtrl = {
     Opinions.findById(req.params.id, function (err, opinion) {
       if (err) {
         res.status(500).send(err);
-      } else if (!req.body.content) {
-        res.status(400).send({message: 'The opinion must have content'});
       } else {
         opinion.dislikes += 1;
         opinion.save(function (err, _opinion) {
