@@ -29,6 +29,11 @@ const opinionSchema = new Schema({
   dislikes: {
     type: Number,
     default: 0
+  },
+  topicId: {
+    type: Schema.ObjectId,
+    required: true,
+    ref: 'Topic'
   }
 });
 
