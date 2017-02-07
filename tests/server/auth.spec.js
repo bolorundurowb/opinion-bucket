@@ -114,7 +114,7 @@ describe('Auth', function () {
       .expect(404)
       .end(function (err, res) {
         res.status.should.equal(404);
-        res.body.message.should.equal('A user with that username does not exist');
+        res.body.message.should.equal('A user with that username or email does not exist');
         done();
       });
   });
@@ -128,7 +128,7 @@ describe('Auth', function () {
       .expect(400)
       .end(function (err, res) {
         res.status.should.equal(400);
-        res.body.message.should.equal('A username and password are required');
+        res.body.message.should.equal('A username or email and password are required');
         done();
       });
   });
