@@ -10,13 +10,13 @@ const config = require('./../../../config/config');
 const authCtrl = {
   signin: function (req, res) {
     if (!(req.body.username && req.body.password)) {
-      res.status(400).send({message: 'A username and password are required'});
+      res.status(400).send({message: 'A username or email and password are required'});
     } else {
-      Users.findOne({username: req.body.username}, function (err, user) {
+      Users.findOne({$or: [{username: req.body.username}, {email: req.body.username}]}).exec(function (err, user) {
         if (err) {
           res.status(500).send(err);
         } else if (!user) {
-          res.status(404).send({message: 'A user with that username does not exist'});
+          res.status(404).send({message: 'A user with that username or email does not exist'});
         } else {
           if (verifyPassword(req.body.password, user.hashedPassword)) {
             res.status(200).send(tokenify(user));
@@ -24,7 +24,7 @@ const authCtrl = {
             res.status(403).send({message: 'The passwords did not match'});
           }
         }
-      })
+      });
     }
   },
   
