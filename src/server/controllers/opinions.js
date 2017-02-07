@@ -15,6 +15,11 @@ const opinionsCtrl = {
     var skip = req.query.offset || 0;
     skip = parseInt(skip);
 
+    var filter = {};
+    if (req.params.topic) {
+      filter.topicId = req.params.topic;
+    }
+
     var sort = {};
     if (req.query.order) {
       if (req.query.order === 'date') {
@@ -26,7 +31,7 @@ const opinionsCtrl = {
       }
     }
 
-    Opinions.find({})
+    Opinions.find(filter)
       .limit(limit)
       .sort(sort)
       .skip(skip)
