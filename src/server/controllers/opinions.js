@@ -9,13 +9,34 @@ const Users = require('./../models/user');
 
 const opinionsCtrl = {
   getAll: function (req, res) {
-    Opinions.find(function (err, opinions) {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.status(200).send(opinions);
+    var limit = req.query.limit || 0;
+    limit = parseInt(limit);
+
+    var skip = req.query.offset || 0;
+    skip = parseInt(skip);
+
+    var sort = {};
+    if (req.query.order) {
+      if (req.query.order === 'date') {
+        sort.date = -1;
+      } else if (req.query.order === 'likes') {
+        sort.likes = -1;
+      } else if (req.query.order === 'dislikes') {
+        sort.dislikes = -1;
       }
-    });
+    }
+
+    Opinions.find({})
+      .limit(limit)
+      .sort(sort)
+      .skip(skip)
+      .exec(function (err, opinions) {
+        if (err) {
+          res.status(500).send(err);
+        } else {
+          res.status(200).send(opinions);
+        }
+      });
   },
 
   getOne: function (req, res) {
