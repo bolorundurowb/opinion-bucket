@@ -15,6 +15,10 @@ var userToken;
 var adminToken;
 
 before(function (done) {
+  userToken = jwt.sign({username: 'john.doe'}, config.secret, {
+    expiresIn: '24h'
+  });
+
   adminToken = jwt.sign({username: 'admin', type: 'Admin'}, config.secret, {
     expiresIn: '24h'
   });
@@ -25,9 +29,6 @@ before(function (done) {
     .expect(200)
     .end(function (err, res) {
       id = res.body[0]._id;
-      userToken = jwt.sign(res.body[0], config.secret, {
-        expiresIn: '24h'
-      });
       done();
     });
 });
@@ -136,6 +137,20 @@ describe('Users', function () {
       .end(function (err, res) {
         res.status.should.equal(500);
         res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "User"');
+        done();
+      });
+  });
+
+  // Admin Tests
+  it('only allows for all users to be retrieved by an admin', function (done) {
+    server
+      .get('/api/v1/users')
+      .set('x-access-token', userToken)
+      .expect(403)
+      .end(function (err, res) {
+        res.status.should.equal(403);
+        res.body.should.be.type('object');
+        res.body.message.should.equal('You need to be an admin to access that information');
         done();
       });
   });
