@@ -2,6 +2,7 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
+const mongoose = require('mongoose');
 const Users = require('./../models/user');
 
 const usersCtrl = {
@@ -45,7 +46,7 @@ const usersCtrl = {
     Users.findById(req.params.id, function (err, user) {
       if (err) {
         res.status(500).send(err);
-      } else {
+      } else if (user) {
         if (req.body.password) {
           user.password = req.body.password;
         }
@@ -68,57 +69,62 @@ const usersCtrl = {
           if (Array.isArray(req.body.topics)) {
             req.body.topics.forEach(function (topic_id) {
               if (typeof topic_id == 'string') {
-                var id = mongoose.Types.ObjectId(topic_id);
-                user.topics.push(id);
+                try {
+                  var id = mongoose.Types.ObjectId(topic_id);
+                  user.topics.push(id);
+                } catch (err) {
+                  //eslint-disable-next-line
+                  console.error('The topic id is invalid');
+                }
               } else {
                 user.topics.push(topic_id);
               }
             });
           } else {
-            var id = mongoose.Types.ObjectId(req.body.topics);
-            user.topics.push(id);
+            try {
+              var id = mongoose.Types.ObjectId(req.body.topics);
+              user.topics.push(id);
+            } catch (err) {
+              //eslint-disable-next-line
+              console.error('The topic id is invalid');
+            }
           }
         }
         user.topics = Array.from(new Set(user.topics));
-        // Critical details
-        var queryOptions = [];
+
         if (req.body.email) {
-          queryOptions.push({email: req.body.email});
+          user.email = req.body.email;
         }
         if (req.body.username) {
-          queryOptions.push({username: req.body.username});
+          user.username = req.body.username;
         }
-        Users.find({$or: queryOptions}, function (err, result) {
+        user.save(function (err, _user) {
           if (err) {
             res.status(500).send(err);
-          } else if (result.length !== 0) {
-            res.status(409).send({message: 'A user exists with that username or email address'});
           } else {
-            if (req.body.email) {
-              user.email = req.body.email;
-            }
-            if (req.body.username) {
-              user.username = req.body.username;
-            }
-            user.save(function (err, _user) {
-              if (err) {
-                res.status(500).send(err);
-              } else {
-                res.status(200).send(_user);
-              }
-            });
+            res.status(200).send(_user);
           }
         });
+      } else {
+        res.status(404).send({message: 'No user with that id'});
       }
     });
   },
 
   delete: function (req, res) {
-    Users.findByIdAndRemove(req.params.id, function (err) {
+    Users.findById(req.params.id, function (err, user) {
       if (err) {
         res.status(500).send(err);
+      } else if (user.username === 'admin') {
+        res.status(403).send({message: 'Admin cannot be removed'});
       } else {
-        res.status(200).send({message: 'User successfully removed'});
+        Users.findByIdAndRemove(req.params.id, function (err) {
+          if (err) {
+            res.status(500).send(err);
+          } else {
+            res.status(200).send({message: 'User successfully removed'});
+          }
+        });
       }
     });
   }
