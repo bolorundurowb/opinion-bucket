@@ -185,64 +185,84 @@ describe('Opinions', function () {
     server
       .put('/api/v1/opinions/' + id)
       .set('x-access-token', userToken)
-      .send({content: 'Technology is really good'})
+      .send({
+        title: 'Cool Stuff',
+        showName: true,
+        date: '2015-11-11',
+        content: 'Technology is really good'
+      })
       .expect(200)
       .end(function (err, res) {
         res.status.should.equal(200);
         res.body.should.be.type('object');
+        res.body.title.should.equal('Cool Stuff');
         res.body.content.should.equal('Technology is really good');
         done();
       });
   });
-  //
-  // it('doesnt allow for opinions to be title-less', function (done) {
-  //   server
-  //     .put('/api/v1/opinions/' + id)
-  //     .set('x-access-token', userToken)
-  //     .send({})
-  //     .expect(400)
-  //     .end(function (err, res) {
-  //       res.status.should.equal(400);
-  //       res.body.message.should.equal('The opinion requires a title');
-  //       done();
-  //     });
-  // });
-  //
-  // it('throws an error when an invalid id is updated', function (done) {
-  //   server
-  //     .put('/api/v1/opinions/507f1')
-  //     .set('x-access-token', userToken)
-  //     .expect(500)
-  //     .end(function (err, res) {
-  //       res.status.should.equal(500);
-  //       res.body.should.be.type('object');
-  //       res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "Opinion"');
-  //       done();
-  //     });
-  // });
-  //
-  // // Delete Tests
-  // it('allows for opinions to be deleted', function (done) {
-  //   server
-  //     .delete('/api/v1/opinions/' + id)
-  //     .set('x-access-token', userToken)
-  //     .expect(200)
-  //     .end(function (err, res) {
-  //       res.status.should.equal(200);
-  //       res.body.message.should.equal('Opinion successfully removed');
-  //       done();
-  //     });
-  // });
-  //
-  // it('throws an error when an invalid id is deleted', function (done) {
-  //   server
-  //     .delete('/api/v1/opinions/507f1')
-  //     .set('x-access-token', userToken)
-  //     .expect(500)
-  //     .end(function (err, res) {
-  //       res.status.should.equal(500);
-  //       res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "Opinion"');
-  //       done();
-  //     });
-  // });
+
+  it('throws an error when an invalid id is updated', function (done) {
+    server
+      .put('/api/v1/opinions/507f1')
+      .set('x-access-token', userToken)
+      .expect(500)
+      .end(function (err, res) {
+        res.status.should.equal(500);
+        res.body.should.be.type('object');
+        res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "Opinion"');
+        done();
+      });
+  });
+
+  // Likes and Dislikes Tests
+  it('allows for opinions to be liked', function (done) {
+    server
+      .post('/api/v1/opinions/' + id + '/like')
+      .set('x-access-token', userToken)
+      .expect(200)
+      .end(function (err, res) {
+        res.status.should.equal(200);
+        res.body.should.be.type('object');
+        res.body.likes.should.equal(1);
+        done();
+      });
+  });
+
+  it('allows for opinions to be disliked', function (done) {
+    server
+      .post('/api/v1/opinions/' + id + '/dislike')
+      .set('x-access-token', userToken)
+      .expect(200)
+      .end(function (err, res) {
+        res.status.should.equal(200);
+        res.body.should.be.type('object');
+        res.body.dislikes.should.equal(1);
+        done();
+      });
+  });
+
+  // Delete Tests
+  it('allows for opinions to be deleted', function (done) {
+    server
+      .delete('/api/v1/opinions/' + id)
+      .set('x-access-token', userToken)
+      .expect(200)
+      .end(function (err, res) {
+        res.status.should.equal(200);
+        res.body.message.should.equal('Opinion successfully removed');
+        done();
+      });
+  });
+
+  it('throws an error when an invalid id is deleted', function (done) {
+    server
+      .delete('/api/v1/opinions/507f1')
+      .set('x-access-token', userToken)
+      .expect(500)
+      .end(function (err, res) {
+        res.status.should.equal(500);
+        res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "Opinion"');
+        done();
+      });
+  });
 });
