@@ -18,6 +18,9 @@ const opinionSchema = new Schema({
   content: {
     type: String
   },
+  title: {
+    type: String
+  },
   date: {
     type: Date,
     default: Date.now

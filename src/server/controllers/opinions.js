@@ -144,6 +144,7 @@ const opinionsCtrl = {
         var index = topic.opinions.indexOf(req.params.id);
         if (index !== -1) {
           topic.opinions.splice(index, 1);
+          topic.opinionsLength = topic.opinions.length;
         }
         topic.save(function (err) {
           if (err) {

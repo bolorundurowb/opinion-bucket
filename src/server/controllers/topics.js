@@ -20,7 +20,8 @@ const topicsCtrl = {
           '$in': [mongoose.Types.ObjectId(req.query.category)]
         };
       } catch (err) {
-        console.log('The mongo id supplied is invalid');
+        //eslint-disable-next-line
+        console.error('The mongo id supplied is invalid');
       }
     }
 
@@ -50,7 +51,7 @@ const topicsCtrl = {
       if (err) {
         res.status(500).send(err);
       } else if (!topic) {
-        res.status(400).send({message: 'No topic exists with that id'});
+        res.status(404).send({message: 'No topic exists with that id'});
       } else {
         res.status(200).send(topic);
       }
@@ -64,7 +65,7 @@ const topicsCtrl = {
         if (err) {
           res.status(500).send(err);
         } else if (!topic) {
-          res.status(400).send({message: 'No topic exists with that id'});
+          res.status(404).send({message: 'No topic exists with that id'});
         } else {
           res.status(200).send(topic);
         }
@@ -100,25 +101,35 @@ const topicsCtrl = {
       } else if (!topic) {
         res.status(404).send({message: 'A topic with that id doesn\'t exist'});
       } else {
+        if (req.body.title) {
+          topic.title = req.body.title;
+        }
         if (req.body.content) {
           topic.content = req.body.content;
-        }
-        if (req.body.date) {
-          topic.date = new Date(req.body.date);
         }
         if (req.body.categories) {
           if (Array.isArray(req.body.categories)) {
             req.body.categories.forEach(function (cat_id) {
-              if (typeof cat_id == 'string') {
-                var id = mongoose.Types.ObjectId(cat_id);
-                topic.categories.push(id);
+              if (typeof cat_id === 'string') {
+                try {
+                  var id = mongoose.Types.ObjectId(cat_id);
+                  topic.categories.push(id);
+                } catch (err) {
+                  //eslint-disable-next-line
+                  console.error('The mongo id supplied is invalid');
+                }
               } else {
                 topic.categories.push(cat_id);
               }
             });
           } else {
-            var id = mongoose.Types.ObjectId(req.body.categories);
-            topic.categories.push(id);
+            try {
+              var id = mongoose.Types.ObjectId(req.body.categories);
+              topic.categories.push(id);
+            } catch (err) {
+              //eslint-disable-next-line
+              console.error('The mongo id supplied is invalid');
+            }
           }
         }
         topic.categories = Array.from(new Set(topic.categories));
