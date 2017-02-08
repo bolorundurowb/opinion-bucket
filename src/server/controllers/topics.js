@@ -20,7 +20,8 @@ const topicsCtrl = {
           '$in': [mongoose.Types.ObjectId(req.query.category)]
         };
       } catch (err) {
-        console.log('The mongo id supplied is invalid');
+        //eslint-disable-next-line
+        console.error('The mongo id supplied is invalid');
       }
     }
 
@@ -100,6 +101,9 @@ const topicsCtrl = {
       } else if (!topic) {
         res.status(404).send({message: 'A topic with that id doesn\'t exist'});
       } else {
+        if (req.body.title) {
+          topic.title = req.body.title;
+        }
         if (req.body.content) {
           topic.content = req.body.content;
         }
@@ -109,7 +113,7 @@ const topicsCtrl = {
         if (req.body.categories) {
           if (Array.isArray(req.body.categories)) {
             req.body.categories.forEach(function (cat_id) {
-              if (typeof cat_id == 'string') {
+              if (typeof cat_id === 'string') {
                 var id = mongoose.Types.ObjectId(cat_id);
                 topic.categories.push(id);
               } else {
