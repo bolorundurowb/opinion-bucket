@@ -180,20 +180,20 @@ describe('Opinions', function () {
       });
   });
 
-  // // Update Tests
-  // it('allows for opinions to be updated', function (done) {
-  //   server
-  //     .put('/api/v1/opinions/' + id)
-  //     .set('x-access-token', userToken)
-  //     .send({title: 'Technology'})
-  //     .expect(200)
-  //     .end(function (err, res) {
-  //       res.status.should.equal(200);
-  //       res.body.should.be.type('object');
-  //       res.body.title.should.equal('Technology');
-  //       done();
-  //     });
-  // });
+  // Update Tests
+  it('allows for opinions to be updated', function (done) {
+    server
+      .put('/api/v1/opinions/' + id)
+      .set('x-access-token', userToken)
+      .send({content: 'Technology is really good'})
+      .expect(200)
+      .end(function (err, res) {
+        res.status.should.equal(200);
+        res.body.should.be.type('object');
+        res.body.content.should.equal('Technology is really good');
+        done();
+      });
+  });
   //
   // it('doesnt allow for opinions to be title-less', function (done) {
   //   server
