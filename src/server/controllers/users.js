@@ -91,7 +91,7 @@ const usersCtrl = {
         Users.find({$or: queryOptions}, function (err, result) {
           if (err) {
             res.status(500).send(err);
-          } else if (result.length != 0) {
+          } else if (result.length !== 0) {
             res.status(409).send({message: 'A user exists with that username or email address'});
           } else {
             if (req.body.email) {

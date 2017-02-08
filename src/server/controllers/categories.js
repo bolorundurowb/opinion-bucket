@@ -41,8 +41,9 @@ const categoriesCtrl = {
           _category.save(function (err, category) {
             if (err) {
               res.status(500).send(err);
+            } else {
+              res.status(201).send(category);
             }
-            res.status(201).send(category);
           });
         }
       });
