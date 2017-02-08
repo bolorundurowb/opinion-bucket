@@ -4,10 +4,10 @@
   "description": "A RESTful API and App code for Opinion Bucket",
   "main": "server.js",
   "scripts": {
-    "test": "./teardown.sh && NODE_ENV=test && node ./config/init.js && NODE_ENV=test mocha tests/server",
+    "test": "./teardown.sh && NODE_ENV=test node ./config/init.js && NODE_ENV=test mocha tests/server",
     "start": "node ./config/init.js && nodemon server.js",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "coverage": "rm -rf /coverage && istanbul cover node_modules/.bin/_mocha tests/server"
+    "coverage": "rm -rf /coverage && node ./config/init.js && istanbul cover node_modules/.bin/_mocha tests/server"
   },
   "repository": {
     "type": "git",

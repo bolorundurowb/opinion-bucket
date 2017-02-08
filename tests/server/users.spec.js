@@ -7,6 +7,7 @@ const supertest = require('supertest');
 const should = require('should');
 const jwt = require('jsonwebtoken');
 const app = require('./../../server');
+const config = require('./../../config/config');
 
 const server = supertest.agent(app);
 var id = '';
@@ -14,11 +15,11 @@ var userToken;
 var adminToken;
 
 before(function () {
-  userToken = jwt.sign({username: 'john.doe', email: 'john.doe@doe.org'}, '765105877C8DF471AC2B3E58801E8099', {
+  userToken = jwt.sign({username: 'john.doe'}, config.secret, {
     expiresIn: '24h'
   });
 
-  adminToken = jwt.sign({username: 'admin', type: 'Admin'}, '765105877C8DF471AC2B3E58801E8099', {
+  adminToken = jwt.sign({username: 'admin', type: 'Admin'}, config.secret, {
     expiresIn: '24h'
   });
 });
@@ -38,7 +39,7 @@ describe('Users', function () {
   //     });
   // });
 
-  // //TODO: id is empty
+  //
   // it('allows for a user to be retrieved', function (done) {
   //   server
   //     .get('/api/v1/users/' + id)

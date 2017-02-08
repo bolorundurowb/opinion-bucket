@@ -17,7 +17,12 @@ const opinionsCtrl = {
 
     var filter = {};
     if (req.params.topic) {
-      filter.topicId = req.params.topic;
+      try {
+        filter.topicId = req.params.topic;
+      } catch (err) {
+        //eslint-disable-next-line
+        console.error('The topic id is not valid');
+      }
     }
 
     var sort = {};
@@ -58,10 +63,10 @@ const opinionsCtrl = {
 
   create: function (req, res) {
     req.body.author = req.user._id;
-    if (!(req.body.author && req.body.content)) {
-      res.status(400).send({message: 'An opinion must have an author and content'});
+    if (!(req.body.author && req.body.title)) {
+      res.status(400).send({message: 'An opinion must have an author and title'});
     } else if (!req.body.topicId) {
-      res.status(400).send({message: 'An opinion must have a topic'});
+      res.status(400).send({message: 'An opinion must have a parent topic'});
     } else {
       Topics.findById(req.body.topicId, function (err, topic) {
         if (err) {
@@ -110,10 +115,19 @@ const opinionsCtrl = {
     Opinions.findById(req.params.id, function (err, opinion) {
       if (err) {
         res.status(500).send(err);
-      } else if (!req.body.content) {
-        res.status(400).send({message: 'The opinion must have content'});
       } else {
-        opinion.content = req.body.content;
+        if (req.body.title) {
+          opinion.title = req.body.title;
+        }
+        if (req.body.content) {
+          opinion.content = req.body.content;
+        }
+        if (req.body.showName) {
+          opinion.showName = req.body.showName;
+        }
+        if (req.body.date) {
+          opinion.date = new Date(req.body.date);
+        }
         opinion.save(function (err, _opinion) {
           if (err) {
             res.status(500).send(err);

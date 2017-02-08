@@ -76,7 +76,7 @@ describe('Topics', function () {
       .end(function (err, res) {
         res.status.should.equal(200);
         res.body.should.be.type('object');
-        res.body.length.should.equal(1);
+        res.body.length.should.equal(2);
         done();
       });
   });
@@ -102,7 +102,7 @@ describe('Topics', function () {
       .end(function (err, res) {
         res.status.should.equal(200);
         res.body.should.be.type('object');
-        res.body.length.should.equal(1);
+        res.body.length.should.equal(2);
         done();
       });
   });
