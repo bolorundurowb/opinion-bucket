@@ -49,10 +49,21 @@ describe('Users', function () {
       });
   });
 
-
   it('allows for a user to be retrieved', function (done) {
     server
       .get('/api/v1/users/' + id)
+      .set('x-access-token', adminToken)
+      .expect(200)
+      .end(function (err, res) {
+        res.status.should.equal(200);
+        res.body.should.be.type('object');
+        done();
+      });
+  });
+
+  it('allows for a user to be retrieved with more detail', function (done) {
+    server
+      .get('/api/v1/users/' + id + '/full')
       .set('x-access-token', adminToken)
       .expect(200)
       .end(function (err, res) {
@@ -92,11 +103,20 @@ describe('Users', function () {
     server
       .put('/api/v1/users/' + id)
       .set('x-access-token', userToken)
-      .send({lastName: 'Woke'})
+      .send({
+        lastName: 'Woke',
+        firstName: 'Wobe',
+        password: 'Youknowwho',
+        gender: 'Male',
+        dateOfBirth: '1909-12-12',
+        profilePhoto: 'http://google.com',
+        topics: ['507f1']
+      })
       .expect(200)
       .end(function (err, res) {
         res.status.should.equal(200);
         res.body.should.be.type('object');
+        res.body.firstName.should.equal('Wobe');
         res.body.lastName.should.equal('Woke');
         done();
       });

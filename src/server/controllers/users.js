@@ -2,6 +2,7 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
+const mongoose = require('mongoose');
 const Users = require('./../models/user');
 
 const usersCtrl = {
@@ -68,15 +69,25 @@ const usersCtrl = {
           if (Array.isArray(req.body.topics)) {
             req.body.topics.forEach(function (topic_id) {
               if (typeof topic_id == 'string') {
-                var id = mongoose.Types.ObjectId(topic_id);
-                user.topics.push(id);
+                try {
+                  var id = mongoose.Types.ObjectId(topic_id);
+                  user.topics.push(id);
+                } catch (err) {
+                  //eslint-disable-next-line
+                  console.error('The topic id is invalid');
+                }
               } else {
                 user.topics.push(topic_id);
               }
             });
           } else {
-            var id = mongoose.Types.ObjectId(req.body.topics);
-            user.topics.push(id);
+            try {
+              var id = mongoose.Types.ObjectId(req.body.topics);
+              user.topics.push(id);
+            } catch (err) {
+              //eslint-disable-next-line
+              console.error('The topic id is invalid');
+            }
           }
         }
         user.topics = Array.from(new Set(user.topics));
