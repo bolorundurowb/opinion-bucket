@@ -135,9 +135,21 @@ describe('Topics', function () {
     server
       .get('/api/v1/topics/507f1f77bcf86cd799439011')
       .set('x-access-token', userToken)
-      .expect(400)
+      .expect(404)
       .end(function (err, res) {
-        res.status.should.equal(400);
+        res.status.should.equal(404);
+        res.body.message.should.equal('No topic exists with that id');
+        done();
+      });
+  });
+
+  it('doesnt allow a non-existent topic to be retrieved with more detail', function (done) {
+    server
+      .get('/api/v1/topics/507f1f77bcf86cd799439011/full')
+      .set('x-access-token', userToken)
+      .expect(404)
+      .end(function (err, res) {
+        res.status.should.equal(404);
         res.body.message.should.equal('No topic exists with that id');
         done();
       });
@@ -161,12 +173,32 @@ describe('Topics', function () {
     server
       .put('/api/v1/topics/' + id)
       .set('x-access-token', userToken)
-      .send({title: 'Technology'})
+      .send({
+        title: 'Technology',
+        content: 'New content',
+        categories: ['507f1f77bcf86cd799439011', '507f1f77bcf86cd79']
+      })
       .expect(200)
       .end(function (err, res) {
         res.status.should.equal(200);
         res.body.should.be.type('object');
         res.body.title.should.equal('Technology');
+        res.body.content.should.equal('New content');
+        done();
+      });
+  });
+
+  it('alerts the user when the category ids are wrong', function (done) {
+    server
+      .put('/api/v1/topics/' + id)
+      .set('x-access-token', userToken)
+      .send({
+        categories: '507f1f77bcf86cd79'
+      })
+      .expect(200)
+      .end(function (err, res) {
+        res.status.should.equal(200);
+        res.body.should.be.type('object');
         done();
       });
   });
