@@ -81,9 +81,47 @@ describe('Topics', function () {
       });
   });
 
+  it('allows for topics to be retrieved with query options', function (done) {
+    server
+      .get('/api/v1/topics?limit=12&offset=10&order=date')
+      .set('x-access-token', userToken)
+      .expect(200)
+      .end(function (err, res) {
+        res.status.should.equal(200);
+        res.body.should.be.type('object');
+        res.body.length.should.equal(0);
+        done();
+      });
+  });
+
+  it('allows for topics to be retrieved with query options but sanitizes input', function (done) {
+    server
+      .get('/api/v1/topics?category=50e76f592&order=opinion')
+      .set('x-access-token', userToken)
+      .expect(200)
+      .end(function (err, res) {
+        res.status.should.equal(200);
+        res.body.should.be.type('object');
+        res.body.length.should.equal(1);
+        done();
+      });
+  });
+
   it('allows for a topic to be retrieved', function (done) {
     server
       .get('/api/v1/topics/' + id)
+      .set('x-access-token', userToken)
+      .expect(200)
+      .end(function (err, res) {
+        res.status.should.equal(200);
+        res.body.should.be.type('object');
+        done();
+      });
+  });
+
+  it('allows for a topic to be retrieved with more detail', function (done) {
+    server
+      .get('/api/v1/topics/' + id + '/full')
       .set('x-access-token', userToken)
       .expect(200)
       .end(function (err, res) {
@@ -126,10 +164,22 @@ describe('Topics', function () {
       .send({title: 'Technology'})
       .expect(200)
       .end(function (err, res) {
-        console.log(res.body);
         res.status.should.equal(200);
         res.body.should.be.type('object');
         res.body.title.should.equal('Technology');
+        done();
+      });
+  });
+
+  it('alerts the user when a non-existent id is entered', function (done) {
+    server
+      .put('/api/v1/topics/507f1f77bcf86cd799439011')
+      .set('x-access-token', userToken)
+      .expect(404)
+      .end(function (err, res) {
+        res.status.should.equal(404);
+        res.body.should.be.type('object');
+        res.body.message.should.equal('A topic with that id doesn\'t exist');
         done();
       });
   });
