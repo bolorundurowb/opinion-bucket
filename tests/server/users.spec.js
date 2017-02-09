@@ -160,18 +160,4 @@ describe('Users', function () {
         done();
       });
   });
-
-  // Admin Tests
-  it('only allows for all users to be retrieved by an admin', function (done) {
-    server
-      .get('/api/v1/users')
-      .set('x-access-token', userToken)
-      .expect(403)
-      .end(function (err, res) {
-        res.status.should.equal(403);
-        res.body.should.be.type('object');
-        res.body.message.should.equal('You need to be an admin to access that information');
-        done();
-      });
-  });
 });
