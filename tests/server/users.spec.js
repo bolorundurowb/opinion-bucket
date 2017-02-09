@@ -242,9 +242,13 @@ describe('Users', function () {
       .set('x-access-token', adminToken)
       .expect(200)
       .end(function (err, res) {
-        console.log(res.body);
         // get the id of the second user
-        id = res.body[1]._id;
+        // order is different on Ci hence the if block
+        if (process.env.NODE_ENV === 'test') {
+          id = res.body[1]._id;
+        } else {
+          id = res.body[0]._id;
+        }
         server
           .delete('/api/v1/users/' + id)
           .set('x-access-token', userToken)
