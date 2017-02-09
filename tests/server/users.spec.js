@@ -242,6 +242,7 @@ describe('Users', function () {
       .set('x-access-token', adminToken)
       .expect(200)
       .end(function (err, res) {
+        console.log(res.body);
         // get the id of the second user
         id = res.body[1]._id;
         server
