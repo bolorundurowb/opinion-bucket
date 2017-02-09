@@ -214,11 +214,18 @@ describe('Users', function () {
   // Delete Tests
   it('does not allow for the admin to be deleted', function (done) {
     server
+      .get('/api/v1/users')
+      .set('x-access-token', adminToken)
+      .expect(200)
+      .end(function (err, res) {
+        id = res.body[1]._id;
+      });
+
+    server
       .delete('/api/v1/users/' + id)
       .set('x-access-token', userToken)
       .expect(403)
       .end(function (err, res) {
-        console.log(res.body);
         res.status.should.equal(403);
         res.body.message.should.equal('Admin cannot be removed');
         done();
@@ -233,6 +240,18 @@ describe('Users', function () {
       .end(function (err, res) {
         res.status.should.equal(500);
         res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "User"');
+        done();
+      });
+  });
+
+  it('allows for users to be deleted', function (done) {
+    server
+      .delete('/api/v1/users/' + id)
+      .set('x-access-token', userToken)
+      .expect(200)
+      .end(function (err, res) {
+        res.status.should.equal(200);
+        res.body.message.should.equal('User successfully removed');
         done();
       });
   });
