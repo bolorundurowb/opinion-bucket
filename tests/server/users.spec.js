@@ -119,6 +119,8 @@ describe('Users', function () {
         lastName: 'Woke',
         firstName: 'Wobe',
         password: 'Youknowwho',
+        username: 'admin',
+        email: 'admin@opinionbucket.io',
         gender: 'Male',
         dateOfBirth: '1909-12-12',
         profilePhoto: 'http://google.com',
