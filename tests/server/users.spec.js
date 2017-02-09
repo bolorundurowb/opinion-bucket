@@ -214,14 +214,6 @@ describe('Users', function () {
   // Delete Tests
   it('does not allow for the admin to be deleted', function (done) {
     server
-      .get('/api/v1/users')
-      .set('x-access-token', adminToken)
-      .expect(200)
-      .end(function (err, res) {
-        id = res.body[1]._id;
-      });
-
-    server
       .delete('/api/v1/users/' + id)
       .set('x-access-token', userToken)
       .expect(403)
@@ -246,13 +238,21 @@ describe('Users', function () {
 
   it('allows for users to be deleted', function (done) {
     server
-      .delete('/api/v1/users/' + id)
-      .set('x-access-token', userToken)
+      .get('/api/v1/users')
+      .set('x-access-token', adminToken)
       .expect(200)
       .end(function (err, res) {
-        res.status.should.equal(200);
-        res.body.message.should.equal('User successfully removed');
-        done();
+        // get the id of the second user
+        id = res.body[1]._id;
+        server
+          .delete('/api/v1/users/' + id)
+          .set('x-access-token', userToken)
+          .expect(200)
+          .end(function (err, res) {
+            res.status.should.equal(200);
+            res.body.message.should.equal('User successfully removed');
+            done();
+          });
       });
   });
 });
