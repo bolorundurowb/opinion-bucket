@@ -32,7 +32,7 @@ server.use(bodyParser.json());
 server.use('/api/v1', router);
 
 // handle unmatched routes
-server.use((req, res, next) => {
+server.use(function (req, res, next) {
   res.status(501).send({
     status: 'failed',
     message: 'This API doesn\'t support that function'
