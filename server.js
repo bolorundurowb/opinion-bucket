@@ -41,7 +41,7 @@ server.use(function (req, res, next) {
 });
 
 // set the API port
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 4321;
 
 // start the server
 server.listen(port);
