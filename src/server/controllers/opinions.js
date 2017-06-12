@@ -200,7 +200,7 @@ const opinionsCtrl = {
         res.status(500).send(err);
       } else {
         opinion.dislikes += 1;
-        this.saveOpinion(opinion, res);
+        saveOpinion(opinion, res);
       }
     });
   },
