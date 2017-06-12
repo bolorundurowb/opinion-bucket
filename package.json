@@ -27,16 +27,16 @@
   },
   "homepage": "https://github.com/bolorundurowb/opinion-bucket#readme",
   "devDependencies": {
-    "chai": "^3.5.0",
+    "chai": "4.0.2",
     "coveralls": "^2.11.14",
     "del": "^2.2.2",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "should": "^11.1.2",
     "supertest": "3.0.0",
-    "concurrently": "3.2.0",
+    "concurrently": "3.4.0",
     "lite-server": "^2.2.0",
-    "tslint": "4.4.2",
+    "tslint": "5.4.3",
     "typescript": "^2.0.2",
     "typings": "2.1.0"
   },
@@ -56,12 +56,11 @@
     "express": "^4.14.0",
     "jsonwebtoken": "^7.2.1",
     "mongoose": "^4.7.6",
-    "mongoose-seed": "^0.3.2",
-    "morgan": "1.8.0",
-    "reflect-metadata": "0.1.9",
-    "rxjs": "5.1.0",
+    "morgan": "1.8.2",
+    "reflect-metadata": "0.1.10",
+    "rxjs": "5.4.0",
     "semantic-ui-css": "^2.2.4",
-    "systemjs": "0.20.7",
+    "systemjs": "0.20.13",
     "zone.js": "0.7.6"
   }
 }
