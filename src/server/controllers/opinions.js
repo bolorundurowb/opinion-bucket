@@ -128,13 +128,7 @@ const opinionsCtrl = {
         if (req.body.date) {
           opinion.date = new Date(req.body.date);
         }
-        opinion.save(function (err, _opinion) {
-          if (err) {
-            res.status(500).send(err);
-          } else {
-            res.status(200).send(_opinion);
-          }
-        });
+        this.saveOpinion(opinion, res);
       }
     });
   },
@@ -195,13 +189,7 @@ const opinionsCtrl = {
         res.status(500).send(err);
       } else {
         opinion.likes += 1;
-        opinion.save(function (err, _opinion) {
-          if (err) {
-            res.status(500).send(err);
-          } else {
-            res.status(200).send(_opinion);
-          }
-        });
+        this.saveOpinion(opinion, res);
       }
     });
   },
@@ -212,13 +200,17 @@ const opinionsCtrl = {
         res.status(500).send(err);
       } else {
         opinion.dislikes += 1;
-        opinion.save(function (err, _opinion) {
-          if (err) {
-            res.status(500).send(err);
-          } else {
-            res.status(200).send(_opinion);
-          }
-        });
+        this.saveOpinion(opinion, res);
+      }
+    });
+  },
+
+  saveOpinion: function(opinion, res) {
+    opinion.save(function (err, _opinion) {
+      if (err) {
+        res.status(500).send(err);
+      } else {
+        res.status(200).send(_opinion);
       }
     });
   }
