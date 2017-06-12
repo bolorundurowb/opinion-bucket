@@ -107,7 +107,6 @@ const opinionsCtrl = {
           });
         }
       });
-
     }
   },
 
@@ -128,13 +127,7 @@ const opinionsCtrl = {
         if (req.body.date) {
           opinion.date = new Date(req.body.date);
         }
-        opinion.save(function (err, _opinion) {
-          if (err) {
-            res.status(500).send(err);
-          } else {
-            res.status(200).send(_opinion);
-          }
-        });
+        saveOpinion(opinion, res);
       }
     });
   },
@@ -195,13 +188,7 @@ const opinionsCtrl = {
         res.status(500).send(err);
       } else {
         opinion.likes += 1;
-        opinion.save(function (err, _opinion) {
-          if (err) {
-            res.status(500).send(err);
-          } else {
-            res.status(200).send(_opinion);
-          }
-        });
+        saveOpinion(opinion, res);
       }
     });
   },
@@ -212,16 +199,20 @@ const opinionsCtrl = {
         res.status(500).send(err);
       } else {
         opinion.dislikes += 1;
-        opinion.save(function (err, _opinion) {
-          if (err) {
-            res.status(500).send(err);
-          } else {
-            res.status(200).send(_opinion);
-          }
-        });
+        saveOpinion(opinion, res);
       }
     });
   }
 };
+
+function saveOpinion(opinion, res) {
+  opinion.save(function (err, _opinion) {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(200).send(_opinion);
+    }
+  });
+}
 
 module.exports = opinionsCtrl;
