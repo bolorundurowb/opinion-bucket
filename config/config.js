@@ -5,7 +5,7 @@
 const dotenv = require('dotenv');
 
 var env = process.env.NODE_ENV || 'development';
-if (env !== 'production') {
+if (env === 'development') {
   dotenv.config({silent: true});
 }
 
