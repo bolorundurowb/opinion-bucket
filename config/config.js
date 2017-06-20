@@ -4,22 +4,18 @@
 
 const dotenv = require('dotenv');
 
-var env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV || 'development';
 if (env !== 'production') {
-  dotenv.config({silent: true});
+  dotenv.config({ silent: true });
 }
 
-var config = {
-  database: '',
+const config = {
+  database: process.env.MONGO_URL,
   secret: process.env.SECRET
 };
 
-if (env === 'development') {
-  config.database = process.env.DEV_DB;
-} else if (env === 'test') {
-  config.database = process.env.TEST_DB;
-} else {
-  config.database = process.env.PROD_DB;
+if (env === 'test') {
+  config.database = process.env.MONGO_TEST_URL;
 }
 
 module.exports = config;
