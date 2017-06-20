@@ -4,6 +4,7 @@
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const cloudinary = require('cloudinary');
 const Users = require('./../models/user');
 const config = require('./../../../config/config');
 
@@ -45,13 +46,14 @@ const authCtrl = {
         } else {
           const user = new Users(req.body);
           user.joined = new Date();
-          user.save(function (err, _user) {
-            if (err) {
-              res.status(500).send(err);
-            } else {
-              res.status(201).send(tokenify(_user));
-            }
-          });
+          if (req.file) {
+            cloudinary.uploader.upload(req.file.path, function (result) {
+              user.profilePhoto = result.url;
+              saveUser(user, res);
+            });
+          } else {
+            saveUser(user, res);
+          }
         }
       });
     }
@@ -61,6 +63,16 @@ const authCtrl = {
     res.status(200).send({message: 'signout successful'});
   }
 };
+
+function saveUser(user, res) {
+  user.save(function (err, _user) {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(201).send(tokenify(_user));
+    }
+  });
+}
 
 function tokenify(user) {
   var response = {user: user};
