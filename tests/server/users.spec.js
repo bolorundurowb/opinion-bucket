@@ -147,7 +147,7 @@ describe('Users', function () {
         gender: 'Male',
         dateOfBirth: '1909-12-12',
         profilePhoto: 'http://google.com',
-        topics: '507f1'
+        topics: ['507f1']
       })
       .expect(200)
       .end(function (err, res) {
@@ -170,7 +170,7 @@ describe('Users', function () {
         gender: 'Male',
         dateOfBirth: '1909-12-12',
         profilePhoto: 'http://google.com',
-        topics: '507f1f77bcf86cd799439011'
+        topics: ['507f1f77bcf86cd799439011']
       })
       .expect(200)
       .end(function (err, res) {
