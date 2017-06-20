@@ -3,6 +3,7 @@
  */
 
 const mongoose = require('mongoose');
+const cloudinary = require('cloudinary');
 const Users = require('./../models/user');
 
 const usersCtrl = {
@@ -46,7 +47,9 @@ const usersCtrl = {
     Users.findById(req.params.id, function (err, user) {
       if (err) {
         res.status(500).send(err);
-      } else if (user) {
+      } else if (!user) {
+        res.status(404).send({message: 'No user with that id'});
+      } else{
         if (req.body.password) {
           user.password = req.body.password;
         }
@@ -62,51 +65,27 @@ const usersCtrl = {
         if (req.body.dateOfBirth) {
           user.dateOfBirth = new Date(req.body.dateOfBirth);
         }
-        if (req.body.profilePhoto) {
-          user.profilePhoto = req.body.profilePhoto;
-        }
         if (req.body.topics) {
-          if (Array.isArray(req.body.topics)) {
-            req.body.topics.forEach(function (topic_id) {
-              if (typeof topic_id == 'string') {
-                try {
-                  var id = mongoose.Types.ObjectId(topic_id);
-                  user.topics.push(id);
-                } catch (err) {
-                  //eslint-disable-next-line
-                  console.error('The topic id is invalid');
-                }
-              } else {
-                user.topics.push(topic_id);
-              }
-            });
-          } else {
+          user.topics = [];
+          req.body.topics.forEach(function (topic_id) {
             try {
-              var id = mongoose.Types.ObjectId(req.body.topics);
+              var id = mongoose.Types.ObjectId(topic_id);
               user.topics.push(id);
-            } catch (err) {
-              //eslint-disable-next-line
-              console.error('The topic id is invalid');
-            }
-          }
+            } catch (err) {}
+          });
         }
-        user.topics = Array.from(new Set(user.topics));
-
         if (req.body.email) {
           user.email = req.body.email;
         }
-        if (req.body.username) {
-          user.username = req.body.username;
+
+        if (req.file) {
+          cloudinary.uploader.upload(req.file.path, function (result) {
+            user.profilePhoto = result.url;
+            saveUser(user, res);
+          });
+        } else {
+          saveUser(user, res);
         }
-        user.save(function (err, _user) {
-          if (err) {
-            res.status(500).send(err);
-          } else {
-            res.status(200).send(_user);
-          }
-        });
-      } else {
-        res.status(404).send({message: 'No user with that id'});
       }
     });
   },
@@ -129,5 +108,15 @@ const usersCtrl = {
     });
   }
 };
+
+function saveUser(user, res) {
+  user.save(function (err, _user) {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(200).send(_user);
+    }
+  });
+}
 
 module.exports = usersCtrl;
