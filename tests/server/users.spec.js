@@ -242,7 +242,7 @@ describe('Users', function () {
       .set('x-access-token', adminToken)
       .expect(200)
       .end(function (err, res) {
-        id = res.body[0]._id;
+        id = res.body[1]._id;
         server
           .delete('/api/v1/users/' + id)
           .set('x-access-token', userToken)

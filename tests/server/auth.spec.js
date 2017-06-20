@@ -52,7 +52,7 @@ describe('Auth', function () {
       });
   });
 
-  it('does not allow for users with incomplete details to be created', function (done) {
+  it('does not allow for users without an email address to be created', function (done) {
     server
       .post('/api/v1/auth/signup')
       .send({
@@ -63,7 +63,39 @@ describe('Auth', function () {
       .end(function (err, res) {
         res.status.should.equal(400);
         res.body.should.be.type('object');
-        res.body.message.should.equal('A user must have an email address, username and password defined');
+        res.body.message.should.equal('A user must have an email address.');
+        done();
+      });
+  });
+
+  it('does not allow for users without a username to be created', function (done) {
+    server
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'john@doe.org',
+        password: 'john.doe'
+      })
+      .expect(400)
+      .end(function (err, res) {
+        res.status.should.equal(400);
+        res.body.should.be.type('object');
+        res.body.message.should.equal('A user must have a username.');
+        done();
+      });
+  });
+
+  it('does not allow for users without a password to be created', function (done) {
+    server
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'john@doe.org',
+        username: 'john.doe'
+      })
+      .expect(400)
+      .end(function (err, res) {
+        res.status.should.equal(400);
+        res.body.should.be.type('object');
+        res.body.message.should.equal('A user must have a password.');
         done();
       });
   });

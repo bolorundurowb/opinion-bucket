@@ -25,6 +25,7 @@ before(function (done) {
     .send({title: 'Sports'})
     .expect(201)
     .end(function (err, res) {
+      console.log(res.body);
       topicId = res.body._id;
     });
 
@@ -60,7 +61,7 @@ describe('Opinions', function () {
       });
   });
 
-  it('doesnt allow for opinions to be without a title', function (done) {
+  it('doesn\'t allow for opinions to be without a title', function (done) {
     server
       .post('/api/v1/opinions')
       .set('x-access-token', userToken)

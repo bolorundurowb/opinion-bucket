@@ -29,13 +29,18 @@ const authCtrl = {
   },
   
   signup: function (req, res) {
-    if (!(req.body.email && req.body.username && req.body.password)) {
-      res.status(400).send({message: 'A user must have an email address, username and password defined'});
+    const body = req.body;
+    if (!body.email) {
+      res.status(400).send({message: 'A user must have an email address.'});
+    } else if (!body.username) {
+      res.status(400).send({message: 'A user must have a username.'});
+    } else if (!body.password) {
+      res.status(400).send({message: 'A user must have a password.'});
     } else {
       Users.find({$or: [{username: req.body.username}, {email: req.body.email}]}, function (err, result) {
         if (err) {
           res.status(500).send(err);
-        } else if (result.length != 0) {
+        } else if (result.length !== 0) {
           res.status(409).send({message: 'A user exists with that username or email address'});
         } else {
           const user = new Users(req.body);
