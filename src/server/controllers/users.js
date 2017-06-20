@@ -77,7 +77,6 @@ const usersCtrl = {
         if (req.body.email) {
           user.email = req.body.email;
         }
-
         if (req.file) {
           cloudinary.uploader.upload(req.file.path, function (result) {
             user.profilePhoto = result.url;

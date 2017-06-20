@@ -25,7 +25,6 @@ before(function (done) {
     .send({title: 'Sports'})
     .expect(201)
     .end(function (err, res) {
-      console.log(res.body);
       topicId = res.body._id;
     });
 

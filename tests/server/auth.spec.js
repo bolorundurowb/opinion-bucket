@@ -36,11 +36,10 @@ describe('Auth', function () {
   it('allows for users to be created', function (done) {
     server
       .post('/api/v1/auth/signup')
-      .send({
-        username: 'john.doe',
-        email: 'john.doe@gmail.com',
-        password: 'john.doe'
-      })
+      .field('username', 'john.doe')
+      .field('email', 'john.doe@gmail.com')
+      .field('password', 'john.doe')
+      .attach('profile', './tests/artifacts/sample.svg')
       .expect(201)
       .end(function (err, res) {
         res.status.should.equal(201);
