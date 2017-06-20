@@ -51,6 +51,7 @@
     "@angular/router": "3.4.7",
     "bcryptjs": "^2.4.0",
     "body-parser": "^1.15.2",
+    "cloudinary": "^1.9.0",
     "core-js": "^2.4.1",
     "dotenv": "4.0.0",
     "express": "^4.14.0",
