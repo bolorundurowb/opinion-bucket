@@ -47,7 +47,9 @@ const authCtrl = {
           const user = new Users(req.body);
           user.joined = new Date();
           if (req.file) {
+            console.log(req.file);
             cloudinary.uploader.upload(req.file.path, function (result) {
+              console.log(result);
               user.profilePhoto = result.url;
               saveUser(user, res);
             });
@@ -60,7 +62,7 @@ const authCtrl = {
   },
 
   signout: function (req, res) {
-    res.status(200).send({message: 'signout successful'});
+    res.status(200).send({message: 'sign out successful'});
   }
 };
 

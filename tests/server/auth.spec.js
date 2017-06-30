@@ -27,7 +27,7 @@ describe('Auth', function () {
       .end(function (err, res) {
         res.status.should.equal(200);
         res.body.should.be.type('object');
-        res.body.message.should.equal('signout successful');
+        res.body.message.should.equal('sign out successful');
         done();
       });
   });

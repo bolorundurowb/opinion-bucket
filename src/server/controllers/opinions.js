@@ -81,27 +81,13 @@ const opinionsCtrl = {
             } else {
               topic.opinions.push(_opinion._id);
               topic.opinionsLength++;
-              topic.save(function (err) {
-                if (err) {
-                    //eslint-disable-next-line
-                  console.log('Error updating topic with opinion', err);
-                } else {
-                    //eslint-disable-next-line
-                  console.log('Successfully updated topic with opinion');
-                }
-              });
+              topic.save();
+
               Users.findById(req.user._id, function (err, user) {
                 user.topics.push(topic._id);
-                user.save(function (err) {
-                  if (err) {
-                    //eslint-disable-next-line
-                    console.log('Error updating user with topic', err.message);
-                  } else {
-                    //eslint-disable-next-line
-                    console.log('Successfully updated user with topic');
-                  }
-                });
+                user.save();
               });
+
               res.status(201).send(_opinion);
             }
           });
@@ -111,22 +97,18 @@ const opinionsCtrl = {
   },
 
   update: function (req, res) {
+    const body = req.body;
+
     Opinions.findById(req.params.id, function (err, opinion) {
       if (err) {
         res.status(500).send(err);
       } else {
-        if (req.body.title) {
-          opinion.title = req.body.title;
-        }
-        if (req.body.content) {
-          opinion.content = req.body.content;
-        }
-        if (req.body.showName) {
-          opinion.showName = req.body.showName;
-        }
-        if (req.body.date) {
-          opinion.date = new Date(req.body.date);
-        }
+        ['title', 'content', 'showName', 'date'].forEach(function (property) {
+          if (body[property]) {
+            opinion[property] = body[property];
+          }
+        });
+
         saveOpinion(opinion, res);
       }
     });
@@ -153,30 +135,16 @@ const opinionsCtrl = {
           topic.opinions.splice(index, 1);
           topic.opinionsLength = topic.opinions.length;
         }
-        topic.save(function (err) {
-          if (err) {
-            //eslint-disable-next-line
-            console.log('Cannot remove opinion from topic', err);
-          } else {
-            //eslint-disable-next-line
-            console.log('Successfully removed opinion from topic');
-          }
-        });
+
+        topic.save();
 
         Users.findById(req.user._id, function (err, user) {
           var index = user.topics.indexOf(topic._id);
           if (index !== -1) {
             user.topics.splice(index, 1);
           }
-          user.save(function (err) {
-            if (err) {
-              //eslint-disable-next-line
-              console.log('Cannot remove topic from user', err);
-            } else {
-              //eslint-disable-next-line
-              console.log('Successfully removed topic from user');
-            }
-          });
+
+          user.save();
         });
       });
     });
