@@ -44,28 +44,21 @@ const usersCtrl = {
   },
 
   update: function (req, res) {
+    const body = req.body;
+    
     Users.findById(req.params.id, function (err, user) {
       if (err) {
         res.status(500).send(err);
       } else if (!user) {
         res.status(404).send({message: 'No user with that id'});
       } else{
-        if (req.body.password) {
-          user.password = req.body.password;
-        }
-        if (req.body.firstName) {
-          user.firstName = req.body.firstName;
-        }
-        if (req.body.lastName) {
-          user.lastName = req.body.lastName;
-        }
-        if (req.body.gender) {
-          user.gender = req.body.gender;
-        }
-        if (req.body.dateOfBirth) {
-          user.dateOfBirth = new Date(req.body.dateOfBirth);
-        }
-        if (req.body.topics) {
+        ['firstName', 'lastName', 'gender', 'dateOfBirth', 'email'].forEach(function (property) { 
+          if (body[property]) {
+            user[property] = body[property];
+          }
+        });
+        
+        if (body.topics) {
           user.topics = [];
           req.body.topics.forEach(function (topic_id) {
             try {
@@ -74,14 +67,13 @@ const usersCtrl = {
             } catch (err) {}
           });
         }
-        if (req.body.email) {
-          user.email = req.body.email;
-        }
+
         if (req.file) {
-          cloudinary.uploader.upload(req.file.path, function (result) {
-            user.profilePhoto = result.url;
-            saveUser(user, res);
-          });
+          uploadImage(req.file, user)
+            .then(function (url) {
+              user.profilePhoto = url;
+              saveUser(user, res);
+            });
         } else {
           saveUser(user, res);
         }
@@ -108,6 +100,11 @@ const usersCtrl = {
   }
 };
 
+/**
+ * Saves a user to the database
+ * @param {Object} user
+ * @param {Object} res
+ */
 function saveUser(user, res) {
   user.save(function (err, _user) {
     if (err) {
@@ -115,6 +112,20 @@ function saveUser(user, res) {
     } else {
       res.status(200).send(_user);
     }
+  });
+}
+
+/**
+ * Uploads an image to cloudinary
+ * @param {Object} file
+ * @param {Object} user
+ * @return {Promise<Object>}
+ */
+function uploadImage(file, user) {
+  return new Promise(function (resolve) {
+    cloudinary.uploader.upload(file.path, function (result) {
+      resolve(result.url);
+    });
   });
 }
 

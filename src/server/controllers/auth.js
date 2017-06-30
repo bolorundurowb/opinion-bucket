@@ -45,14 +45,12 @@ const authCtrl = {
           res.status(409).send({message: 'A user exists with that username or email address'});
         } else {
           const user = new Users(req.body);
-          user.joined = new Date();
           if (req.file) {
-            console.log(req.file);
-            cloudinary.uploader.upload(req.file.path, function (result) {
-              console.log(result);
-              user.profilePhoto = result.url;
-              saveUser(user, res);
-            });
+            uploadImage(req.file, user)
+              .then(function (url) {
+                user.profilePhoto = url;
+                saveUser(user, res);
+              });
           } else {
             saveUser(user, res);
           }
@@ -66,6 +64,25 @@ const authCtrl = {
   }
 };
 
+/**
+ * Uploads an image to cloudinary
+ * @param {Object} file
+ * @param {Object} user
+ * @return {Promise<Object>}
+ */
+function uploadImage(file, user) {
+  return new Promise(function (resolve) {
+    cloudinary.uploader.upload(file.path, function (result) {
+      resolve(result.url);
+    });
+  });
+}
+
+/**
+ * Saves a user to the database
+ * @param {Object} user
+ * @param {Object} res
+ */
 function saveUser(user, res) {
   user.save(function (err, _user) {
     if (err) {
@@ -76,6 +93,11 @@ function saveUser(user, res) {
   });
 }
 
+/**
+ * Generate a JWT token
+ * @param {Object} user
+ * @return {{user: *}} - an object with the user and token
+ */
 function tokenify(user) {
   var response = {user: user};
   response.token = jwt.sign(user._doc, config.secret, {
