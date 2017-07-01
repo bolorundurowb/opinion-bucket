@@ -16,11 +16,11 @@ var adminToken;
 
 before(function (done) {
   userToken = jwt.sign({username: 'john.doe'}, config.secret, {
-    expiresIn: '24h'
+    expiresIn: '1h'
   });
 
   adminToken = jwt.sign({username: 'admin', type: 'Admin'}, config.secret, {
-    expiresIn: '24h'
+    expiresIn: '1h'
   });
 
   server

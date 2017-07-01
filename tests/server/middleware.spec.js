@@ -15,7 +15,7 @@ var userToken;
 
 before(function () {
   userToken = jwt.sign({username: 'john.doe'}, config.secret, {
-    expiresIn: '24h'
+    expiresIn: '1h'
   });
 });
 
@@ -57,4 +57,4 @@ describe('Middleware', function () {
         done();
       });
   });
-})
+});

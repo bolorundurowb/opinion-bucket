@@ -7,13 +7,14 @@ const supertest = require('supertest');
 const should = require('should');
 const jwt = require('jsonwebtoken');
 const app = require('./../../server');
+const config = require('./../../config/config');
 
 const server = supertest.agent(app);
 
 describe('Auth', function () {
   // Sign out
   it('allows for users to be signed out', function (done) {
-    const userToken = jwt.sign({username: 'john.doe', email: 'john.doe@doe.org'}, '765105877C8DF471AC2B3E58801E8099', {
+    const userToken = jwt.sign({username: 'john.doe', email: 'john.doe@doe.org'}, config.secret, {
       expiresIn: '1h'
     });
     server

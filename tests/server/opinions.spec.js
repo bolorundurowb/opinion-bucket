@@ -16,7 +16,7 @@ var userToken;
 
 before(function (done) {
   var adminToken = jwt.sign({username: 'admin', type: 'Admin'}, config.secret, {
-    expiresIn: '24h'
+    expiresIn: '1h'
   });
 
   server
