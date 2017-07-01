@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-mongo opinion_bucket_test --eval "db.dropDatabase()"
+mongo opinion-bucket-test --eval "db.dropDatabase()"

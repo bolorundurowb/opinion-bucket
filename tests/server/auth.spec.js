@@ -7,19 +7,16 @@ const supertest = require('supertest');
 const should = require('should');
 const jwt = require('jsonwebtoken');
 const app = require('./../../server');
+const config = require('./../../config/config');
 
 const server = supertest.agent(app);
-var userToken;
-
-before(function () {
-  userToken = jwt.sign({username: 'john.doe', email: 'john.doe@doe.org'}, '765105877C8DF471AC2B3E58801E8099', {
-    expiresIn: '24h'
-  });
-});
 
 describe('Auth', function () {
   // Sign out
   it('allows for users to be signed out', function (done) {
+    const userToken = jwt.sign({username: 'john.doe', email: 'john.doe@doe.org'}, config.secret, {
+      expiresIn: '1h'
+    });
     server
       .post('/api/v1/auth/signout')
       .set('x-access-token', userToken)
@@ -27,7 +24,7 @@ describe('Auth', function () {
       .end(function (err, res) {
         res.status.should.equal(200);
         res.body.should.be.type('object');
-        res.body.message.should.equal('signout successful');
+        res.body.message.should.equal('sign out successful');
         done();
       });
   });
@@ -36,11 +33,10 @@ describe('Auth', function () {
   it('allows for users to be created', function (done) {
     server
       .post('/api/v1/auth/signup')
-      .send({
-        username: 'john.doe',
-        email: 'john.doe@gmail.com',
-        password: 'john.doe'
-      })
+      .field('username', 'john.doe')
+      .field('email', 'john.doe@gmail.com')
+      .field('password', 'john.doe')
+      .attach('profile', './tests/artifacts/sample.png')
       .expect(201)
       .end(function (err, res) {
         res.status.should.equal(201);
@@ -52,7 +48,7 @@ describe('Auth', function () {
       });
   });
 
-  it('does not allow for users with incomplete details to be created', function (done) {
+  it('does not allow for users without an email address to be created', function (done) {
     server
       .post('/api/v1/auth/signup')
       .send({
@@ -63,7 +59,39 @@ describe('Auth', function () {
       .end(function (err, res) {
         res.status.should.equal(400);
         res.body.should.be.type('object');
-        res.body.message.should.equal('A user must have an email address, username and password defined');
+        res.body.message.should.equal('A user must have an email address.');
+        done();
+      });
+  });
+
+  it('does not allow for users without a username to be created', function (done) {
+    server
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'john@doe.org',
+        password: 'john.doe'
+      })
+      .expect(400)
+      .end(function (err, res) {
+        res.status.should.equal(400);
+        res.body.should.be.type('object');
+        res.body.message.should.equal('A user must have a username.');
+        done();
+      });
+  });
+
+  it('does not allow for users without a password to be created', function (done) {
+    server
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'john@doe.org',
+        username: 'john.doe'
+      })
+      .expect(400)
+      .end(function (err, res) {
+        res.status.should.equal(400);
+        res.body.should.be.type('object');
+        res.body.message.should.equal('A user must have a password.');
         done();
       });
   });

@@ -16,11 +16,11 @@ var adminToken;
 
 before(function (done) {
   userToken = jwt.sign({username: 'john.doe'}, config.secret, {
-    expiresIn: '24h'
+    expiresIn: '1h'
   });
 
   adminToken = jwt.sign({username: 'admin', type: 'Admin'}, config.secret, {
-    expiresIn: '24h'
+    expiresIn: '1h'
   });
 
   server
@@ -147,7 +147,7 @@ describe('Users', function () {
         gender: 'Male',
         dateOfBirth: '1909-12-12',
         profilePhoto: 'http://google.com',
-        topics: '507f1'
+        topics: ['507f1']
       })
       .expect(200)
       .end(function (err, res) {
@@ -170,7 +170,7 @@ describe('Users', function () {
         gender: 'Male',
         dateOfBirth: '1909-12-12',
         profilePhoto: 'http://google.com',
-        topics: '507f1f77bcf86cd799439011'
+        topics: ['507f1f77bcf86cd799439011']
       })
       .expect(200)
       .end(function (err, res) {
@@ -182,7 +182,24 @@ describe('Users', function () {
       });
   });
 
-  it('does not allow for non-existemt users to be updated', function (done) {
+  it('allows for users to be updated with photos', function (done) {
+    server
+      .put('/api/v1/users/' + id)
+      .set('x-access-token', userToken)
+      .field('lastName', 'Woke')
+      .field('firstName', 'Wobe')
+      .attach('profile', './tests/artifacts/sample.png')
+      .expect(200)
+      .end(function (err, res) {
+        res.status.should.equal(200);
+        res.body.should.be.type('object');
+        res.body.firstName.should.equal('Wobe');
+        res.body.lastName.should.equal('Woke');
+        done();
+      });
+  });
+
+  it('does not allow for non-existent users to be updated', function (done) {
     server
       .put('/api/v1/users/507f1f77bcf86cd799439011')
       .set('x-access-token', userToken)
@@ -242,7 +259,12 @@ describe('Users', function () {
       .set('x-access-token', adminToken)
       .expect(200)
       .end(function (err, res) {
-        id = res.body[0]._id;
+        // HACK: get the id of the second user order is different on CI hence the if block
+        if (process.env.NODE_ENV === 'test') {
+          id = res.body[1]._id;
+        } else {
+           id = res.body[0]._id;
+        }
         server
           .delete('/api/v1/users/' + id)
           .set('x-access-token', userToken)

@@ -16,7 +16,7 @@ var userToken;
 
 before(function (done) {
   var adminToken = jwt.sign({username: 'admin', type: 'Admin'}, config.secret, {
-    expiresIn: '24h'
+    expiresIn: '1h'
   });
 
   server
@@ -60,7 +60,7 @@ describe('Opinions', function () {
       });
   });
 
-  it('doesnt allow for opinions to be without a title', function (done) {
+  it('doesn\'t allow for opinions to be without a title', function (done) {
     server
       .post('/api/v1/opinions')
       .set('x-access-token', userToken)
