@@ -39,7 +39,7 @@ describe('Auth', function () {
       .field('username', 'john.doe')
       .field('email', 'john.doe@gmail.com')
       .field('password', 'john.doe')
-      .attach('profile', './tests/artifacts/sample.svg')
+      .attach('profile', './tests/artifacts/sample.png')
       .expect(201)
       .end(function (err, res) {
         res.status.should.equal(201);
