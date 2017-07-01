@@ -9,17 +9,13 @@ const jwt = require('jsonwebtoken');
 const app = require('./../../server');
 
 const server = supertest.agent(app);
-var userToken;
-
-before(function () {
-  userToken = jwt.sign({username: 'john.doe', email: 'john.doe@doe.org'}, '765105877C8DF471AC2B3E58801E8099', {
-    expiresIn: '24h'
-  });
-});
 
 describe('Auth', function () {
   // Sign out
   it('allows for users to be signed out', function (done) {
+    const userToken = jwt.sign({username: 'john.doe', email: 'john.doe@doe.org'}, '765105877C8DF471AC2B3E58801E8099', {
+      expiresIn: '1h'
+    });
     server
       .post('/api/v1/auth/signout')
       .set('x-access-token', userToken)

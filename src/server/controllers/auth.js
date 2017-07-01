@@ -67,10 +67,9 @@ const authCtrl = {
 /**
  * Uploads an image to cloudinary
  * @param {Object} file
- * @param {Object} user
  * @return {Promise<Object>}
  */
-function uploadImage(file, user) {
+function uploadImage(file) {
   return new Promise(function (resolve) {
     cloudinary.uploader.upload(file.path, function (result) {
       resolve(result.url);

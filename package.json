@@ -28,14 +28,14 @@
   "homepage": "https://github.com/bolorundurowb/opinion-bucket#readme",
   "devDependencies": {
     "chai": "4.0.2",
+    "concurrently": "3.4.0",
     "coveralls": "^2.11.14",
     "del": "^2.2.2",
     "istanbul": "^0.4.5",
+    "lite-server": "^2.2.0",
     "mocha": "^3.2.0",
     "should": "^11.1.2",
     "supertest": "3.0.0",
-    "concurrently": "3.4.0",
-    "lite-server": "^2.2.0",
     "tslint": "5.4.3",
     "typescript": "^2.0.2",
     "typings": "2.1.0"
