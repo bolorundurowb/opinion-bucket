@@ -19,10 +19,7 @@ const topicsCtrl = {
         filter.categories = {
           '$in': [mongoose.Types.ObjectId(req.query.category)]
         };
-      } catch (err) {
-        //eslint-disable-next-line
-        console.error('The mongo id supplied is invalid');
-      }
+      } catch (err) {}
     }
 
     var sort = {};
@@ -95,44 +92,29 @@ const topicsCtrl = {
   },
 
   update: function (req, res) {
+    const body = req.body;
+
     Topics.findById(req.params.id, function (err, topic) {
       if (err) {
         res.status(500).send(err);
       } else if (!topic) {
         res.status(404).send({message: 'A topic with that id doesn\'t exist'});
       } else {
-        if (req.body.title) {
-          topic.title = req.body.title;
-        }
-        if (req.body.content) {
-          topic.content = req.body.content;
-        }
-        if (req.body.categories) {
-          if (Array.isArray(req.body.categories)) {
-            req.body.categories.forEach(function (cat_id) {
-              if (typeof cat_id === 'string') {
-                try {
-                  var id = mongoose.Types.ObjectId(cat_id);
-                  topic.categories.push(id);
-                } catch (err) {
-                  //eslint-disable-next-line
-                  console.error('The mongo id supplied is invalid');
-                }
-              } else {
-                topic.categories.push(cat_id);
-              }
-            });
-          } else {
-            try {
-              var id = mongoose.Types.ObjectId(req.body.categories);
-              topic.categories.push(id);
-            } catch (err) {
-              //eslint-disable-next-line
-              console.error('The mongo id supplied is invalid');
-            }
+        ['title', 'content'].forEach(function (property) {
+          if (body[property]) {
+            topic[property] = body[property];
           }
+        });
+        if (body.categories && Array.isArray(body.categories)) {
+          topic.categories = [];
+          req.body.categories.forEach(function (cat_id) {
+            try {
+              var id = mongoose.Types.ObjectId(cat_id);
+              topic.categories.push(id);
+            } catch (err) {}
+          });
         }
-        topic.categories = Array.from(new Set(topic.categories));
+
         topic.save(function (err, _topic) {
           if (err) {
             res.status(500).send(err);
