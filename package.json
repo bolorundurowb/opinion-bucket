@@ -4,10 +4,12 @@
   "description": "A RESTful API and App code for Opinion Bucket",
   "main": "server.js",
   "scripts": {
-    "test": "./teardown.sh && NODE_ENV=test node ./src/server/config/init.js && NODE_ENV=test mocha tests/server",
-    "start": "node ./src/server/config/init.js && nodemon server.js",
+    "init": "node ./src/server/config/init.js",
+    "clean": "./teardown.sh",
+    "test": "npm run clean && NODE_ENV=test npm run init && NODE_ENV=test mocha tests/server",
+    "start": "npm run init && nodemon server.js",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "coverage": "rm -rf /coverage && node ./src/server/config/init.js && istanbul cover node_modules/.bin/_mocha tests/server"
+    "coverage": "rm -rf /coverage && npm run init && istanbul cover node_modules/.bin/_mocha tests/server"
   },
   "repository": {
     "type": "git",
@@ -25,31 +27,17 @@
   "homepage": "https://github.com/bolorundurowb/opinion-bucket#readme",
   "devDependencies": {
     "chai": "4.0.2",
-    "concurrently": "3.4.0",
     "coveralls": "^2.11.14",
     "del": "^2.2.2",
     "istanbul": "^0.4.5",
-    "lite-server": "^2.2.0",
     "mocha": "^3.2.0",
     "should": "^11.1.2",
-    "supertest": "3.0.0",
-    "tslint": "5.4.3",
-    "typescript": "^2.0.2",
-    "typings": "2.1.0"
+    "supertest": "3.0.0"
   },
   "dependencies": {
-    "@angular/common": "2.4.7",
-    "@angular/compiler": "2.4.7",
-    "@angular/core": "2.4.7",
-    "@angular/forms": "2.4.7",
-    "@angular/http": "2.4.7",
-    "@angular/platform-browser": "2.4.7",
-    "@angular/platform-browser-dynamic": "2.4.7",
-    "@angular/router": "3.4.7",
     "bcryptjs": "^2.4.0",
     "body-parser": "^1.15.2",
     "cloudinary": "^1.9.0",
-    "core-js": "^2.4.1",
     "dotenv": "4.0.0",
     "express": "^4.14.0",
     "jsonwebtoken": "^7.2.1",
@@ -57,11 +45,6 @@
     "mongoose-seed": "^0.3.2",
     "morgan": "1.8.2",
     "multer": "^1.3.0",
-    "reflect-metadata": "0.1.10",
-    "rxjs": "5.4.0",
-    "semantic-ui-css": "^2.2.4",
-    "systemjs": "0.20.13",
-    "winston": "^2.3.1",
-    "zone.js": "0.7.6"
+    "winston": "^2.3.1"
   }
 }
