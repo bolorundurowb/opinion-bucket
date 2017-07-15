@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./src/server/routes/routes');
 const config = require('./src/server/config/config');
+const logger = require ('./src/server/config/logger');
 
 // Connect to MongoDB
 mongoose.connect(config.database);
@@ -47,8 +48,7 @@ const port = process.env.PORT || 4321;
 server.listen(port);
 
 // indicate server status
-// eslint-disable-next-line
-console.log('Server started on port: ' + port);
+logger.log('Server started on port: ' + port);
 
 // expose server to test
 module.exports = server;

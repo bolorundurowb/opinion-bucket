@@ -18,7 +18,7 @@ describe('Auth', function () {
       expiresIn: '1h'
     });
     server
-      .post('/api/v1/auth/signout')
+      .post('/api/v1/signout')
       .set('x-access-token', userToken)
       .expect(200)
       .end(function (err, res) {
@@ -32,7 +32,7 @@ describe('Auth', function () {
   // Sign up
   it('allows for users to be created', function (done) {
     server
-      .post('/api/v1/auth/signup')
+      .post('/api/v1/signup')
       .field('username', 'john.doe')
       .field('email', 'john.doe@gmail.com')
       .field('password', 'john.doe')
@@ -50,7 +50,7 @@ describe('Auth', function () {
 
   it('does not allow for users without an email address to be created', function (done) {
     server
-      .post('/api/v1/auth/signup')
+      .post('/api/v1/signup')
       .send({
         username: 'john.doe',
         password: 'john.doe'
@@ -66,7 +66,7 @@ describe('Auth', function () {
 
   it('does not allow for users without a username to be created', function (done) {
     server
-      .post('/api/v1/auth/signup')
+      .post('/api/v1/signup')
       .send({
         email: 'john@doe.org',
         password: 'john.doe'
@@ -82,7 +82,7 @@ describe('Auth', function () {
 
   it('does not allow for users without a password to be created', function (done) {
     server
-      .post('/api/v1/auth/signup')
+      .post('/api/v1/signup')
       .send({
         email: 'john@doe.org',
         username: 'john.doe'
@@ -98,7 +98,7 @@ describe('Auth', function () {
 
   it('does not allow for duplicate users to be created', function (done) {
     server
-      .post('/api/v1/auth/signup')
+      .post('/api/v1/signup')
       .send({
         username: 'john.doe',
         email: 'john.doe@yahoo.org',
@@ -116,7 +116,7 @@ describe('Auth', function () {
   // Sign in
   it('allows for users to be signed in', function (done) {
     server
-      .post('/api/v1/auth/signin')
+      .post('/api/v1/signin')
       .send({
         username: 'john.doe',
         password: 'john.doe'
@@ -134,7 +134,7 @@ describe('Auth', function () {
 
   it('does not allow for invalid users to be signed in', function (done) {
     server
-      .post('/api/v1/auth/signin')
+      .post('/api/v1/signin')
       .send({
         username: 'jane.doe',
         password: 'john.doe'
@@ -149,7 +149,7 @@ describe('Auth', function () {
 
   it('does not allow for users without password to be signed in', function (done) {
     server
-      .post('/api/v1/auth/signin')
+      .post('/api/v1/signin')
       .send({
         username: 'jane.doe'
       })
@@ -163,7 +163,7 @@ describe('Auth', function () {
 
   it('does not allow for users with a wrong password to be signed in', function (done) {
     server
-      .post('/api/v1/auth/signin')
+      .post('/api/v1/signin')
       .send({
         username: 'john.doe',
         password: 'john.do'
