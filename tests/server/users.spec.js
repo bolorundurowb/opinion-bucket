@@ -188,7 +188,7 @@ describe('Users', function () {
       .set('x-access-token', userToken)
       .field('lastName', 'Woke')
       .field('firstName', 'Wobe')
-      .attach('profile', './tests/artifacts/sample.png')
+      .attach('profile', './tests/server/artifacts/sample.png')
       .expect(200)
       .end(function (err, res) {
         res.status.should.equal(200);

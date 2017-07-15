@@ -175,7 +175,7 @@ describe('Opinions', function () {
       .end(function (err, res) {
         res.status.should.equal(500);
         res.body.should.be.type('object');
-        res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "Opinion"');
+        res.body.message.should.equal('An error occurred when retrieving an opinion');
         done();
       });
   });
@@ -209,7 +209,7 @@ describe('Opinions', function () {
       .end(function (err, res) {
         res.status.should.equal(500);
         res.body.should.be.type('object');
-        res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "Opinion"');
+        res.body.message.should.equal('An error occurred when retrieving an opinion');
         done();
       });
   });
@@ -261,7 +261,7 @@ describe('Opinions', function () {
       .expect(500)
       .end(function (err, res) {
         res.status.should.equal(500);
-        res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "Opinion"');
+        res.body.message.should.equal('An error occurred when removing an opinion');
         done();
       });
   });
