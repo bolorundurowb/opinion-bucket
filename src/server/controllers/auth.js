@@ -5,8 +5,10 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const cloudinary = require('cloudinary');
-const Users = require('./../models/user');
 const config = require('../config/config');
+const logger = require('./../config/logger');
+const Users = require('./../models/user');
+
 
 const authCtrl = {
   signin: function (req, res) {
@@ -15,7 +17,8 @@ const authCtrl = {
     } else {
       Users.findOne({$or: [{username: req.body.username}, {email: req.body.username}]}).exec(function (err, user) {
         if (err) {
-          res.status(500).send(err);
+          logger.error(err);
+          res.status(500).send({message: 'An error occurred when retrieving users'});
         } else if (!user) {
           res.status(404).send({message: 'A user with that username or email does not exist'});
         } else {
@@ -40,7 +43,8 @@ const authCtrl = {
     } else {
       Users.find({$or: [{username: req.body.username}, {email: req.body.email}]}, function (err, result) {
         if (err) {
-          res.status(500).send(err);
+          logger.error(err);
+          res.status(500).send({message: 'An error occurred when retrieving users'});
         } else if (result.length !== 0) {
           res.status(409).send({message: 'A user exists with that username or email address'});
         } else {
@@ -85,7 +89,8 @@ function uploadImage(file) {
 function saveUser(user, res) {
   user.save(function (err, _user) {
     if (err) {
-      res.status(500).send(err);
+      logger.error(err);
+      res.status(500).send({message: 'An error occurred when saving users'});
     } else {
       res.status(201).send(tokenify(_user));
     }

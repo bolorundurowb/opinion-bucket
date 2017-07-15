@@ -3,6 +3,7 @@
  */
 
 const mongoose = require('mongoose');
+const logger = require('./../config/logger');
 const Opinions = require('./../models/opinion');
 const Topics = require('./../models/topic');
 const Users = require('./../models/user');
