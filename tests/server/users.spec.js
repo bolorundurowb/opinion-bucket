@@ -14,26 +14,26 @@ var id = '';
 var userToken;
 var adminToken;
 
-before(function (done) {
-  userToken = jwt.sign({username: 'john.doe'}, config.secret, {
-    expiresIn: '1h'
-  });
-
-  adminToken = jwt.sign({username: 'admin', type: 'Admin'}, config.secret, {
-    expiresIn: '1h'
-  });
-
-  server
-    .get('/api/v1/users')
-    .set('x-access-token', adminToken)
-    .expect(200)
-    .end(function (err, res) {
-      id = res.body[0]._id;
-      done();
-    });
-});
-
 describe('Users', function () {
+  before(function (done) {
+    userToken = jwt.sign({username: 'john.doe'}, config.secret, {
+      expiresIn: '1h'
+    });
+
+    adminToken = jwt.sign({username: 'admin', type: 'Admin'}, config.secret, {
+      expiresIn: '1h'
+    });
+
+    server
+      .get('/api/v1/users')
+      .set('x-access-token', adminToken)
+      .expect(200)
+      .end(function (err, res) {
+        id = res.body[0]._id;
+        done();
+      });
+  });
+
   // Retrieval Tests
   it('allows for all users to be retrieved', function (done) {
     server

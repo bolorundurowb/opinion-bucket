@@ -17,7 +17,7 @@ const tsFormat = function() {
 const errorLogger = new winston.Logger({
   transports: [
     new (winston.transports.File)({
-      filename: logDir + '/errors.log',
+      filename: logDir + '/errors.json',
       timestamp: tsFormat
     })
   ],
@@ -53,7 +53,7 @@ const logger = {
    */
   error: function(err) {
     errorLogger.level = 'error';
-    errorLogger.error(err);
+    errorLogger.error('\n\n' + err);
   }
 };
 

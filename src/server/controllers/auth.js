@@ -103,10 +103,12 @@ function saveUser(user, res) {
  * @return {{user: *}} - an object with the user and token
  */
 function tokenify(user) {
-  var response = {user: user};
+  const response = {};
+
   response.token = jwt.sign({ uid: user._id }, config.secret, {
     expiresIn: '48h'
   });
+
   return response;
 }
 
@@ -114,6 +116,7 @@ function verifyPassword(plainText, hashedPassword) {
   if (!(plainText && hashedPassword)) {
     return false;
   }
+
   return bcrypt.compareSync(plainText, hashedPassword);
 }
 
