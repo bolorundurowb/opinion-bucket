@@ -47,10 +47,10 @@ const userSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'Topic'
   }],
-  type: {
-    type: String,
-    enum: ['User', 'Admin'],
-    default: 'User'
+  role: {
+    type: Number,
+    ref: 'Role',
+    required: true
   }
 });
 
