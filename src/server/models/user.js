@@ -50,7 +50,7 @@ const userSchema = new Schema({
   role: {
     type: Number,
     ref: 'Role',
-    required: true
+    default: 1
   }
 });
 
