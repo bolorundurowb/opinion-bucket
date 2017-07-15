@@ -104,8 +104,8 @@ function saveUser(user, res) {
  */
 function tokenify(user) {
   var response = {user: user};
-  response.token = jwt.sign(user._doc, config.secret, {
-    expiresIn: '72h'
+  response.token = jwt.sign({ uid: user._id }, config.secret, {
+    expiresIn: '48h'
   });
   return response;
 }
