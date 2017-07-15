@@ -4,9 +4,6 @@
   "description": "A RESTful API and App code for Opinion Bucket",
   "main": "server.js",
   "scripts": {
-    "postinstall": "typings install",
-    "typings": "typings",
-    "lint": "tslint ./src/app/**/*.ts  -t verbose",
     "test": "./teardown.sh && NODE_ENV=test node ./src/server/config/init.js && NODE_ENV=test mocha tests/server",
     "start": "node ./src/server/config/init.js && nodemon server.js",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
