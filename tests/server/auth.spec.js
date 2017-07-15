@@ -7,7 +7,7 @@ const supertest = require('supertest');
 const should = require('should');
 const jwt = require('jsonwebtoken');
 const app = require('./../../server');
-const config = require('./../../config/config');
+const config = require('../../src/server/config/config');
 
 const server = supertest.agent(app);
 
@@ -36,7 +36,7 @@ describe('Auth', function () {
       .field('username', 'john.doe')
       .field('email', 'john.doe@gmail.com')
       .field('password', 'john.doe')
-      .attach('profile', './tests/artifacts/sample.png')
+      .attach('profile', './tests/server/artifacts/sample.png')
       .expect(201)
       .end(function (err, res) {
         res.status.should.equal(201);

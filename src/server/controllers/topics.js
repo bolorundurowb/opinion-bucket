@@ -3,6 +3,7 @@
  */
 
 const mongoose = require('mongoose');
+const logger = require('./../config/logger');
 const Topics = require('./../models/topic');
 
 const topicsCtrl = {
@@ -37,7 +38,8 @@ const topicsCtrl = {
       .skip(skip)
       .exec(function (err, topics) {
         if (err) {
-          res.status(500).send(err);
+          logger.error(err);
+          res.status(500).send({message: 'An error occurred when retrieving topics'});
         }
         res.status(200).send(topics);
       });
@@ -46,7 +48,8 @@ const topicsCtrl = {
   getOne: function (req, res) {
     Topics.findOne({_id: req.params.id}, function (err, topic) {
       if (err) {
-        res.status(500).send(err);
+        logger.error(err);
+        res.status(500).send({message: 'An error occurred when retrieving a topic'});
       } else if (!topic) {
         res.status(404).send({message: 'No topic exists with that id'});
       } else {
@@ -56,11 +59,13 @@ const topicsCtrl = {
   },
 
   getOneFull: function (req, res) {
-    Topics.findOne({_id: req.params.id})
+    Topics
+      .findOne({_id: req.params.id})
       .populate('opinions categories')
       .exec(function (err, topic) {
         if (err) {
-          res.status(500).send(err);
+          logger.error(err);
+          res.status(500).send({message: 'An error occurred when retrieving a topic'});
         } else if (!topic) {
           res.status(404).send({message: 'No topic exists with that id'});
         } else {
@@ -75,14 +80,16 @@ const topicsCtrl = {
     } else {
       Topics.findOne({title: req.body.title}, function (err, result) {
         if (err) {
-          res.status(500).send(err);
+          logger.error(err);
+          res.status(500).send({message: 'An error occurred when retrieving a topic'});
         } else if (result) {
           res.status(409).send({message: 'A topic exists with that title'});
         } else {
           const _topic = new Topics(req.body);
           _topic.save(function (err, topic) {
             if (err) {
-              res.status(500).send(err);
+              logger.error(err);
+              res.status(500).send({message: 'An error occurred when saving a topic'});
             }
             res.status(201).send(topic);
           });
@@ -96,7 +103,8 @@ const topicsCtrl = {
 
     Topics.findById(req.params.id, function (err, topic) {
       if (err) {
-        res.status(500).send(err);
+        logger.error(err);
+        res.status(500).send({message: 'An error occurred when retrieving a topic'});
       } else if (!topic) {
         res.status(404).send({message: 'A topic with that id doesn\'t exist'});
       } else {
@@ -117,7 +125,8 @@ const topicsCtrl = {
 
         topic.save(function (err, _topic) {
           if (err) {
-            res.status(500).send(err);
+            logger.error(err);
+            res.status(500).send({message: 'An error occurred when saving a topic'});
           } else {
             res.status(200).send(_topic);
           }
@@ -129,7 +138,8 @@ const topicsCtrl = {
   delete: function (req, res) {
     Topics.findByIdAndRemove(req.params.id, function (err) {
       if (err) {
-        res.status(500).send(err);
+        logger.error(err);
+        res.status(500).send({message: 'An error occurred when removing a topic'});
       } else {
         res.status(200).send({message: 'Topic successfully removed'});
       }

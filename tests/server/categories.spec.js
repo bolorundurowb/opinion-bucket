@@ -7,7 +7,7 @@ const supertest = require('supertest');
 const should = require('should');
 const jwt = require('jsonwebtoken');
 const app = require('./../../server');
-const config = require('./../../config/config');
+const config = require('../../src/server/config/config');
 
 const server = supertest.agent(app);
 var id = '';
@@ -113,7 +113,7 @@ describe('Categories', function () {
       .end(function (err, res) {
         res.status.should.equal(500);
         res.body.should.be.type('object');
-        res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "Category"');
+        res.body.message.should.equal('An error occurred when retrieving a category');
         done();
       });
   });
@@ -154,7 +154,7 @@ describe('Categories', function () {
       .end(function (err, res) {
         res.status.should.equal(500);
         res.body.should.be.type('object');
-        res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "Category"');
+        res.body.message.should.equal('An error occurred when retrieving a category');
         done();
       });
   });
@@ -179,7 +179,7 @@ describe('Categories', function () {
       .expect(500)
       .end(function (err, res) {
         res.status.should.equal(500);
-        res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "Category"');
+        res.body.message.should.equal('An error occurred when removing a category');
         done();
       });
   });

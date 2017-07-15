@@ -7,10 +7,10 @@
     "postinstall": "typings install",
     "typings": "typings",
     "lint": "tslint ./src/app/**/*.ts  -t verbose",
-    "test": "./teardown.sh && NODE_ENV=test node ./config/init.js && NODE_ENV=test mocha tests/server",
-    "start": "node ./config/init.js && tsc && concurrently \"nodemon server.js\" \"tsc -w\" \"lite-server\"",
+    "test": "./teardown.sh && NODE_ENV=test node ./src/server/config/init.js && NODE_ENV=test mocha tests/server",
+    "start": "node ./src/server/config/init.js && nodemon server.js",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "coverage": "rm -rf /coverage && node ./config/init.js && istanbul cover node_modules/.bin/_mocha tests/server"
+    "coverage": "rm -rf /coverage && node ./src/server/config/init.js && istanbul cover node_modules/.bin/_mocha tests/server"
   },
   "repository": {
     "type": "git",
@@ -64,6 +64,7 @@
     "rxjs": "5.4.0",
     "semantic-ui-css": "^2.2.4",
     "systemjs": "0.20.13",
+    "winston": "^2.3.1",
     "zone.js": "0.7.6"
   }
 }
