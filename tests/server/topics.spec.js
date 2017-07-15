@@ -7,7 +7,7 @@ const supertest = require('supertest');
 const should = require('should');
 const jwt = require('jsonwebtoken');
 const app = require('./../../server');
-const config = require('./../../config/config');
+const config = require('../../src/server/config/config');
 
 const server = supertest.agent(app);
 var id = '';

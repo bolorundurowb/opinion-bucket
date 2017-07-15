@@ -7,8 +7,8 @@
     "postinstall": "typings install",
     "typings": "typings",
     "lint": "tslint ./src/app/**/*.ts  -t verbose",
-    "test": "./teardown.sh && NODE_ENV=test node ./config/init.js && NODE_ENV=test mocha tests/server",
-    "start": "node ./config/init.js && tsc && concurrently \"nodemon server.js\" \"tsc -w\" \"lite-server\"",
+    "test": "./teardown.sh && NODE_ENV=test node ./src/server/config/init.js && NODE_ENV=test mocha tests/server",
+    "start": "node ./src/server/config/init.js && tsc && concurrently \"nodemon server.js\" \"tsc -w\" \"lite-server\"",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "coverage": "rm -rf /coverage && node ./config/init.js && istanbul cover node_modules/.bin/_mocha tests/server"
   },

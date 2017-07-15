@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const cloudinary = require('cloudinary');
 const Users = require('./../models/user');
-const config = require('./../../../config/config');
+const config = require('../config/config');
 
 const authCtrl = {
   signin: function (req, res) {

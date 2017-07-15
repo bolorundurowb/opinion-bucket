@@ -3,7 +3,7 @@
  */
 
 const jwt = require('jsonwebtoken');
-const config = require('./../../../config/config');
+const config = require('../config/config');
 
 const auth = function (req, res, next) {
   const token = req.headers['x-access-token'] || req.body.token;
