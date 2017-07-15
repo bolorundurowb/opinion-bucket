@@ -105,7 +105,7 @@ describe('Users', function () {
       .end(function (err, res) {
         res.status.should.equal(500);
         res.body.should.be.type('object');
-        res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "User"');
+        res.body.message.should.equal('An error occurred when retrieving a user');
         done();
       });
   });
@@ -223,7 +223,7 @@ describe('Users', function () {
       .end(function (err, res) {
         res.status.should.equal(500);
         res.body.should.be.type('object');
-        res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "User"');
+        res.body.message.should.equal('An error occurred when retrieving a user');
         done();
       });
   });
@@ -248,7 +248,7 @@ describe('Users', function () {
       .expect(500)
       .end(function (err, res) {
         res.status.should.equal(500);
-        res.body.message.should.equal('Cast to ObjectId failed for value "507f1" at path "_id" for model "User"');
+        res.body.message.should.equal('An error occurred when retrieving a user');
         done();
       });
   });

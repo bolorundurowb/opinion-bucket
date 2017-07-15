@@ -4,13 +4,15 @@
 
 const mongoose = require('mongoose');
 const cloudinary = require('cloudinary');
+const logger = require('./../config/logger');
 const Users = require('./../models/user');
 
 const usersCtrl = {
   getAll: function (req, res) {
     Users.find(function (err, users) {
       if (err) {
-        res.status(500).send(err);
+        logger.error(err);
+        res.status(500).send({message: 'An error occurred when retrieving users'});
       } else {
         res.status(200).send(users);
       }
@@ -20,7 +22,8 @@ const usersCtrl = {
   getOne: function (req, res) {
     Users.findOne({_id: req.params.id}, function (err, user) {
       if (err) {
-        res.status(500).send(err);
+        logger.error(err);
+        res.status(500).send({message: 'An error occurred when retrieving a user'});
       } else if (!user) {
         res.status(400).send({message: 'No user exists with that id'});
       } else {
@@ -34,7 +37,8 @@ const usersCtrl = {
       .populate('topics')
       .exec(function (err, user) {
         if (err) {
-          res.status(500).send(err);
+          logger.error(err);
+          res.status(500).send({message: 'An error occurred when retrieving a user'});
         } else if (!user) {
           res.status(400).send({message: 'No user exists with that id'});
         } else {
@@ -48,7 +52,8 @@ const usersCtrl = {
     
     Users.findById(req.params.id, function (err, user) {
       if (err) {
-        res.status(500).send(err);
+        logger.error(err);
+        res.status(500).send({message: 'An error occurred when retrieving a user'});
       } else if (!user) {
         res.status(404).send({message: 'No user with that id'});
       } else{
@@ -84,13 +89,15 @@ const usersCtrl = {
   delete: function (req, res) {
     Users.findById(req.params.id, function (err, user) {
       if (err) {
-        res.status(500).send(err);
+        logger.error(err);
+        res.status(500).send({message: 'An error occurred when retrieving a user'});
       } else if (user.username === 'admin') {
         res.status(403).send({message: 'Admin cannot be removed'});
       } else {
         Users.findByIdAndRemove(req.params.id, function (err) {
           if (err) {
-            res.status(500).send(err);
+            logger.error(err);
+            res.status(500).send({message: 'An error occurred when removing a user'});
           } else {
             res.status(200).send({message: 'User successfully removed'});
           }
@@ -108,7 +115,8 @@ const usersCtrl = {
 function saveUser(user, res) {
   user.save(function (err, _user) {
     if (err) {
-      res.status(500).send(err);
+      logger.error(err);
+      res.status(500).send({message: 'An error occurred when saving a user'});
     } else {
       res.status(200).send(_user);
     }
@@ -118,10 +126,9 @@ function saveUser(user, res) {
 /**
  * Uploads an image to cloudinary
  * @param {Object} file
- * @param {Object} user
  * @return {Promise<Object>}
  */
-function uploadImage(file, user) {
+function uploadImage(file) {
   return new Promise(function (resolve) {
     cloudinary.uploader.upload(file.path, function (result) {
       resolve(result.url);
