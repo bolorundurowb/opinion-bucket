@@ -44,3 +44,6 @@ uploads/
 # Typescript typings
 typings/
 
+# Istanbul Files
+coverage/
+
