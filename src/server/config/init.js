@@ -4,23 +4,40 @@
 
 const seeder = require('mongoose-seed');
 const config = require('./config');
-const users = require('./seeds/users.json');
+const logger = require('./logger');
+const User  = require('./../models/user');
 
 seeder.connect(config.database, function () {
-  seeder.loadModels([
-    './src/server/models/user.js'
-  ]);
+  User.findOne({username: 'admin'}, function (err, user) {
+    if (err) {
+      logger.error(err);
+      logger.log('An error occurred when retrieving the user');
 
-  seeder.clearModels(['User'], function () {
-    const user = {
-      username: 'admin',
-      password: process.env.ADMIN_PASS,
-      email: 'admin@opinionbucket.io',
-      type: 'Admin'
-    };
-    users[0].documents.push(user);
-    seeder.populateModels(users, function () {
+      process.exit(1);
+    } else if (!user) {
+      const user = new User({
+        username: 'admin',
+        password: process.env.ADMIN_PASS,
+        email: 'admin@opinionbucket.io',
+        type: 'Admin'
+      });
+
+      user.save(function (err) {
+        if (err) {
+          logger.error(err);
+          logger.log('An error occurred when retrieving the user');
+
+          process.exit(1);
+        } else {
+          logger.log('The default admin added successfully');
+
+          process.exit(0);
+        }
+      })
+    } else {
+      logger.log('default admin already exists');
+
       process.exit(0);
-    })
+    }
   })
 });
