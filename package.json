@@ -7,7 +7,6 @@
     "init": "node ./src/server/config/init.js",
     "clean": "./teardown.sh",
     "test": "npm run clean && NODE_ENV=test npm run init && NODE_ENV=test mocha tests/server",
-    "test-local": "npm run clean && npm test",
     "start": "npm run init && nodemon server.js",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "coverage": "rm -rf /coverage && npm run init && istanbul cover node_modules/.bin/_mocha tests/server"
