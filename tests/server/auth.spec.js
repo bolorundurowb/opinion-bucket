@@ -22,6 +22,7 @@ describe('Auth', function () {
       .set('x-access-token', userToken)
       .expect(200)
       .end(function (err, res) {
+        console.log(res.body);
         res.status.should.equal(200);
         res.body.should.be.type('object');
         res.body.message.should.equal('sign out successful');

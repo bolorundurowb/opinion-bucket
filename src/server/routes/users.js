@@ -11,7 +11,7 @@ const upload = multer({ dest: 'uploads/' });
 
 const userRoutes = function (router) {
   router.route('/users')
-    .get(authentication, authorization, users.getAll);
+    .get(authentication, authorization.isAdmin, users.getAll);
 
   router.route('/users/:id')
     .get(authentication, users.getOne)
