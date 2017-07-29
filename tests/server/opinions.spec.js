@@ -13,13 +13,35 @@ const server = supertest.agent(app);
 var id = '';
 var topicId = '';
 var userToken;
+var adminToken;
 
 describe('Opinions', function () {
   before(function (done) {
-    var adminToken = jwt.sign({username: 'admin', type: 'Admin'}, config.secret, {
-      expiresIn: '1h'
-    });
+    server
+      .post('/api/v1/signin')
+      .send({
+        username: 'john.doe',
+        password: 'john.doe'
+      })
+      .expect(200)
+      .end(function (err, res) {
+        userToken = res.body.token;
 
+        server
+          .post('/api/v1/signin')
+          .send({
+            username: process.env.ADMIN_USERNAME,
+            password: process.env.ADMIN_PASS
+          })
+          .expect(200)
+          .end(function (err, res) {
+            adminToken = res.body.token;
+            done();
+          });
+      });
+  });
+
+  before(function (done) {
     server
       .post('/api/v1/topics')
       .set('x-access-token', adminToken)
@@ -27,16 +49,6 @@ describe('Opinions', function () {
       .expect(201)
       .end(function (err, res) {
         topicId = res.body._id;
-      });
-
-    server
-      .get('/api/v1/users')
-      .set('x-access-token', adminToken)
-      .expect(200)
-      .end(function (err, res) {
-        userToken = jwt.sign(res.body[0], config.secret, {
-          expiresIn: '24h'
-        });
         done();
       });
   });
