@@ -3,9 +3,14 @@
  */
 
 const mongoose = require('mongoose');
+const shortid = require('shortid');
 const Schema = mongoose.Schema;
 
 const topicSchema = new Schema({
+  _id: {
+    type: String,
+    default: shortid.generate
+  },
   title: {
     type: String,
     required: true
@@ -18,11 +23,11 @@ const topicSchema = new Schema({
     default: Date.now
   },
   opinions: [{
-    type: Schema.ObjectId,
+    type: String,
     ref: 'Opinion'
   }],
   categories: [{
-    type: Schema.ObjectId,
+    type: String,
     ref: 'Category'
   }],
   opinionsLength: {

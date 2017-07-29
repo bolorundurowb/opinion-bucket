@@ -113,19 +113,6 @@ describe('Users', function () {
       });
   });
 
-  it('throws an error when a wrong id is given', function (done) {
-    server
-      .get('/api/v1/users/507f1')
-      .set('x-access-token', userToken)
-      .expect(500)
-      .end(function (err, res) {
-        res.status.should.equal(500);
-        res.body.should.be.type('object');
-        res.body.message.should.equal('An error occurred when retrieving a user');
-        done();
-      });
-  });
-
   // Update Tests
   it('allows for users to be updated', function (done) {
     server
@@ -231,19 +218,6 @@ describe('Users', function () {
       });
   });
 
-  it('throws an error when an invalid id is updated', function (done) {
-    server
-      .put('/api/v1/users/507f1')
-      .set('x-access-token', userToken)
-      .expect(500)
-      .end(function (err, res) {
-        res.status.should.equal(500);
-        res.body.should.be.type('object');
-        res.body.message.should.equal('An error occurred when retrieving a user');
-        done();
-      });
-  });
-
   // Delete Tests
   it('does not allow for the admin to be deleted', function (done) {
     server
@@ -253,18 +227,6 @@ describe('Users', function () {
       .end(function (err, res) {
         res.status.should.equal(403);
         res.body.message.should.equal('Admin cannot be removed');
-        done();
-      });
-  });
-
-  it('throws an error when an invalid id is deleted', function (done) {
-    server
-      .delete('/api/v1/users/507f1')
-      .set('x-access-token', userToken)
-      .expect(500)
-      .end(function (err, res) {
-        res.status.should.equal(500);
-        res.body.message.should.equal('An error occurred when retrieving a user');
         done();
       });
   });

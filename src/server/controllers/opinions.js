@@ -131,7 +131,7 @@ const opinionsCtrl = {
 
     Topics.find({
       opinions: {
-        '$in': [mongoose.Types.ObjectId(req.params.id)]
+        '$in': [req.params.id]
       }
     }).exec(function (err, topics) {
       topics.forEach(function (topic) {

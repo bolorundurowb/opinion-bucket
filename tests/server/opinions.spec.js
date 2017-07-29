@@ -5,7 +5,6 @@
 const supertest = require('supertest');
 // eslint-disable-next-line
 const should = require('should');
-const jwt = require('jsonwebtoken');
 const app = require('./../../server');
 const config = require('../../src/server/config/config');
 
@@ -179,19 +178,6 @@ describe('Opinions', function () {
       });
   });
 
-  it('throws an error when a wrong id is given', function (done) {
-    server
-      .get('/api/v1/opinions/507f1')
-      .set('x-access-token', userToken)
-      .expect(500)
-      .end(function (err, res) {
-        res.status.should.equal(500);
-        res.body.should.be.type('object');
-        res.body.message.should.equal('An error occurred when retrieving an opinion');
-        done();
-      });
-  });
-
   // Update Tests
   it('allows for opinions to be updated', function (done) {
     server
@@ -209,19 +195,6 @@ describe('Opinions', function () {
         res.body.should.be.type('object');
         res.body.title.should.equal('Cool Stuff');
         res.body.content.should.equal('Technology is really good');
-        done();
-      });
-  });
-
-  it('throws an error when an invalid id is updated', function (done) {
-    server
-      .put('/api/v1/opinions/507f1')
-      .set('x-access-token', userToken)
-      .expect(500)
-      .end(function (err, res) {
-        res.status.should.equal(500);
-        res.body.should.be.type('object');
-        res.body.message.should.equal('An error occurred when retrieving an opinion');
         done();
       });
   });
@@ -262,18 +235,6 @@ describe('Opinions', function () {
       .end(function (err, res) {
         res.status.should.equal(200);
         res.body.message.should.equal('Opinion successfully removed');
-        done();
-      });
-  });
-
-  it('throws an error when an invalid id is deleted', function (done) {
-    server
-      .delete('/api/v1/opinions/507f1')
-      .set('x-access-token', userToken)
-      .expect(500)
-      .end(function (err, res) {
-        res.status.should.equal(500);
-        res.body.message.should.equal('An error occurred when removing an opinion');
         done();
       });
   });
