@@ -141,9 +141,9 @@ describe('Opinions', function () {
       });
   });
 
-  it('allows for all opinions to be retrieved with query options', function (done) {
+  it('allows for all opinions to be retrieved with other query options', function (done) {
     server
-      .get('/api/v1/opinions?topic=507f1&order=dislikes')
+      .get('/api/v1/opinions?topic=' + topicId + '&order=dislikes')
       .set('x-access-token', userToken)
       .expect(200)
       .end(function (err, res) {
@@ -154,9 +154,9 @@ describe('Opinions', function () {
       });
   });
 
-  it('allows for all opinions to be retrieved with query options', function (done) {
+  it('allows for all opinions to be retrieved with even more query options', function (done) {
     server
-      .get('/api/v1/opinions?order=likes')
+      .get('/api/v1/opinions?author=&order=likes')
       .set('x-access-token', userToken)
       .expect(200)
       .end(function (err, res) {

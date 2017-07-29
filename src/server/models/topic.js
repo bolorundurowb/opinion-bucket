@@ -22,18 +22,10 @@ const topicSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  opinions: [{
-    type: String,
-    ref: 'Opinion'
-  }],
   categories: [{
     type: String,
     ref: 'Category'
-  }],
-  opinionsLength: {
-    type: Number,
-    default: 0
-  }
+  }]
 });
 
 const topicModel = mongoose.model('Topic', topicSchema);

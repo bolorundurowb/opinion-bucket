@@ -48,10 +48,6 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  topics: [{
-    type: Schema.ObjectId,
-    ref: 'Topic'
-  }],
   role: {
     type: Number,
     ref: 'Role',
