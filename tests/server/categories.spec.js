@@ -14,17 +14,32 @@ var id = '';
 var userToken;
 var adminToken;
 
-before(function () {
-  userToken = jwt.sign({username: 'john.doe'}, config.secret, {
-    expiresIn: '1h'
-  });
-
-  adminToken = jwt.sign({username: 'admin', type: 'Admin'}, config.secret, {
-    expiresIn: '1h'
-  });
-});
-
 describe('Categories', function () {
+  before(function (done) {
+    server
+      .post('/api/v1/signin')
+      .send({
+        username: 'john.doe',
+        password: 'john.doe'
+      })
+      .expect(200)
+      .end(function (err, res) {
+        userToken = res.body.token;
+
+        server
+          .post('/api/v1/signin')
+          .send({
+            username: process.env.ADMIN_USERNAME,
+            password: process.env.ADMIN_PASS
+          })
+          .expect(200)
+          .end(function (err, res) {
+            adminToken = res.body.token;
+            done();
+          });
+      });
+  });
+
   // Creation Tests
   it('allows for categories to be created', function (done) {
     server
