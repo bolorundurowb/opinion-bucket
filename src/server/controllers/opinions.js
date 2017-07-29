@@ -87,7 +87,7 @@ const opinionsCtrl = {
 
               Users.findById(req.user._id, function (err, user) {
                 user.topics.push(topic._id);
-                user.save();
+                user.save(function () {});
               });
 
               res.status(201).send(_opinion);
@@ -141,7 +141,7 @@ const opinionsCtrl = {
           topic.opinionsLength = topic.opinions.length;
         }
 
-        topic.save();
+        topic.save(function () {});
 
         Users.findById(req.user._id, function (err, user) {
           var index = user.topics.indexOf(topic._id);
@@ -149,7 +149,7 @@ const opinionsCtrl = {
             user.topics.splice(index, 1);
           }
 
-          user.save();
+          user.save(function () {});
         });
       });
     });

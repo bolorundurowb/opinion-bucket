@@ -63,7 +63,7 @@ describe('Opinions', function () {
       })
       .expect(201)
       .end(function (err, res) {
-        id = res.body._id || '';
+        id = res.body._id;
         res.status.should.equal(201);
         res.body.should.be.type('object');
         res.body.title.should.equal('Good Stuff');
@@ -103,7 +103,7 @@ describe('Opinions', function () {
       .set('x-access-token', userToken)
       .send({
         title: 'Good Stuff',
-        topicId: '507f1f77bcf86cd799439011'
+        topicId: '507f1f77'
       })
       .expect(404)
       .end(function (err, res) {
@@ -144,6 +144,19 @@ describe('Opinions', function () {
   it('allows for all opinions to be retrieved with query options', function (done) {
     server
       .get('/api/v1/opinions?topic=507f1&order=dislikes')
+      .set('x-access-token', userToken)
+      .expect(200)
+      .end(function (err, res) {
+        res.status.should.equal(200);
+        res.body.should.be.type('object');
+        res.body.length.should.equal(1);
+        done();
+      });
+  });
+
+  it('allows for all opinions to be retrieved with query options', function (done) {
+    server
+      .get('/api/v1/opinions?order=likes')
       .set('x-access-token', userToken)
       .expect(200)
       .end(function (err, res) {
