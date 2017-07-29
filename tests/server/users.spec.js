@@ -5,7 +5,6 @@
 const supertest = require('supertest');
 // eslint-disable-next-line
 const should = require('should');
-const jwt = require('jsonwebtoken');
 const app = require('./../../server');
 const config = require('../../src/server/config/config');
 
@@ -14,26 +13,43 @@ var id = '';
 var userToken;
 var adminToken;
 
-before(function (done) {
-  userToken = jwt.sign({username: 'john.doe'}, config.secret, {
-    expiresIn: '1h'
-  });
-
-  adminToken = jwt.sign({username: 'admin', type: 'Admin'}, config.secret, {
-    expiresIn: '1h'
-  });
-
-  server
-    .get('/api/v1/users')
-    .set('x-access-token', adminToken)
-    .expect(200)
-    .end(function (err, res) {
-      id = res.body[0]._id;
-      done();
-    });
-});
-
 describe('Users', function () {
+  before(function (done) {
+    server
+      .post('/api/v1/signin')
+      .send({
+        username: 'john.doe',
+        password: 'john.doe'
+      })
+      .expect(200)
+      .end(function (err, res) {
+        userToken = res.body.token;
+
+        server
+          .post('/api/v1/signin')
+          .send({
+            username: process.env.ADMIN_USERNAME,
+            password: process.env.ADMIN_PASS
+          })
+          .expect(200)
+          .end(function (err, res) {
+            adminToken = res.body.token;
+            done();
+          });
+      });
+  });
+
+  before(function (done) {
+    server
+      .get('/api/v1/users')
+      .set('x-access-token', adminToken)
+      .expect(200)
+      .end(function (err, res) {
+        id = res.body[0]._id;
+        done();
+      });
+  });
+
   // Retrieval Tests
   it('allows for all users to be retrieved', function (done) {
     server

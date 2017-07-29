@@ -9,13 +9,13 @@ const authentication = require('./../middleware/authentication');
 const upload = multer({ dest: 'uploads/' });
 
 const authRoutes = function (router) {
-  router.route('/auth/signin')
+  router.route('/signin')
     .post(auth.signin);
 
-  router.route('/auth/signup')
+  router.route('/signup')
     .post(upload.single('profile'), auth.signup);
 
-  router.route('/auth/signout')
+  router.route('/signout')
     .post(authentication, auth.signout);
 };
 

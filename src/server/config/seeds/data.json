@@ -1,6 +1,19 @@
 [
   {
-    "model": "User",
-    "documents": []
+    "model": "Role",
+    "documents": [
+      {
+        "_id": 1,
+        "name": "USER"
+      },
+      {
+        "_id": 2,
+        "name": "ADMIN"
+      },
+      {
+        "_id": 3,
+        "name": "MODERATOR"
+      }
+    ]
   }
 ]
