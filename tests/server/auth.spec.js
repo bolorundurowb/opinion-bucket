@@ -5,7 +5,9 @@
 const supertest = require('supertest');
 // eslint-disable-next-line
 const should = require('should');
+const sinon = require('sinon');
 const app = require('./../../server');
+const auth = require('./../../src/server/controllers/auth');
 const config = require('../../src/server/config/config');
 
 const server = supertest.agent(app);

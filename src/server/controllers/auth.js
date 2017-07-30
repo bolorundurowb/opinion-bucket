@@ -23,7 +23,10 @@ const authCtrl = {
           res.status(404).send({message: 'A user with that username or email does not exist'});
         } else {
           if (verifyPassword(req.body.password, user.hashedPassword)) {
-            res.status(200).send(tokenify(user));
+            res.status(200).send({
+              user: user,
+              token: tokenify(user)
+            });
           } else {
             res.status(403).send({message: 'The passwords did not match'});
           }
@@ -92,7 +95,10 @@ function saveUser(user, res) {
       logger.error(err);
       res.status(500).send({message: 'An error occurred when saving users'});
     } else {
-      res.status(201).send(tokenify(_user));
+      res.status(201).send({
+        user: user,
+        token: tokenify(_user)
+      });
     }
   });
 }
@@ -103,13 +109,9 @@ function saveUser(user, res) {
  * @return {{user: *}} - an object with the user and token
  */
 function tokenify(user) {
-  const response = {};
-
-  response.token = jwt.sign({ uid: user._id }, config.secret, {
+  return jwt.sign({uid: user._id}, config.secret, {
     expiresIn: '48h'
   });
-
-  return response;
 }
 
 function verifyPassword(plainText, hashedPassword) {

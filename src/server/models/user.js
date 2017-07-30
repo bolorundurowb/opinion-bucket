@@ -4,9 +4,14 @@
 
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
+const shortid = require('shortid');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
+  _id: {
+    type: String,
+    default: shortid.generate
+  },
   firstName: {
     type: String
   },
@@ -43,10 +48,6 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  topics: [{
-    type: Schema.ObjectId,
-    ref: 'Topic'
-  }],
   role: {
     type: Number,
     ref: 'Role',

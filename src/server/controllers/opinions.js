@@ -6,17 +6,16 @@ const mongoose = require('mongoose');
 const logger = require('./../config/logger');
 const Opinions = require('./../models/opinion');
 const Topics = require('./../models/topic');
-const Users = require('./../models/user');
 
 const opinionsCtrl = {
   getAll: function (req, res) {
+    var filter = {};
     var limit = req.query.limit || 0;
     limit = parseInt(limit);
 
     var skip = req.query.offset || 0;
     skip = parseInt(skip);
 
-    var filter = {};
     if (req.params.topic) {
       try {
         filter.topicId = req.params.topic;
@@ -32,6 +31,14 @@ const opinionsCtrl = {
       } else if (req.query.order === 'dislikes') {
         sort.dislikes = -1;
       }
+    }
+
+    if (req.query.author) {
+      filter.author = req.query.author;
+    }
+
+    if (req.query.topic) {
+      filter.topicId = req.query.topic;
     }
 
     Opinions.find(filter)
@@ -81,15 +88,6 @@ const opinionsCtrl = {
               logger.error(err);
               res.status(500).send({message: 'An error occurred when saving an opinion.'});
             } else {
-              topic.opinions.push(_opinion._id);
-              topic.opinionsLength++;
-              topic.save();
-
-              Users.findById(req.user._id, function (err, user) {
-                user.topics.push(topic._id);
-                user.save();
-              });
-
               res.status(201).send(_opinion);
             }
           });
@@ -128,31 +126,6 @@ const opinionsCtrl = {
           res.status(200).send({message: 'Opinion successfully removed'});
         }
       });
-
-    Topics.find({
-      opinions: {
-        '$in': [mongoose.Types.ObjectId(req.params.id)]
-      }
-    }).exec(function (err, topics) {
-      topics.forEach(function (topic) {
-        var index = topic.opinions.indexOf(req.params.id);
-        if (index !== -1) {
-          topic.opinions.splice(index, 1);
-          topic.opinionsLength = topic.opinions.length;
-        }
-
-        topic.save();
-
-        Users.findById(req.user._id, function (err, user) {
-          var index = user.topics.indexOf(topic._id);
-          if (index !== -1) {
-            user.topics.splice(index, 1);
-          }
-
-          user.save();
-        });
-      });
-    });
   },
 
   like: function (req, res) {

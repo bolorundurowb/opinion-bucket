@@ -5,7 +5,6 @@
 const supertest = require('supertest');
 // eslint-disable-next-line
 const should = require('should');
-const jwt = require('jsonwebtoken');
 const app = require('./../../server');
 const config = require('../../src/server/config/config');
 
@@ -170,19 +169,6 @@ describe('Topics', function () {
       });
   });
 
-  it('throws an error when a wrong id is given', function (done) {
-    server
-      .get('/api/v1/topics/507f1')
-      .set('x-access-token', userToken)
-      .expect(500)
-      .end(function (err, res) {
-        res.status.should.equal(500);
-        res.body.should.be.type('object');
-        res.body.message.should.equal('An error occurred when retrieving a topic');
-        done();
-      });
-  });
-
   // Update Tests
   it('allows for topics to be updated', function (done) {
     server
@@ -231,19 +217,6 @@ describe('Topics', function () {
       });
   });
 
-  it('throws an error when an invalid id is updated', function (done) {
-    server
-      .put('/api/v1/topics/507f1')
-      .set('x-access-token', userToken)
-      .expect(500)
-      .end(function (err, res) {
-        res.status.should.equal(500);
-        res.body.should.be.type('object');
-        res.body.message.should.equal('An error occurred when retrieving a topic');
-        done();
-      });
-  });
-
   // Delete Tests
   it('allows for topics to be deleted', function (done) {
     server
@@ -253,18 +226,6 @@ describe('Topics', function () {
       .end(function (err, res) {
         res.status.should.equal(200);
         res.body.message.should.equal('Topic successfully removed');
-        done();
-      });
-  });
-
-  it('throws an error when an invalid id is deleted', function (done) {
-    server
-      .delete('/api/v1/topics/507f1')
-      .set('x-access-token', adminToken)
-      .expect(500)
-      .end(function (err, res) {
-        res.status.should.equal(500);
-        res.body.message.should.equal('An error occurred when removing a topic');
         done();
       });
   });
