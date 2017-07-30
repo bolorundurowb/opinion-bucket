@@ -40,6 +40,23 @@ describe('Categories', function () {
   });
 
   describe('creation', function () {
+    describe('allows', function () {
+      it('for  categories to be created', function (done) {
+        server
+          .post('/api/v1/categories')
+          .set('x-access-token', adminToken)
+          .send({title: 'Tech'})
+          .expect(201)
+          .end(function (err, res) {
+            id = res.body._id || '';
+            res.status.should.equal(201);
+            res.body.should.be.type('object');
+            res.body.title.should.equal('Tech');
+            done();
+          });
+      });
+    });
+
     describe('does not allow', function () {
       it('for categories to be duplicated', function (done) {
         server
@@ -63,23 +80,6 @@ describe('Categories', function () {
           .end(function (err, res) {
             res.status.should.equal(400);
             res.body.message.should.equal('The category requires a title');
-            done();
-          });
-      });
-    });
-
-    describe('allows', function () {
-      it('for  categories to be created', function (done) {
-        server
-          .post('/api/v1/categories')
-          .set('x-access-token', adminToken)
-          .send({title: 'Tech'})
-          .expect(201)
-          .end(function (err, res) {
-            id = res.body._id || '';
-            res.status.should.equal(201);
-            res.body.should.be.type('object');
-            res.body.title.should.equal('Tech');
             done();
           });
       });
