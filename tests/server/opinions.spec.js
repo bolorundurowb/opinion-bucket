@@ -52,6 +52,16 @@ describe('Opinions', function () {
       });
   });
 
+  describe('', function () {
+    describe('does not allow', function () {
+
+    });
+
+    describe('allows', function () {
+
+    });
+  });
+
   // Creation Tests
   it('allows for opinions to be created', function (done) {
     server

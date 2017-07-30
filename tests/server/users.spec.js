@@ -50,6 +50,16 @@ describe('Users', function () {
       });
   });
 
+  describe('', function () {
+    describe('does not allow', function () {
+
+    });
+
+    describe('allows', function () {
+
+    });
+  });
+
   // Retrieval Tests
   it('allows for all users to be retrieved', function (done) {
     server

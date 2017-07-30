@@ -39,6 +39,16 @@ describe('Topics', function () {
       });
   });
 
+  describe('', function () {
+    describe('does not allow', function () {
+
+    });
+
+    describe('allows', function () {
+
+    });
+  });
+
   //Creation tests
   it('allows for topics to be created', function (done) {
     server

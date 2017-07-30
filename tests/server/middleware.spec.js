@@ -28,6 +28,16 @@ describe('Middleware', function () {
       });
   });
 
+  describe('', function () {
+    describe('does not allow', function () {
+
+    });
+
+    describe('allows', function () {
+
+    });
+  });
+
   // Authentication Tests
   it('does not allow expired tokens', function (done) {
     server
