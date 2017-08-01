@@ -28,41 +28,47 @@ describe('Middleware', function () {
       });
   });
 
-  // Authentication Tests
-  it('does not allow expired tokens', function (done) {
-    server
-      .get('/api/v1/users')
-      .set('x-access-token', expiredToken)
-      .expect(401)
-      .end(function (err, res) {
-        res.status.should.equal(401);
-        res.body.message.should.equal('Failed to authenticate token.');
-        done();
+  describe('authentication', function () {
+    describe('does not allow', function () {
+      it('expired tokens', function (done) {
+        server
+          .get('/api/v1/users')
+          .set('x-access-token', expiredToken)
+          .expect(401)
+          .end(function (err, res) {
+            res.status.should.equal(401);
+            res.body.message.should.equal('Failed to authenticate token.');
+            done();
+          });
       });
+
+      it('for tokenless requests', function (done) {
+        server
+          .get('/api/v1/users')
+          .expect(403)
+          .end(function (err, res) {
+            res.status.should.equal(403);
+            res.body.message.should.equal('You need to be logged in to access that information.');
+            done();
+          });
+      });
+    });
   });
 
-  it('does not allow for tokenless requests', function (done) {
-    server
-      .get('/api/v1/users')
-      .expect(403)
-      .end(function (err, res) {
-        res.status.should.equal(403);
-        res.body.message.should.equal('You need to be logged in to access that information.');
-        done();
+  describe('authorization', function () {
+    describe('does not allow', function () {
+      it('non-admins access admin-only routes', function (done) {
+        server
+          .get('/api/v1/users')
+          .set('x-access-token', userToken)
+          .expect(403)
+          .end(function (err, res) {
+            res.status.should.equal(403);
+            res.body.should.be.type('object');
+            res.body.message.should.equal('You need to be an admin to access that information');
+            done();
+          });
       });
-  });
-
-  // Authorization Tests
-  it('only allows for all users to be retrieved by an admin', function (done) {
-    server
-      .get('/api/v1/users')
-      .set('x-access-token', userToken)
-      .expect(403)
-      .end(function (err, res) {
-        res.status.should.equal(403);
-        res.body.should.be.type('object');
-        res.body.message.should.equal('You need to be an admin to access that information');
-        done();
-      });
+    });
   });
 });
