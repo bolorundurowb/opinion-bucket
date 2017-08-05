@@ -15,7 +15,7 @@ const authCtrl = {
     if (!(req.body.username && req.body.password)) {
       res.status(400).send({message: 'A username or email and password are required'});
     } else {
-      Users.findOne({$or: [{username: req.body.username}, {email: req.body.username}]}).exec(function (err, user) {
+      Users.findOne({$or: [{username: req.body.username}, {email: req.body.username}]}).exec((err, user) => {
         if (err) {
           logger.error(err);
           res.status(500).send({message: 'An error occurred when retrieving users'});
@@ -44,7 +44,7 @@ const authCtrl = {
     } else if (!body.password) {
       res.status(400).send({message: 'A user must have a password.'});
     } else {
-      Users.find({$or: [{username: req.body.username}, {email: req.body.email}]}, function (err, result) {
+      Users.find({$or: [{username: req.body.username}, {email: req.body.email}]}, (err, result) => {
         if (err) {
           logger.error(err);
           res.status(500).send({message: 'An error occurred when retrieving users'});
@@ -122,4 +122,4 @@ function verifyPassword(plainText, hashedPassword) {
   return bcrypt.compareSync(plainText, hashedPassword);
 }
 
-module.exports = authCtrl;
+export default authCtrl;

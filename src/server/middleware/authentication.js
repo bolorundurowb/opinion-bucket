@@ -20,7 +20,7 @@ const auth = function (req, res, next) {
         User
           .findOne({ _id: decoded.uid })
           .populate('role')
-          .exec(function (err, user) {
+          .exec((err, user) => {
             if (err) {
               logger.error(err);
               res.status(500).send({ message: 'An error occurred when retrieving the user' });
@@ -39,4 +39,4 @@ const auth = function (req, res, next) {
   }
 };
 
-module.exports = auth;
+export default auth;

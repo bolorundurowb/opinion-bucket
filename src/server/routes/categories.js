@@ -17,4 +17,4 @@ const categoryRoutes = function (router) {
     .delete(authentication, authorization.isAdmin, categories.delete);
 };
 
-module.exports = categoryRoutes;
+export default categoryRoutes;

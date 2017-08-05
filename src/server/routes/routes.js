@@ -16,4 +16,4 @@ const routes = function (router) {
   userRoutes(router);
 };
 
-module.exports = routes;
+export default routes;

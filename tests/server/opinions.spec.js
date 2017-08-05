@@ -9,10 +9,10 @@ const app = require('./../../server');
 const config = require('../../src/server/config/config');
 
 const server = supertest.agent(app);
-var id = '';
-var topicId = '';
-var userToken;
-var adminToken;
+let id = '';
+let topicId = '';
+let userToken;
+let adminToken;
 
 describe('Opinions', () => {
   before((done) => {
@@ -23,7 +23,7 @@ describe('Opinions', () => {
         password: 'john.doe'
       })
       .expect(200)
-      .end(function (err, res) {
+      .end((err, res) => {
         userToken = res.body.token;
 
         server
@@ -33,7 +33,7 @@ describe('Opinions', () => {
             password: process.env.ADMIN_PASS
           })
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             adminToken = res.body.token;
             done();
           });
@@ -46,7 +46,7 @@ describe('Opinions', () => {
       .set('x-access-token', adminToken)
       .send({title: 'Sports'})
       .expect(201)
-      .end(function (err, res) {
+      .end((err, res) => {
         topicId = res.body._id;
         done();
       });
@@ -60,7 +60,7 @@ describe('Opinions', () => {
           .set('x-access-token', userToken)
           .send({topicId: topicId})
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('An opinion must have an author and title');
             done();
@@ -73,7 +73,7 @@ describe('Opinions', () => {
           .set('x-access-token', userToken)
           .send({title: 'Things'})
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('An opinion must have a parent topic');
             done();
@@ -89,7 +89,7 @@ describe('Opinions', () => {
             topicId: '507f1f77'
           })
           .expect(404)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(404);
             res.body.message.should.equal('A topic with that id doesn\'t exist');
             done();
@@ -107,7 +107,7 @@ describe('Opinions', () => {
             topicId: topicId
           })
           .expect(201)
-          .end(function (err, res) {
+          .end((err, res) => {
             id = res.body._id;
             res.status.should.equal(201);
             res.body.should.be.type('object');
@@ -131,7 +131,7 @@ describe('Opinions', () => {
             content: 'Technology is really good'
           })
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.title.should.equal('Cool Stuff');
@@ -149,7 +149,7 @@ describe('Opinions', () => {
           .get('/api/v1/opinions/507f1f77bcf86cd799439011')
           .set('x-access-token', userToken)
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('No opinion exists with that id');
             done();
@@ -163,7 +163,7 @@ describe('Opinions', () => {
           .get('/api/v1/opinions')
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             id = res.body[0]._id;
             res.status.should.equal(200);
             res.body.should.be.type('object');
@@ -177,7 +177,7 @@ describe('Opinions', () => {
           .get('/api/v1/opinions?limit=12&offset=0&order=date')
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.length.should.equal(1);
@@ -190,7 +190,7 @@ describe('Opinions', () => {
           .get('/api/v1/opinions?topic=' + topicId + '&order=dislikes')
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.length.should.equal(1);
@@ -203,7 +203,7 @@ describe('Opinions', () => {
           .get('/api/v1/opinions?author=&order=likes')
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.length.should.equal(1);
@@ -216,7 +216,7 @@ describe('Opinions', () => {
           .get('/api/v1/opinions/' + id)
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             done();
@@ -232,7 +232,7 @@ describe('Opinions', () => {
           .post('/api/v1/opinions/' + id + '/like')
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.likes.should.equal(1);
@@ -245,7 +245,7 @@ describe('Opinions', () => {
           .post('/api/v1/opinions/' + id + '/dislike')
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.dislikes.should.equal(1);
@@ -262,7 +262,7 @@ describe('Opinions', () => {
           .delete('/api/v1/opinions/' + id)
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.message.should.equal('Opinion successfully removed');
             done();

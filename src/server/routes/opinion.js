@@ -22,4 +22,4 @@ const opinionRoutes = function (router) {
     .post(authentication, opinions.dislike);
 };
 
-module.exports = opinionRoutes;
+export default opinionRoutes;

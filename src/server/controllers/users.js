@@ -9,7 +9,7 @@ const Users = require('./../models/user');
 
 const usersCtrl = {
   getAll: function (req, res) {
-    Users.find(function (err, users) {
+    Users.find((err, users) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving users'});
@@ -20,7 +20,7 @@ const usersCtrl = {
   },
 
   getOne: function (req, res) {
-    Users.findOne({_id: req.params.id}, function (err, user) {
+    Users.findOne({_id: req.params.id}, (err, user) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving a user'});
@@ -35,7 +35,7 @@ const usersCtrl = {
   getOneFull: function (req, res) {
     Users.findOne({_id: req.params.id})
       .populate('topics')
-      .exec(function (err, user) {
+      .exec((err, user) => {
         if (err) {
           logger.error(err);
           res.status(500).send({message: 'An error occurred when retrieving a user'});
@@ -50,7 +50,7 @@ const usersCtrl = {
   update: function (req, res) {
     const body = req.body;
     
-    Users.findById(req.params.id, function (err, user) {
+    Users.findById(req.params.id, (err, user) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving a user'});
@@ -67,7 +67,7 @@ const usersCtrl = {
           user.topics = [];
           req.body.topics.forEach(function (topic_id) {
             try {
-              var id = mongoose.Types.ObjectId(topic_id);
+              let id = mongoose.Types.ObjectId(topic_id);
               user.topics.push(id);
             } catch (err) {}
           });
@@ -87,14 +87,14 @@ const usersCtrl = {
   },
 
   delete: function (req, res) {
-    Users.findById(req.params.id, function (err, user) {
+    Users.findById(req.params.id, (err, user) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving a user'});
       } else if (user.username === 'admin') {
         res.status(403).send({message: 'Admin cannot be removed'});
       } else {
-        Users.findByIdAndRemove(req.params.id, function (err) {
+        Users.findByIdAndRemove(req.params.id, (err) => {
           if (err) {
             logger.error(err);
             res.status(500).send({message: 'An error occurred when removing a user'});
@@ -136,4 +136,4 @@ function uploadImage(file) {
   });
 }
 
-module.exports = usersCtrl;
+export default usersCtrl;

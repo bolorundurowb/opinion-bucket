@@ -9,9 +9,9 @@ const app = require('./../../server');
 const config = require('../../src/server/config/config');
 
 const server = supertest.agent(app);
-var id = '';
-var userToken;
-var adminToken;
+let id = '';
+let userToken;
+let adminToken;
 
 describe('Categories', () => {
   before((done) => {
@@ -22,7 +22,7 @@ describe('Categories', () => {
         password: 'john.doe'
       })
       .expect(200)
-      .end(function (err, res) {
+      .end((err, res) => {
         userToken = res.body.token;
 
         server
@@ -32,7 +32,7 @@ describe('Categories', () => {
             password: process.env.ADMIN_PASS
           })
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             adminToken = res.body.token;
             done();
           });
@@ -47,7 +47,7 @@ describe('Categories', () => {
           .set('x-access-token', adminToken)
           .send({title: 'Tech'})
           .expect(201)
-          .end(function (err, res) {
+          .end((err, res) => {
             id = res.body._id || '';
             res.status.should.equal(201);
             res.body.should.be.type('object');
@@ -64,7 +64,7 @@ describe('Categories', () => {
           .set('x-access-token', adminToken)
           .send({title: 'Tech'})
           .expect(409)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(409);
             res.body.message.should.equal('A category exists with that title');
             done();
@@ -77,7 +77,7 @@ describe('Categories', () => {
           .set('x-access-token', adminToken)
           .send({})
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('The category requires a title');
             done();
@@ -93,7 +93,7 @@ describe('Categories', () => {
           .get('/api/v1/categories/507f1f77bcf86cd799439011')
           .set('x-access-token', userToken)
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('No category exists with that id');
             done();
@@ -107,7 +107,7 @@ describe('Categories', () => {
           .get('/api/v1/categories')
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.length.should.equal(1);
@@ -120,7 +120,7 @@ describe('Categories', () => {
           .get('/api/v1/categories/' + id)
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             done();
@@ -137,7 +137,7 @@ describe('Categories', () => {
           .set('x-access-token', adminToken)
           .send({})
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('The category requires a title');
             done();
@@ -152,7 +152,7 @@ describe('Categories', () => {
           .set('x-access-token', adminToken)
           .send({title: 'Technology'})
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.title.should.equal('Technology');
@@ -169,7 +169,7 @@ describe('Categories', () => {
           .delete('/api/v1/categories/' + id)
           .set('x-access-token', adminToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.message.should.equal('Category successfully removed');
             done();

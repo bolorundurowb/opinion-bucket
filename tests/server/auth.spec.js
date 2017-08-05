@@ -11,7 +11,7 @@ const auth = require('./../../src/server/controllers/auth');
 const config = require('../../src/server/config/config');
 
 const server = supertest.agent(app);
-var userToken;
+let userToken;
 
 describe('Auth', () => {
   describe('sign up', () => {
@@ -24,7 +24,7 @@ describe('Auth', () => {
           .field('password', 'john.doe')
           .attach('profile', './tests/server/artifacts/sample.png')
           .expect(201)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(201);
             res.body.should.be.type('object');
             res.body.should.have.property('token');
@@ -45,7 +45,7 @@ describe('Auth', () => {
             password: 'john.doe'
           })
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.should.be.type('object');
             res.body.message.should.equal('A user must have an email address.');
@@ -61,7 +61,7 @@ describe('Auth', () => {
             password: 'john.doe'
           })
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.should.be.type('object');
             res.body.message.should.equal('A user must have a username.');
@@ -77,7 +77,7 @@ describe('Auth', () => {
             username: 'john.doe'
           })
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.should.be.type('object');
             res.body.message.should.equal('A user must have a password.');
@@ -94,7 +94,7 @@ describe('Auth', () => {
             password: 'john.doe'
           })
           .expect(409)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(409);
             res.body.should.be.type('object');
             res.body.message.should.equal('A user exists with that username or email address');
@@ -114,7 +114,7 @@ describe('Auth', () => {
             password: 'john.doe'
           })
           .expect(404)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(404);
             res.body.message.should.equal('A user with that username or email does not exist');
             done();
@@ -128,7 +128,7 @@ describe('Auth', () => {
             username: 'jane.doe'
           })
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('A username or email and password are required');
             done();
@@ -143,7 +143,7 @@ describe('Auth', () => {
             password: 'john.do'
           })
           .expect(403)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(403);
             res.body.message.should.equal('The passwords did not match');
             done();
@@ -160,7 +160,7 @@ describe('Auth', () => {
             password: 'john.doe'
           })
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.should.have.property('token');
@@ -178,7 +178,7 @@ describe('Auth', () => {
           .post('/api/v1/signout')
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             console.log(res.body);
             res.status.should.equal(200);
             res.body.should.be.type('object');

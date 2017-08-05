@@ -9,9 +9,9 @@ const app = require('./../../server');
 const config = require('../../src/server/config/config');
 
 const server = supertest.agent(app);
-var id = '';
-var userToken;
-var adminToken;
+let id = '';
+let userToken;
+let adminToken;
 
 describe('Topics', () => {
   before((done) => {
@@ -22,7 +22,7 @@ describe('Topics', () => {
         password: 'john.doe'
       })
       .expect(200)
-      .end(function (err, res) {
+      .end((err, res) => {
         userToken = res.body.token;
 
         server
@@ -32,7 +32,7 @@ describe('Topics', () => {
             password: process.env.ADMIN_PASS
           })
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             adminToken = res.body.token;
             done();
           });
@@ -47,7 +47,7 @@ describe('Topics', () => {
           .set('x-access-token', adminToken)
           .send({title: 'Tech'})
           .expect(201)
-          .end(function (err, res) {
+          .end((err, res) => {
             id = res.body._id || '';
             res.status.should.equal(201);
             res.body.should.be.type('object');
@@ -64,7 +64,7 @@ describe('Topics', () => {
           .set('x-access-token', adminToken)
           .send({title: 'Tech'})
           .expect(409)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(409);
             res.body.message.should.equal('A topic exists with that title');
             done();
@@ -77,7 +77,7 @@ describe('Topics', () => {
           .set('x-access-token', adminToken)
           .send({})
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('The topic requires a title');
             done();
@@ -96,7 +96,7 @@ describe('Topics', () => {
             categories: '507f1f77bcf86cd79'
           })
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             done();
@@ -108,7 +108,7 @@ describe('Topics', () => {
           .put('/api/v1/topics/507f1f77bcf86cd799439011')
           .set('x-access-token', userToken)
           .expect(404)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(404);
             res.body.should.be.type('object');
             res.body.message.should.equal('A topic with that id doesn\'t exist');
@@ -128,7 +128,7 @@ describe('Topics', () => {
             categories: ['507f1f77bcf86cd799439011', '507f1f77bcf86cd79']
           })
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.title.should.equal('Technology');
@@ -146,7 +146,7 @@ describe('Topics', () => {
           .get('/api/v1/topics/507f1f77bcf86cd799439011')
           .set('x-access-token', userToken)
           .expect(404)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(404);
             res.body.message.should.equal('No topic exists with that id');
             done();
@@ -158,7 +158,7 @@ describe('Topics', () => {
           .get('/api/v1/topics/507f1f77bcf86cd799439011/full')
           .set('x-access-token', userToken)
           .expect(404)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(404);
             res.body.message.should.equal('No topic exists with that id');
             done();
@@ -172,7 +172,7 @@ describe('Topics', () => {
           .get('/api/v1/topics')
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.length.should.equal(2);
@@ -185,7 +185,7 @@ describe('Topics', () => {
           .get('/api/v1/topics?limit=12&offset=10&order=date')
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.length.should.equal(0);
@@ -198,7 +198,7 @@ describe('Topics', () => {
           .get('/api/v1/topics?category=50e76f592&order=opinion')
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.length.should.equal(2);
@@ -211,7 +211,7 @@ describe('Topics', () => {
           .get('/api/v1/topics/' + id)
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             done();
@@ -223,7 +223,7 @@ describe('Topics', () => {
           .get('/api/v1/topics/' + id + '/full')
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             done();
@@ -239,7 +239,7 @@ describe('Topics', () => {
           .delete('/api/v1/topics/' + id)
           .set('x-access-token', adminToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.message.should.equal('Topic successfully removed');
             done();

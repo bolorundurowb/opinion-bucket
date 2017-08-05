@@ -20,4 +20,4 @@ const topicRoutes = function (router) {
     .get(topics.getOneFull);
 };
 
-module.exports = topicRoutes;
+export default topicRoutes;

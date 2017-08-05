@@ -33,7 +33,7 @@ server.use(bodyParser.json());
 server.use('/api/v1', router);
 
 // handle unmatched routes
-server.use(function (req, res, next) {
+server.use((req, res, next) => {
   res.status(501).send({
     status: 'failed',
     message: 'This API doesn\'t support that function'
@@ -51,5 +51,5 @@ server.listen(port);
 logger.log('Server started on port: ' + port);
 
 // expose server to test
-module.exports = server;
+export default server;
 

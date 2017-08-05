@@ -19,4 +19,4 @@ const authRoutes = function (router) {
     .post(authentication, auth.signout);
 };
 
-module.exports = authRoutes;
+export default authRoutes;

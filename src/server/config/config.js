@@ -25,4 +25,4 @@ if (env === 'test') {
   config.database = process.env.MONGO_TEST_URL;
 }
 
-module.exports = config;
+export default config;

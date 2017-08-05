@@ -22,4 +22,4 @@ const userRoutes = function (router) {
     .get(authentication, users.getOneFull);
 };
 
-module.exports = userRoutes;
+export default userRoutes;
