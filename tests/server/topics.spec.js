@@ -13,8 +13,8 @@ var id = '';
 var userToken;
 var adminToken;
 
-describe('Topics', function () {
-  before(function (done) {
+describe('Topics', () => {
+  before((done) => {
     server
       .post('/api/v1/signin')
       .send({
@@ -39,9 +39,9 @@ describe('Topics', function () {
       });
   });
 
-  describe('creation', function () {
-    describe('allows', function () {
-      it('for topics to be created', function (done) {
+  describe('creation', () => {
+    describe('allows', () => {
+      it('for topics to be created', (done) => {
         server
           .post('/api/v1/topics')
           .set('x-access-token', adminToken)
@@ -57,8 +57,8 @@ describe('Topics', function () {
       });
     });
 
-    describe('does not allow', function () {
-      it('for topics to be duplicated', function (done) {
+    describe('does not allow', () => {
+      it('for topics to be duplicated', (done) => {
         server
           .post('/api/v1/topics')
           .set('x-access-token', adminToken)
@@ -71,7 +71,7 @@ describe('Topics', function () {
           });
       });
 
-      it('for topics to be title-less', function (done) {
+      it('for topics to be title-less', (done) => {
         server
           .post('/api/v1/topics')
           .set('x-access-token', adminToken)
@@ -86,9 +86,9 @@ describe('Topics', function () {
     });
   });
 
-  describe('updating', function () {
-    describe('does not allow', function () {
-      it('for wrong category ids', function (done) {
+  describe('updating', () => {
+    describe('does not allow', () => {
+      it('for wrong category ids', (done) => {
         server
           .put('/api/v1/topics/' + id)
           .set('x-access-token', userToken)
@@ -103,7 +103,7 @@ describe('Topics', function () {
           });
       });
 
-      it('for non-existent ids', function (done) {
+      it('for non-existent ids', (done) => {
         server
           .put('/api/v1/topics/507f1f77bcf86cd799439011')
           .set('x-access-token', userToken)
@@ -117,8 +117,8 @@ describe('Topics', function () {
       });
     });
 
-    describe('allows', function () {
-      it('for topics to be updated', function (done) {
+    describe('allows', () => {
+      it('for topics to be updated', (done) => {
         server
           .put('/api/v1/topics/' + id)
           .set('x-access-token', userToken)
@@ -139,9 +139,9 @@ describe('Topics', function () {
     });
   });
 
-  describe('retrieval', function () {
-    describe('does not allow', function () {
-      it('doesnt allow a non-existent topic to be retrieved', function (done) {
+  describe('retrieval', () => {
+    describe('does not allow', () => {
+      it('doesnt allow a non-existent topic to be retrieved', (done) => {
         server
           .get('/api/v1/topics/507f1f77bcf86cd799439011')
           .set('x-access-token', userToken)
@@ -153,7 +153,7 @@ describe('Topics', function () {
           });
       });
 
-      it('doesnt allow a non-existent topic to be retrieved with more detail', function (done) {
+      it('doesnt allow a non-existent topic to be retrieved with more detail', (done) => {
         server
           .get('/api/v1/topics/507f1f77bcf86cd799439011/full')
           .set('x-access-token', userToken)
@@ -166,8 +166,8 @@ describe('Topics', function () {
       });
     });
 
-    describe('allows', function () {
-      it('for all topics to be retrieved', function (done) {
+    describe('allows', () => {
+      it('for all topics to be retrieved', (done) => {
         server
           .get('/api/v1/topics')
           .set('x-access-token', userToken)
@@ -180,7 +180,7 @@ describe('Topics', function () {
           });
       });
 
-      it('for topics to be retrieved with query options', function (done) {
+      it('for topics to be retrieved with query options', (done) => {
         server
           .get('/api/v1/topics?limit=12&offset=10&order=date')
           .set('x-access-token', userToken)
@@ -193,7 +193,7 @@ describe('Topics', function () {
           });
       });
 
-      it('for topics to be retrieved with query options but sanitizes input', function (done) {
+      it('for topics to be retrieved with query options but sanitizes input', (done) => {
         server
           .get('/api/v1/topics?category=50e76f592&order=opinion')
           .set('x-access-token', userToken)
@@ -206,7 +206,7 @@ describe('Topics', function () {
           });
       });
 
-      it('for a topic to be retrieved', function (done) {
+      it('for a topic to be retrieved', (done) => {
         server
           .get('/api/v1/topics/' + id)
           .set('x-access-token', userToken)
@@ -218,7 +218,7 @@ describe('Topics', function () {
           });
       });
 
-      it('for a topic to be retrieved with more detail', function (done) {
+      it('for a topic to be retrieved with more detail', (done) => {
         server
           .get('/api/v1/topics/' + id + '/full')
           .set('x-access-token', userToken)
@@ -232,9 +232,9 @@ describe('Topics', function () {
     });
   });
 
-  describe('deletion', function () {
-    describe('allows', function () {
-      it('for topics to be deleted', function (done) {
+  describe('deletion', () => {
+    describe('allows', () => {
+      it('for topics to be deleted', (done) => {
         server
           .delete('/api/v1/topics/' + id)
           .set('x-access-token', adminToken)

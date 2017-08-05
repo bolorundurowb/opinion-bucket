@@ -13,8 +13,8 @@ var id = '';
 var userToken;
 var adminToken;
 
-describe('Users', function () {
-  before(function (done) {
+describe('Users', () => {
+  before((done) => {
     server
       .post('/api/v1/signin')
       .send({
@@ -39,7 +39,7 @@ describe('Users', function () {
       });
   });
 
-  before(function (done) {
+  before((done) => {
     server
       .get('/api/v1/users')
       .set('x-access-token', adminToken)
@@ -50,9 +50,9 @@ describe('Users', function () {
       });
   });
 
-  describe('retrieval', function () {
-    describe('does not allow', function () {
-      it('for a non-existent user to be retrieved with detail', function (done) {
+  describe('retrieval', () => {
+    describe('does not allow', () => {
+      it('for a non-existent user to be retrieved with detail', (done) => {
         server
           .get('/api/v1/users/507f1f77bcf86cd799439011/full')
           .set('x-access-token', userToken)
@@ -64,7 +64,7 @@ describe('Users', function () {
           });
       });
 
-      it('for a non-existent user to be retrieved', function (done) {
+      it('for a non-existent user to be retrieved', (done) => {
         server
           .get('/api/v1/users/507f1f77bcf86cd799439011')
           .set('x-access-token', userToken)
@@ -77,8 +77,8 @@ describe('Users', function () {
       });
     });
 
-    describe('allows', function () {
-      it('for  all users to be retrieved', function (done) {
+    describe('allows', () => {
+      it('for  all users to be retrieved', (done) => {
         server
           .get('/api/v1/users')
           .set('x-access-token', adminToken)
@@ -92,7 +92,7 @@ describe('Users', function () {
           });
       });
 
-      it('for  a user to be retrieved', function (done) {
+      it('for  a user to be retrieved', (done) => {
         server
           .get('/api/v1/users/' + id)
           .set('x-access-token', adminToken)
@@ -104,7 +104,7 @@ describe('Users', function () {
           });
       });
 
-      it('for  a user to be retrieved with more detail', function (done) {
+      it('for  a user to be retrieved with more detail', (done) => {
         server
           .get('/api/v1/users/' + id + '/full')
           .set('x-access-token', adminToken)
@@ -118,9 +118,9 @@ describe('Users', function () {
     });
   });
 
-  describe('update', function () {
-    describe('does not allow', function () {
-      it('for  non-existent users to be updated', function (done) {
+  describe('update', () => {
+    describe('does not allow', () => {
+      it('for  non-existent users to be updated', (done) => {
         server
           .put('/api/v1/users/507f1f77bcf86cd799439011')
           .set('x-access-token', userToken)
@@ -138,8 +138,8 @@ describe('Users', function () {
 
     });
 
-    describe('allows', function () {
-      it('for  users to be updated', function (done) {
+    describe('allows', () => {
+      it('for  users to be updated', (done) => {
         server
           .put('/api/v1/users/' + id)
           .set('x-access-token', userToken)
@@ -164,7 +164,7 @@ describe('Users', function () {
           });
       });
 
-      it('for  users to be updated (2)', function (done) {
+      it('for  users to be updated (2)', (done) => {
         server
           .put('/api/v1/users/' + id)
           .set('x-access-token', userToken)
@@ -187,7 +187,7 @@ describe('Users', function () {
           });
       });
 
-      it('for  users to be updated (3)', function (done) {
+      it('for  users to be updated (3)', (done) => {
         server
           .put('/api/v1/users/' + id)
           .set('x-access-token', userToken)
@@ -210,7 +210,7 @@ describe('Users', function () {
           });
       });
 
-      it('for  users to be updated with photos', function (done) {
+      it('for  users to be updated with photos', (done) => {
         server
           .put('/api/v1/users/' + id)
           .set('x-access-token', userToken)
@@ -229,9 +229,9 @@ describe('Users', function () {
     });
   });
 
-  describe('deletion', function () {
-    describe('does not allow', function () {
-      it('for  the admin to be deleted', function (done) {
+  describe('deletion', () => {
+    describe('does not allow', () => {
+      it('for  the admin to be deleted', (done) => {
         server
           .delete('/api/v1/users/' + id)
           .set('x-access-token', userToken)
@@ -244,8 +244,8 @@ describe('Users', function () {
       });
     });
 
-    describe('allows', function () {
-      it('for  users to be deleted', function (done) {
+    describe('allows', () => {
+      it('for  users to be deleted', (done) => {
         server
           .get('/api/v1/users')
           .set('x-access-token', adminToken)

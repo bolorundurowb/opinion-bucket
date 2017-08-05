@@ -13,8 +13,8 @@ var id = '';
 var userToken;
 var adminToken;
 
-describe('Categories', function () {
-  before(function (done) {
+describe('Categories', () => {
+  before((done) => {
     server
       .post('/api/v1/signin')
       .send({
@@ -39,9 +39,9 @@ describe('Categories', function () {
       });
   });
 
-  describe('creation', function () {
-    describe('allows', function () {
-      it('for  categories to be created', function (done) {
+  describe('creation', () => {
+    describe('allows', () => {
+      it('for  categories to be created', (done) => {
         server
           .post('/api/v1/categories')
           .set('x-access-token', adminToken)
@@ -57,8 +57,8 @@ describe('Categories', function () {
       });
     });
 
-    describe('does not allow', function () {
-      it('for categories to be duplicated', function (done) {
+    describe('does not allow', () => {
+      it('for categories to be duplicated', (done) => {
         server
           .post('/api/v1/categories')
           .set('x-access-token', adminToken)
@@ -71,7 +71,7 @@ describe('Categories', function () {
           });
       });
 
-      it('for categories to be title-less', function (done) {
+      it('for categories to be title-less', (done) => {
         server
           .post('/api/v1/categories')
           .set('x-access-token', adminToken)
@@ -86,9 +86,9 @@ describe('Categories', function () {
     });
   });
 
-  describe('retrieval', function () {
-    describe('does not allow', function () {
-      it('for a non-existent category to be retrieved', function (done) {
+  describe('retrieval', () => {
+    describe('does not allow', () => {
+      it('for a non-existent category to be retrieved', (done) => {
         server
           .get('/api/v1/categories/507f1f77bcf86cd799439011')
           .set('x-access-token', userToken)
@@ -101,8 +101,8 @@ describe('Categories', function () {
       });
     });
 
-    describe('allows', function () {
-      it('for  all categories to be retrieved', function (done) {
+    describe('allows', () => {
+      it('for  all categories to be retrieved', (done) => {
         server
           .get('/api/v1/categories')
           .set('x-access-token', userToken)
@@ -115,7 +115,7 @@ describe('Categories', function () {
           });
       });
 
-      it('for  a category to be retrieved', function (done) {
+      it('for  a category to be retrieved', (done) => {
         server
           .get('/api/v1/categories/' + id)
           .set('x-access-token', userToken)
@@ -129,9 +129,9 @@ describe('Categories', function () {
     });
   });
 
-  describe('update', function () {
-    describe('does not allow', function () {
-      it('for categories to be title-less', function (done) {
+  describe('update', () => {
+    describe('does not allow', () => {
+      it('for categories to be title-less', (done) => {
         server
           .put('/api/v1/categories/' + id)
           .set('x-access-token', adminToken)
@@ -145,8 +145,8 @@ describe('Categories', function () {
       });
     });
 
-    describe('allows', function () {
-      it('for  categories to be updated', function (done) {
+    describe('allows', () => {
+      it('for  categories to be updated', (done) => {
         server
           .put('/api/v1/categories/' + id)
           .set('x-access-token', adminToken)
@@ -162,9 +162,9 @@ describe('Categories', function () {
     });
   });
 
-  describe('deletion', function () {
-    describe('allows', function () {
-      it('for  categories to be deleted', function (done) {
+  describe('deletion', () => {
+    describe('allows', () => {
+      it('for  categories to be deleted', (done) => {
         server
           .delete('/api/v1/categories/' + id)
           .set('x-access-token', adminToken)

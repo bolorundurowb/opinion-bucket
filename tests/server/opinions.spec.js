@@ -14,8 +14,8 @@ var topicId = '';
 var userToken;
 var adminToken;
 
-describe('Opinions', function () {
-  before(function (done) {
+describe('Opinions', () => {
+  before((done) => {
     server
       .post('/api/v1/signin')
       .send({
@@ -40,7 +40,7 @@ describe('Opinions', function () {
       });
   });
 
-  before(function (done) {
+  before((done) => {
     server
       .post('/api/v1/topics')
       .set('x-access-token', adminToken)
@@ -52,9 +52,9 @@ describe('Opinions', function () {
       });
   });
 
-  describe('creation', function () {
-    describe('does not allow', function () {
-      it('for opinions to be without a title', function (done) {
+  describe('creation', () => {
+    describe('does not allow', () => {
+      it('for opinions to be without a title', (done) => {
         server
           .post('/api/v1/opinions')
           .set('x-access-token', userToken)
@@ -67,7 +67,7 @@ describe('Opinions', function () {
           });
       });
 
-      it('for opinions to be without a parent topic', function (done) {
+      it('for opinions to be without a parent topic', (done) => {
         server
           .post('/api/v1/opinions')
           .set('x-access-token', userToken)
@@ -80,7 +80,7 @@ describe('Opinions', function () {
           });
       });
 
-      it('for opinions to be without an existing parent topic', function (done) {
+      it('for opinions to be without an existing parent topic', (done) => {
         server
           .post('/api/v1/opinions')
           .set('x-access-token', userToken)
@@ -97,8 +97,8 @@ describe('Opinions', function () {
       });
     });
 
-    describe('allows', function () {
-      it('for opinions to be created', function (done) {
+    describe('allows', () => {
+      it('for opinions to be created', (done) => {
         server
           .post('/api/v1/opinions')
           .set('x-access-token', userToken)
@@ -118,9 +118,9 @@ describe('Opinions', function () {
     });
   });
 
-  describe('updating', function () {
-    describe('allows', function () {
-      it('for opinions to be updated', function (done) {
+  describe('updating', () => {
+    describe('allows', () => {
+      it('for opinions to be updated', (done) => {
         server
           .put('/api/v1/opinions/' + id)
           .set('x-access-token', userToken)
@@ -142,9 +142,9 @@ describe('Opinions', function () {
     });
   });
 
-  describe('retrieval', function () {
-    describe('does not allow', function () {
-      it('for a non-existent opinion to be retrieved', function (done) {
+  describe('retrieval', () => {
+    describe('does not allow', () => {
+      it('for a non-existent opinion to be retrieved', (done) => {
         server
           .get('/api/v1/opinions/507f1f77bcf86cd799439011')
           .set('x-access-token', userToken)
@@ -157,8 +157,8 @@ describe('Opinions', function () {
       });
     });
 
-    describe('allows', function () {
-      it('for all opinions to be retrieved', function (done) {
+    describe('allows', () => {
+      it('for all opinions to be retrieved', (done) => {
         server
           .get('/api/v1/opinions')
           .set('x-access-token', userToken)
@@ -172,7 +172,7 @@ describe('Opinions', function () {
           });
       });
 
-      it('for all opinions to be retrieved with query options', function (done) {
+      it('for all opinions to be retrieved with query options', (done) => {
         server
           .get('/api/v1/opinions?limit=12&offset=0&order=date')
           .set('x-access-token', userToken)
@@ -185,7 +185,7 @@ describe('Opinions', function () {
           });
       });
 
-      it('for all opinions to be retrieved with other query options', function (done) {
+      it('for all opinions to be retrieved with other query options', (done) => {
         server
           .get('/api/v1/opinions?topic=' + topicId + '&order=dislikes')
           .set('x-access-token', userToken)
@@ -198,7 +198,7 @@ describe('Opinions', function () {
           });
       });
 
-      it('for all opinions to be retrieved with even more query options', function (done) {
+      it('for all opinions to be retrieved with even more query options', (done) => {
         server
           .get('/api/v1/opinions?author=&order=likes')
           .set('x-access-token', userToken)
@@ -211,7 +211,7 @@ describe('Opinions', function () {
           });
       });
 
-      it('for an opinion to be retrieved', function (done) {
+      it('for an opinion to be retrieved', (done) => {
         server
           .get('/api/v1/opinions/' + id)
           .set('x-access-token', userToken)
@@ -225,9 +225,9 @@ describe('Opinions', function () {
     });
   });
 
-  describe('likes and dislikes', function () {
-    describe('allows', function () {
-      it('for opinions to be liked', function (done) {
+  describe('likes and dislikes', () => {
+    describe('allows', () => {
+      it('for opinions to be liked', (done) => {
         server
           .post('/api/v1/opinions/' + id + '/like')
           .set('x-access-token', userToken)
@@ -240,7 +240,7 @@ describe('Opinions', function () {
           });
       });
 
-      it('for opinions to be disliked', function (done) {
+      it('for opinions to be disliked', (done) => {
         server
           .post('/api/v1/opinions/' + id + '/dislike')
           .set('x-access-token', userToken)
@@ -255,9 +255,9 @@ describe('Opinions', function () {
     });
   });
 
-  describe('deletion', function () {
-    describe('allows', function () {
-      it('for opinions to be deleted', function (done) {
+  describe('deletion', () => {
+    describe('allows', () => {
+      it('for opinions to be deleted', (done) => {
         server
           .delete('/api/v1/opinions/' + id)
           .set('x-access-token', userToken)

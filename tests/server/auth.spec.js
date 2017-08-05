@@ -13,10 +13,10 @@ const config = require('../../src/server/config/config');
 const server = supertest.agent(app);
 var userToken;
 
-describe('Auth', function () {
-  describe('sign up', function () {
-    describe('allows', function () {
-      it('for users to be created', function (done) {
+describe('Auth', () => {
+  describe('sign up', () => {
+    describe('allows', () => {
+      it('for users to be created', (done) => {
         server
           .post('/api/v1/signup')
           .field('username', 'john.doe')
@@ -36,8 +36,8 @@ describe('Auth', function () {
       });
     });
 
-    describe('does not allow', function () {
-      it('for users without an email address to be created', function (done) {
+    describe('does not allow', () => {
+      it('for users without an email address to be created', (done) => {
         server
           .post('/api/v1/signup')
           .send({
@@ -53,7 +53,7 @@ describe('Auth', function () {
           });
       });
 
-      it('for users without a username to be created', function (done) {
+      it('for users without a username to be created', (done) => {
         server
           .post('/api/v1/signup')
           .send({
@@ -69,7 +69,7 @@ describe('Auth', function () {
           });
       });
 
-      it('for users without a password to be created', function (done) {
+      it('for users without a password to be created', (done) => {
         server
           .post('/api/v1/signup')
           .send({
@@ -85,7 +85,7 @@ describe('Auth', function () {
           });
       });
 
-      it('for duplicate users to be created', function (done) {
+      it('for duplicate users to be created', (done) => {
         server
           .post('/api/v1/signup')
           .send({
@@ -104,9 +104,9 @@ describe('Auth', function () {
     });
   });
 
-  describe('sign in', function () {
-    describe('does not allow', function () {
-      it(' for invalid users to be signed in', function (done) {
+  describe('sign in', () => {
+    describe('does not allow', () => {
+      it(' for invalid users to be signed in', (done) => {
         server
           .post('/api/v1/signin')
           .send({
@@ -121,7 +121,7 @@ describe('Auth', function () {
           });
       });
 
-      it(' for users without password to be signed in', function (done) {
+      it(' for users without password to be signed in', (done) => {
         server
           .post('/api/v1/signin')
           .send({
@@ -135,7 +135,7 @@ describe('Auth', function () {
           });
       });
 
-      it(' for users with a wrong password to be signed in', function (done) {
+      it(' for users with a wrong password to be signed in', (done) => {
         server
           .post('/api/v1/signin')
           .send({
@@ -151,8 +151,8 @@ describe('Auth', function () {
       });
     });
 
-    describe('allows', function () {
-      it('for users to be signed in', function (done) {
+    describe('allows', () => {
+      it('for users to be signed in', (done) => {
         server
           .post('/api/v1/signin')
           .send({
@@ -171,9 +171,9 @@ describe('Auth', function () {
     });
   });
 
-  describe('sign out', function () {
-    describe('allows', function () {
-      it('for users to be signed out', function (done) {
+  describe('sign out', () => {
+    describe('allows', () => {
+      it('for users to be signed out', (done) => {
         server
           .post('/api/v1/signout')
           .set('x-access-token', userToken)
