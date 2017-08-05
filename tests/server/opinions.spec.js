@@ -2,11 +2,11 @@
  * Created by bolorundurowb on 2/8/17.
  */
 
-const supertest = require('supertest');
+import supertest from 'supertest';
 // eslint-disable-next-line
-const should = require('should');
-const app = require('./../../server');
-const config = require('../../src/server/config/config');
+import should from 'should';
+import app from './../../server';
+import config from '../../src/server/config/config';
 
 const server = supertest.agent(app);
 let id = '';
