@@ -2,10 +2,10 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-const mongoose = require('mongoose');
-const cloudinary = require('cloudinary');
-const logger = require('./../config/logger');
-const Users = require('./../models/user');
+import mongoose from 'mongoose';
+import cloudinary from 'cloudinary';
+import logger from './../config/logger';
+import Users from './../models/user';
 
 const usersCtrl = {
   getAll: function (req, res) {

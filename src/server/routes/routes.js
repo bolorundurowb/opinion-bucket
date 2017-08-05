@@ -2,11 +2,11 @@
  * Created by bolorundurowb on 1/6/17.
  */
 
-const authRoutes = require('./auth');
-const userRoutes = require('./users');
-const categoryRoutes = require('./categories');
-const topicRoutes = require('./topics');
-const opinionRoutes = require('./opinion');
+import authRoutes from './auth';
+import userRoutes from './users';
+import categoryRoutes from './categories';
+import topicRoutes from './topics';
+import opinionRoutes from './opinion';
 
 const routes = function (router) {
   authRoutes(router);

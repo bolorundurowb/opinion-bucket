@@ -2,10 +2,10 @@
  * Created by bolorundurowb on 1/18/17.
  */
 
-const mongoose = require('mongoose');
-const logger = require('./../config/logger');
-const Opinions = require('./../models/opinion');
-const Topics = require('./../models/topic');
+import mongoose from 'mongoose';
+import logger from './../config/logger';
+import Opinions from './../models/opinion';
+import Topics from './../models/topic';
 
 const opinionsCtrl = {
   getAll: function (req, res) {

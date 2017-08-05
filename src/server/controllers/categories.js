@@ -2,8 +2,8 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-const logger = require('./../config/logger');
-const Categories = require('./../models/category');
+import logger from './../config/logger';
+import Categories from './../models/category';
 
 const categoriesCtrl = {
   getAll: function (req, res) {

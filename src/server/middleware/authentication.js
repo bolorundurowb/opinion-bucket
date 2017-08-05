@@ -2,12 +2,12 @@
  * Created by bolorundurowb on 1/24/17.
  */
 
-const jwt = require('jsonwebtoken');
-const config = require('./../config/config');
-const logger = require('./../config/logger');
-const User = require('./../models/user');
+import jwt from 'jsonwebtoken';
+import config from './../config/config';
+import logger from './../config/logger';
+import User from './../models/user';
 // eslint-disable-next-line
-const Role = require('./../models/role');
+import Role from './../models/role';
 
 const auth = function (req, res, next) {
   const token = req.headers['x-access-token'] || req.headers['token'] || req.body.token;

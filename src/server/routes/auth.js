@@ -2,9 +2,9 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-const auth = require('./../controllers/auth');
-const multer = require('multer');
-const authentication = require('./../middleware/authentication');
+import auth from './../controllers/auth';
+import multer from 'multer';
+import authentication from './../middleware/authentication';
 
 const upload = multer({ dest: 'uploads/' });
 

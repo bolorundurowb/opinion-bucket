@@ -2,8 +2,8 @@
  * Created by bolorundurowb on 1/18/17.
  */
 
-const opinions = require('./../controllers/opinions');
-const authentication = require('./../middleware/authentication');
+import opinions from './../controllers/opinions';
+import authentication from './../middleware/authentication';
 
 const opinionRoutes = function (router) {
   router.route('/opinions')

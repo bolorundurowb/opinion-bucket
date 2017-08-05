@@ -2,12 +2,12 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const cloudinary = require('cloudinary');
-const config = require('../config/config');
-const logger = require('./../config/logger');
-const Users = require('./../models/user');
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import cloudinary from 'cloudinary';
+import config from '../config/config';
+import logger from './../config/logger';
+import Users from './../models/user';
 
 
 const authCtrl = {

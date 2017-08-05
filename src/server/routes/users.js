@@ -2,10 +2,10 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-const multer = require('multer');
-const users = require('./../controllers/users');
-const authentication = require('./../middleware/authentication');
-const authorization = require('./../middleware/authorization');
+import multer from 'multer';
+import users from './../controllers/users';
+import authentication from './../middleware/authentication';
+import authorization from './../middleware/authorization';
 
 const upload = multer({ dest: 'uploads/' });
 

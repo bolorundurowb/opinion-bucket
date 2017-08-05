@@ -2,9 +2,9 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-const mongoose = require('mongoose');
-const logger = require('./../config/logger');
-const Topics = require('./../models/topic');
+import mongoose from 'mongoose';
+import logger from './../config/logger';
+import Topics from './../models/topic';
 
 const topicsCtrl = {
   getAll: function (req, res) {

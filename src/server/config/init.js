@@ -2,11 +2,11 @@
  * Created by bolorundurowb on 1/27/17.
  */
 
-const seeder = require('mongoose-seed');
-const config = require('./config');
-const logger = require('./logger');
-const User  = require('./../models/user');
-const data = require('./seeds/data.json');
+import seeder from 'mongoose-seed';
+import config from './config';
+import logger from './logger';
+import User  from './../models/user';
+import data from './seeds/data.json';
 
 seeder.connect(config.database, () => {
   seeder.loadModels([
