@@ -5,8 +5,9 @@
 import supertest from 'supertest';
 // eslint-disable-next-line
 import should from 'should';
+import sinon from 'sinon';
 import app from './../../server';
-import config from '../../src/server/config/config';
+import Auth from '../../src/server/controllers/Auth';
 
 const server = supertest.agent(app);
 let id = '';
@@ -14,6 +15,17 @@ let userToken;
 let adminToken;
 
 describe('Users', () => {
+  after(() => {
+    Auth.uploadImage.restore();
+  });
+
+  before(() => {
+    sinon.stub(Auth, 'uploadImage').callsFake(() =>
+      new Promise((resolve) => {
+        resolve('http://sample-url.jpg');
+      }));
+  });
+
   before((done) => {
     server
       .post('/api/v1/signin')

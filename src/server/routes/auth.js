@@ -2,7 +2,7 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-import auth from './../controllers/auth';
+import auth from '../controllers/Auth';
 import multer from 'multer';
 import authentication from './../middleware/authentication';
 

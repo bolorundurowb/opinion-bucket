@@ -7,13 +7,23 @@ import supertest from 'supertest';
 import should from 'should';
 import sinon from 'sinon';
 import app from './../../server';
-import auth from './../../src/server/controllers/auth';
-import config from '../../src/server/config/config';
+import Auth from '../../src/server/controllers/Auth';
 
 const server = supertest.agent(app);
 let userToken;
 
 describe('Auth', () => {
+  after(() => {
+    Auth.uploadImage.restore();
+  });
+
+  before(() => {
+    sinon.stub(Auth, 'uploadImage').callsFake(() =>
+      new Promise((resolve) => {
+        resolve('http://sample-url.jpg');
+      }));
+  });
+
   describe('sign up', () => {
     describe('allows', () => {
       it('for users to be created', (done) => {

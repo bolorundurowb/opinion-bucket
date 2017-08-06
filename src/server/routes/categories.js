@@ -2,7 +2,7 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-import categories from './../controllers/categories';
+import categories from '../controllers/Categories';
 import authentication from './../middleware/authentication';
 import authorization from './../middleware/authorization';
 

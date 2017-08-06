@@ -7,7 +7,7 @@ import logger from '../config/Logger';
 import Topics from './../models/topic';
 
 const topicsCtrl = {
-  getAll: function (req, res) {
+  getAll(req, res) {
     let limit = req.query.limit || 0;
     limit = parseInt(limit);
 
@@ -45,7 +45,7 @@ const topicsCtrl = {
       });
   },
 
-  getOne: function (req, res) {
+  getOne(req, res) {
     Topics.findOne({_id: req.params.id}, (err, topic) => {
       if (err) {
         logger.error(err);
@@ -58,7 +58,7 @@ const topicsCtrl = {
     });
   },
 
-  getOneFull: function (req, res) {
+  getOneFull(req, res) {
     Topics
       .findOne({_id: req.params.id})
       .populate('opinions categories')
@@ -74,7 +74,7 @@ const topicsCtrl = {
       });
   },
 
-  create: function (req, res) {
+  create(req, res) {
     if (!req.body.title) {
       res.status(400).send({message: 'The topic requires a title'});
     } else {
@@ -98,7 +98,7 @@ const topicsCtrl = {
     }
   },
 
-  update: function (req, res) {
+  update(req, res) {
     const body = req.body;
 
     Topics.findById(req.params.id, (err, topic) => {
@@ -135,7 +135,7 @@ const topicsCtrl = {
     });
   },
 
-  delete: function (req, res) {
+  delete(req, res) {
     Topics.findByIdAndRemove(req.params.id, (err) => {
       if (err) {
         logger.error(err);

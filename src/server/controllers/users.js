@@ -8,7 +8,7 @@ import logger from '../config/Logger';
 import Users from './../models/user';
 
 const usersCtrl = {
-  getAll: function (req, res) {
+  getAll(req, res) {
     Users.find((err, users) => {
       if (err) {
         logger.error(err);
@@ -19,7 +19,7 @@ const usersCtrl = {
     });
   },
 
-  getOne: function (req, res) {
+  getOne(req, res) {
     Users.findOne({_id: req.params.id}, (err, user) => {
       if (err) {
         logger.error(err);
@@ -32,7 +32,7 @@ const usersCtrl = {
     });
   },
 
-  getOneFull: function (req, res) {
+  getOneFull(req, res) {
     Users.findOne({_id: req.params.id})
       .populate('topics')
       .exec((err, user) => {
@@ -47,7 +47,7 @@ const usersCtrl = {
       });
   },
 
-  update: function (req, res) {
+  update(req, res) {
     const body = req.body;
     
     Users.findById(req.params.id, (err, user) => {
@@ -86,7 +86,7 @@ const usersCtrl = {
     });
   },
 
-  delete: function (req, res) {
+  delete(req, res) {
     Users.findById(req.params.id, (err, user) => {
       if (err) {
         logger.error(err);

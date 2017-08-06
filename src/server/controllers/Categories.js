@@ -3,11 +3,11 @@
  */
 
 import logger from '../config/Logger';
-import Categories from './../models/category';
+import Category from './../models/category';
 
-const categoriesCtrl = {
-  getAll: function (req, res) {
-    Categories.find(function (err, categories) {
+class Categories {
+  static getAll(req, res) {
+    Category.find(function (err, categories) {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving categories'});
@@ -15,10 +15,10 @@ const categoriesCtrl = {
         res.status(200).send(categories);
       }
     });
-  },
+  }
 
-  getOne: function (req, res) {
-    Categories.findOne({_id: req.params.id}, function (err, category) {
+static getOne(req, res) {
+    Category.findOne({_id: req.params.id}, function (err, category) {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving a category'});
@@ -28,20 +28,20 @@ const categoriesCtrl = {
         res.status(200).send(category);
       }
     });
-  },
+  }
 
-  create: function (req, res) {
+static create(req, res) {
     if (!req.body.title) {
       res.status(400).send({message: 'The category requires a title'});
     } else {
-      Categories.findOne({title: req.body.title}, (err, result) => {
+      Category.findOne({title: req.body.title}, (err, result) => {
         if (err) {
           logger.error(err);
           res.status(500).send({message: 'An error occurred when retrieving a category'});
         } else if (result) {
           res.status(409).send({message: 'A category exists with that title'});
         } else {
-          const _category = new Categories(req.body);
+          const _category = new Category(req.body);
           _category.save(function (err, category) {
             if (err) {
               logger.error(err);
@@ -53,10 +53,10 @@ const categoriesCtrl = {
         }
       });
     }
-  },
+  }
 
-  update: function (req, res) {
-    Categories.findById(req.params.id, function (err, category) {
+static update(req, res) {
+    Category.findById(req.params.id, function (err, category) {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving a category'});
@@ -74,10 +74,10 @@ const categoriesCtrl = {
         });
       }
     });
-  },
+  }
 
-  delete: function (req, res) {
-    Categories.findByIdAndRemove(req.params.id, (err) => {
+static delete(req, res) {
+    Category.findByIdAndRemove(req.params.id, (err) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when removing a category'});
@@ -86,6 +86,6 @@ const categoriesCtrl = {
       }
     });
   }
-};
+}
 
-export default categoriesCtrl;
+export default Categories;

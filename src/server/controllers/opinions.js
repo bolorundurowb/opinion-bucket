@@ -8,7 +8,7 @@ import Opinions from './../models/opinion';
 import Topics from './../models/topic';
 
 const opinionsCtrl = {
-  getAll: function (req, res) {
+  getAll(req, res) {
     let filter = {};
     let limit = req.query.limit || 0;
     limit = parseInt(limit);
@@ -55,7 +55,7 @@ const opinionsCtrl = {
       });
   },
 
-  getOne: function (req, res) {
+  getOne(req, res) {
     Opinions.findOne({_id: req.params.id}, (err, opinion) => {
       if (err) {
         logger.error(err);
@@ -68,7 +68,7 @@ const opinionsCtrl = {
     });
   },
 
-  create: function (req, res) {
+  create(req, res) {
     req.body.author = req.user._id;
     if (!(req.body.author && req.body.title)) {
       res.status(400).send({message: 'An opinion must have an author and title'});
@@ -96,7 +96,7 @@ const opinionsCtrl = {
     }
   },
 
-  update: function (req, res) {
+  update(req, res) {
     const body = req.body;
 
     Opinions.findById(req.params.id, (err, opinion) => {
@@ -115,7 +115,7 @@ const opinionsCtrl = {
     });
   },
 
-  delete: function (req, res) {
+  delete(req, res) {
     Opinions
       .findOneAndRemove({_id: req.params.id})
       .exec((err) => {
@@ -128,7 +128,7 @@ const opinionsCtrl = {
       });
   },
 
-  like: function (req, res) {
+  like(req, res) {
     Opinions.findById(req.params.id, (err, opinion) => {
       if (err) {
         logger.error(err);
@@ -140,7 +140,7 @@ const opinionsCtrl = {
     });
   },
 
-  dislike: function (req, res) {
+  dislike(req, res) {
     Opinions.findById(req.params.id, (err, opinion) => {
       if (err) {
         logger.error(err);
