@@ -8,15 +8,17 @@ import Authentication from '../middleware/Authentication';
 
 const upload = multer({ dest: 'uploads/' });
 
-const authRoutes = (router) => {
-  router.route('/signin')
-    .post(auth.signin);
+class AuthRoutes {
+  static route(router) {
+    router.route('/signin')
+      .post(auth.signin);
 
-  router.route('/signup')
-    .post(upload.single('profile'), auth.signup);
+    router.route('/signup')
+      .post(upload.single('profile'), auth.signup);
 
-  router.route('/signout')
-    .post(Authentication.isAuthenticated, auth.signout);
-};
+    router.route('/signout')
+      .post(Authentication.isAuthenticated, auth.signout);
+  }
+}
 
-export default authRoutes;
+export default AuthRoutes;

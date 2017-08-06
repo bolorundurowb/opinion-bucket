@@ -6,15 +6,17 @@ import categories from '../controllers/Categories';
 import Authentication from '../middleware/Authentication';
 import authorization from '../middleware/Authorization';
 
-const categoryRoutes = function (router) {
-  router.route('/categories')
-    .get(categories.getAll)
-    .post(Authentication.isAuthenticated, authorization.isModerator, categories.create);
+class CategoryRoutes {
+  static route(router) {
+    router.route('/categories')
+      .get(categories.getAll)
+      .post(Authentication.isAuthenticated, authorization.isModerator, categories.create);
 
-  router.route('/categories/:id')
-    .get(categories.getOne)
-    .put(Authentication.isAuthenticated, authorization.isModerator, categories.update)
-    .delete(Authentication.isAuthenticated, authorization.isAdmin, categories.delete);
-};
+    router.route('/categories/:id')
+      .get(categories.getOne)
+      .put(Authentication.isAuthenticated, authorization.isModerator, categories.update)
+      .delete(Authentication.isAuthenticated, authorization.isAdmin, categories.delete);
+  }
+}
 
-export default categoryRoutes;
+export default CategoryRoutes;

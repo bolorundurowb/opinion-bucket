@@ -5,9 +5,9 @@
 import jwt from 'jsonwebtoken';
 import config from './../config/config';
 import logger from '../config/Logger';
-import User from './../models/user';
+import User from '../models/User';
 // eslint-disable-next-line
-import Role from './../models/role';
+import Role from '../models/Role';
 
 class Authentication {
   static isAuthenticated(req, res, next) {

@@ -4,7 +4,7 @@
 
 import mongoose from 'mongoose';
 import logger from '../config/Logger';
-import User from './../models/user';
+import User from '../models/User';
 import Auth from './Auth';
 
 class Users {

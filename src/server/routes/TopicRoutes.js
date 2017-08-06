@@ -6,18 +6,20 @@ import topics from '../controllers/Topics';
 import Authentication from '../middleware/Authentication';
 import authorization from '../middleware/Authorization';
 
-const topicRoutes = (router) => {
-  router.route('/topics')
-    .get(topics.getAll)
-    .post(Authentication.isAuthenticated, topics.create);
+class TopicRoutes {
+  static route(router) {
+    router.route('/topics')
+      .get(topics.getAll)
+      .post(Authentication.isAuthenticated, topics.create);
 
-  router.route('/topics/:id')
-    .get(topics.getOne)
-    .put(Authentication.isAuthenticated, topics.update)
-    .delete(Authentication.isAuthenticated, authorization.isModerator, topics.delete);
+    router.route('/topics/:id')
+      .get(topics.getOne)
+      .put(Authentication.isAuthenticated, topics.update)
+      .delete(Authentication.isAuthenticated, authorization.isModerator, topics.delete);
 
-  router.route('/topics/:id/full')
-    .get(topics.getOneFull);
-};
+    router.route('/topics/:id/full')
+      .get(topics.getOneFull);
+  }
+}
 
-export default topicRoutes;
+export default TopicRoutes;

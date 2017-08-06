@@ -7,7 +7,7 @@ import bcrypt from 'bcryptjs';
 import cloudinary from 'cloudinary';
 import config from '../config/config';
 import Logger from '../config/Logger';
-import Users from './../models/user';
+import Users from '../models/User';
 
 
 class Auth {

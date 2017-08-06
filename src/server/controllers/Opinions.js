@@ -3,8 +3,8 @@
  */
 
 import Logger from '../config/Logger';
-import Opinion from './../models/opinion';
-import Topics from './../models/topic';
+import Opinion from '../models/Opinion';
+import Topics from '../models/Topic';
 
 class Opinions {
   static getAll(req, res) {

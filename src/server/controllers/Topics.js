@@ -4,7 +4,7 @@
 
 import mongoose from 'mongoose';
 import logger from '../config/Logger';
-import Topic from './../models/topic';
+import Topic from '../models/Topic';
 
 class Topics {
   static getAll(req, res) {

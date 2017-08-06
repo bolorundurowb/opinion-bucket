@@ -3,7 +3,7 @@
  */
 
 import logger from '../config/Logger';
-import Category from './../models/category';
+import Category from '../models/Category';
 
 class Categories {
   static getAll(req, res) {
