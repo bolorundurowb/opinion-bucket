@@ -55,11 +55,11 @@ const userSchema = new Schema({
   }
 });
 
-userSchema.virtual('name').get(function () {
+userSchema.virtual('name').get(() => {
   return this.firstName + ' ' + this.lastName;
 });
 
-userSchema.virtual('password').get(function () {
+userSchema.virtual('password').get(() => {
   return this.hashedPassword;
 });
 
@@ -70,4 +70,4 @@ userSchema.virtual('password').set(function (plainText) {
 
 const userModel = mongoose.model('User', userSchema);
 
-module.exports = userModel;
+export default userModel;

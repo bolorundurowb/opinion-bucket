@@ -2,13 +2,13 @@
  * Created by bolorundurowb on 11/11/16.
  */
 
-const mongoose = require('mongoose');
-const express = require('express');
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
-const routes = require('./src/server/routes/routes');
-const config = require('./src/server/config/config');
-const logger = require ('./src/server/config/logger');
+import mongoose from 'mongoose';
+import express from 'express';
+import bodyParser from 'body-parser';
+import morgan from 'morgan';
+import routes from './src/server/routes/routes';
+import config from './src/server/config/config';
+import logger from './src/server/config/logger';
 
 // Connect to MongoDB
 mongoose.connect(config.database);
@@ -33,7 +33,7 @@ server.use(bodyParser.json());
 server.use('/api/v1', router);
 
 // handle unmatched routes
-server.use(function (req, res, next) {
+server.use((req, res, next) => {
   res.status(501).send({
     status: 'failed',
     message: 'This API doesn\'t support that function'
@@ -51,5 +51,5 @@ server.listen(port);
 logger.log('Server started on port: ' + port);
 
 // expose server to test
-module.exports = server;
+export default server;
 

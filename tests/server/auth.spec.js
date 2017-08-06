@@ -2,21 +2,21 @@
  * Created by bolorundurowb on 1/19/17.
  */
 
-const supertest = require('supertest');
+import supertest from 'supertest';
 // eslint-disable-next-line
-const should = require('should');
-const sinon = require('sinon');
-const app = require('./../../server');
-const auth = require('./../../src/server/controllers/auth');
-const config = require('../../src/server/config/config');
+import should from 'should';
+import sinon from 'sinon';
+import app from './../../server';
+import auth from './../../src/server/controllers/auth';
+import config from '../../src/server/config/config';
 
 const server = supertest.agent(app);
-var userToken;
+let userToken;
 
-describe('Auth', function () {
-  describe('sign up', function () {
-    describe('allows', function () {
-      it('for users to be created', function (done) {
+describe('Auth', () => {
+  describe('sign up', () => {
+    describe('allows', () => {
+      it('for users to be created', (done) => {
         server
           .post('/api/v1/signup')
           .field('username', 'john.doe')
@@ -24,7 +24,7 @@ describe('Auth', function () {
           .field('password', 'john.doe')
           .attach('profile', './tests/server/artifacts/sample.png')
           .expect(201)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(201);
             res.body.should.be.type('object');
             res.body.should.have.property('token');
@@ -36,8 +36,8 @@ describe('Auth', function () {
       });
     });
 
-    describe('does not allow', function () {
-      it('for users without an email address to be created', function (done) {
+    describe('does not allow', () => {
+      it('for users without an email address to be created', (done) => {
         server
           .post('/api/v1/signup')
           .send({
@@ -45,7 +45,7 @@ describe('Auth', function () {
             password: 'john.doe'
           })
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.should.be.type('object');
             res.body.message.should.equal('A user must have an email address.');
@@ -53,7 +53,7 @@ describe('Auth', function () {
           });
       });
 
-      it('for users without a username to be created', function (done) {
+      it('for users without a username to be created', (done) => {
         server
           .post('/api/v1/signup')
           .send({
@@ -61,7 +61,7 @@ describe('Auth', function () {
             password: 'john.doe'
           })
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.should.be.type('object');
             res.body.message.should.equal('A user must have a username.');
@@ -69,7 +69,7 @@ describe('Auth', function () {
           });
       });
 
-      it('for users without a password to be created', function (done) {
+      it('for users without a password to be created', (done) => {
         server
           .post('/api/v1/signup')
           .send({
@@ -77,7 +77,7 @@ describe('Auth', function () {
             username: 'john.doe'
           })
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.should.be.type('object');
             res.body.message.should.equal('A user must have a password.');
@@ -85,7 +85,7 @@ describe('Auth', function () {
           });
       });
 
-      it('for duplicate users to be created', function (done) {
+      it('for duplicate users to be created', (done) => {
         server
           .post('/api/v1/signup')
           .send({
@@ -94,7 +94,7 @@ describe('Auth', function () {
             password: 'john.doe'
           })
           .expect(409)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(409);
             res.body.should.be.type('object');
             res.body.message.should.equal('A user exists with that username or email address');
@@ -104,9 +104,9 @@ describe('Auth', function () {
     });
   });
 
-  describe('sign in', function () {
-    describe('does not allow', function () {
-      it(' for invalid users to be signed in', function (done) {
+  describe('sign in', () => {
+    describe('does not allow', () => {
+      it(' for invalid users to be signed in', (done) => {
         server
           .post('/api/v1/signin')
           .send({
@@ -114,28 +114,28 @@ describe('Auth', function () {
             password: 'john.doe'
           })
           .expect(404)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(404);
             res.body.message.should.equal('A user with that username or email does not exist');
             done();
           });
       });
 
-      it(' for users without password to be signed in', function (done) {
+      it(' for users without password to be signed in', (done) => {
         server
           .post('/api/v1/signin')
           .send({
             username: 'jane.doe'
           })
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('A username or email and password are required');
             done();
           });
       });
 
-      it(' for users with a wrong password to be signed in', function (done) {
+      it(' for users with a wrong password to be signed in', (done) => {
         server
           .post('/api/v1/signin')
           .send({
@@ -143,7 +143,7 @@ describe('Auth', function () {
             password: 'john.do'
           })
           .expect(403)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(403);
             res.body.message.should.equal('The passwords did not match');
             done();
@@ -151,8 +151,8 @@ describe('Auth', function () {
       });
     });
 
-    describe('allows', function () {
-      it('for users to be signed in', function (done) {
+    describe('allows', () => {
+      it('for users to be signed in', (done) => {
         server
           .post('/api/v1/signin')
           .send({
@@ -160,7 +160,7 @@ describe('Auth', function () {
             password: 'john.doe'
           })
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.should.have.property('token');
@@ -171,14 +171,14 @@ describe('Auth', function () {
     });
   });
 
-  describe('sign out', function () {
-    describe('allows', function () {
-      it('for users to be signed out', function (done) {
+  describe('sign out', () => {
+    describe('allows', () => {
+      it('for users to be signed out', (done) => {
         server
           .post('/api/v1/signout')
           .set('x-access-token', userToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             console.log(res.body);
             res.status.should.equal(200);
             res.body.should.be.type('object');

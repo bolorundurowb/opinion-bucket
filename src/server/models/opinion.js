@@ -47,4 +47,4 @@ const opinionSchema = new Schema({
 
 const opinionModel = mongoose.model('Opinion', opinionSchema);
 
-module.exports = opinionModel;
+export default opinionModel;

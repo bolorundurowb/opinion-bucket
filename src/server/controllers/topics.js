@@ -2,19 +2,19 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-const mongoose = require('mongoose');
-const logger = require('./../config/logger');
-const Topics = require('./../models/topic');
+import mongoose from 'mongoose';
+import logger from './../config/logger';
+import Topics from './../models/topic';
 
 const topicsCtrl = {
   getAll: function (req, res) {
-    var limit = req.query.limit || 0;
+    let limit = req.query.limit || 0;
     limit = parseInt(limit);
 
-    var skip = req.query.offset || 0;
+    let skip = req.query.offset || 0;
     skip = parseInt(skip);
 
-    var filter = {};
+    let filter = {};
     if (req.query.category) {
       try {
         filter.categories = {
@@ -23,7 +23,7 @@ const topicsCtrl = {
       } catch (err) {}
     }
 
-    var sort = {};
+    let sort = {};
     if (req.query.order) {
       if (req.query.order === 'date') {
         sort.date = -1;
@@ -36,7 +36,7 @@ const topicsCtrl = {
       .limit(limit)
       .sort(sort)
       .skip(skip)
-      .exec(function (err, topics) {
+      .exec((err, topics) => {
         if (err) {
           logger.error(err);
           res.status(500).send({message: 'An error occurred when retrieving topics'});
@@ -46,7 +46,7 @@ const topicsCtrl = {
   },
 
   getOne: function (req, res) {
-    Topics.findOne({_id: req.params.id}, function (err, topic) {
+    Topics.findOne({_id: req.params.id}, (err, topic) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving a topic'});
@@ -62,7 +62,7 @@ const topicsCtrl = {
     Topics
       .findOne({_id: req.params.id})
       .populate('opinions categories')
-      .exec(function (err, topic) {
+      .exec((err, topic) => {
         if (err) {
           logger.error(err);
           res.status(500).send({message: 'An error occurred when retrieving a topic'});
@@ -78,7 +78,7 @@ const topicsCtrl = {
     if (!req.body.title) {
       res.status(400).send({message: 'The topic requires a title'});
     } else {
-      Topics.findOne({title: req.body.title}, function (err, result) {
+      Topics.findOne({title: req.body.title}, (err, result) => {
         if (err) {
           logger.error(err);
           res.status(500).send({message: 'An error occurred when retrieving a topic'});
@@ -86,7 +86,7 @@ const topicsCtrl = {
           res.status(409).send({message: 'A topic exists with that title'});
         } else {
           const _topic = new Topics(req.body);
-          _topic.save(function (err, topic) {
+          _topic.save((err, topic) => {
             if (err) {
               logger.error(err);
               res.status(500).send({message: 'An error occurred when saving a topic'});
@@ -101,7 +101,7 @@ const topicsCtrl = {
   update: function (req, res) {
     const body = req.body;
 
-    Topics.findById(req.params.id, function (err, topic) {
+    Topics.findById(req.params.id, (err, topic) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving a topic'});
@@ -117,7 +117,7 @@ const topicsCtrl = {
           topic.categories = [];
           req.body.categories.forEach(function (cat_id) {
             try {
-              var id = mongoose.Types.ObjectId(cat_id);
+              let id = mongoose.Types.ObjectId(cat_id);
               topic.categories.push(id);
             } catch (err) {}
           });
@@ -136,7 +136,7 @@ const topicsCtrl = {
   },
 
   delete: function (req, res) {
-    Topics.findByIdAndRemove(req.params.id, function (err) {
+    Topics.findByIdAndRemove(req.params.id, (err) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when removing a topic'});
@@ -147,4 +147,4 @@ const topicsCtrl = {
   }
 };
 
-module.exports = topicsCtrl;
+export default topicsCtrl;

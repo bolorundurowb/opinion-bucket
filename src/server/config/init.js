@@ -2,20 +2,20 @@
  * Created by bolorundurowb on 1/27/17.
  */
 
-const seeder = require('mongoose-seed');
-const config = require('./config');
-const logger = require('./logger');
-const User  = require('./../models/user');
-const data = require('./seeds/data.json');
+import seeder from 'mongoose-seed';
+import config from './config';
+import logger from './logger';
+import User  from './../models/user';
+import data from './seeds/data.json';
 
-seeder.connect(config.database, function () {
+seeder.connect(config.database, () => {
   seeder.loadModels([
     './src/server/models/role.js'
   ]);
 
-  seeder.clearModels(['Role'], function () {
-    seeder.populateModels(data, function () {
-      User.findOne({username: 'admin'}, function (err, user) {
+  seeder.clearModels(['Role'], () => {
+    seeder.populateModels(data, () => {
+      User.findOne({username: 'admin'}, (err, user) => {
         if (err) {
           logger.error(err);
           logger.log('An error occurred when retrieving the user');
@@ -29,7 +29,7 @@ seeder.connect(config.database, function () {
             role: 2
           });
 
-          user.save(function (err) {
+          user.save((err) => {
             if (err) {
               logger.error(err);
               logger.log('An error occurred when retrieving the user');

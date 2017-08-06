@@ -2,8 +2,8 @@
  * Created by bolorundurowb on 1/13/17.
  */
 
-const dotenv = require('dotenv');
-const cloudinary = require('cloudinary');
+import dotenv from 'dotenv';
+import cloudinary from 'cloudinary';
 
 const env = process.env.NODE_ENV || 'development';
 if (env !== 'production') {
@@ -25,4 +25,4 @@ if (env === 'test') {
   config.database = process.env.MONGO_TEST_URL;
 }
 
-module.exports = config;
+export default config;

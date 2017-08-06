@@ -2,19 +2,19 @@
  * Created by bolorundurowb on 1/17/17.
  */
 
-const supertest = require('supertest');
+import supertest from 'supertest';
 // eslint-disable-next-line
-const should = require('should');
-const app = require('./../../server');
-const config = require('../../src/server/config/config');
+import should from 'should';
+import app from './../../server';
+import config from '../../src/server/config/config';
 
 const server = supertest.agent(app);
-var id = '';
-var userToken;
-var adminToken;
+let id = '';
+let userToken;
+let adminToken;
 
-describe('Users', function () {
-  before(function (done) {
+describe('Users', () => {
+  before((done) => {
     server
       .post('/api/v1/signin')
       .send({
@@ -22,7 +22,7 @@ describe('Users', function () {
         password: 'john.doe'
       })
       .expect(200)
-      .end(function (err, res) {
+      .end((err, res) => {
         userToken = res.body.token;
 
         server
@@ -32,44 +32,44 @@ describe('Users', function () {
             password: process.env.ADMIN_PASS
           })
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             adminToken = res.body.token;
             done();
           });
       });
   });
 
-  before(function (done) {
+  before((done) => {
     server
       .get('/api/v1/users')
       .set('x-access-token', adminToken)
       .expect(200)
-      .end(function (err, res) {
+      .end((err, res) => {
         id = res.body[0]._id;
         done();
       });
   });
 
-  describe('retrieval', function () {
-    describe('does not allow', function () {
-      it('for a non-existent user to be retrieved with detail', function (done) {
+  describe('retrieval', () => {
+    describe('does not allow', () => {
+      it('for a non-existent user to be retrieved with detail', (done) => {
         server
           .get('/api/v1/users/507f1f77bcf86cd799439011/full')
           .set('x-access-token', userToken)
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('No user exists with that id');
             done();
           });
       });
 
-      it('for a non-existent user to be retrieved', function (done) {
+      it('for a non-existent user to be retrieved', (done) => {
         server
           .get('/api/v1/users/507f1f77bcf86cd799439011')
           .set('x-access-token', userToken)
           .expect(400)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('No user exists with that id');
             done();
@@ -77,13 +77,13 @@ describe('Users', function () {
       });
     });
 
-    describe('allows', function () {
-      it('for  all users to be retrieved', function (done) {
+    describe('allows', () => {
+      it('for  all users to be retrieved', (done) => {
         server
           .get('/api/v1/users')
           .set('x-access-token', adminToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             // One admin and one registered user
@@ -92,24 +92,24 @@ describe('Users', function () {
           });
       });
 
-      it('for  a user to be retrieved', function (done) {
+      it('for  a user to be retrieved', (done) => {
         server
           .get('/api/v1/users/' + id)
           .set('x-access-token', adminToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             done();
           });
       });
 
-      it('for  a user to be retrieved with more detail', function (done) {
+      it('for  a user to be retrieved with more detail', (done) => {
         server
           .get('/api/v1/users/' + id + '/full')
           .set('x-access-token', adminToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             done();
@@ -118,9 +118,9 @@ describe('Users', function () {
     });
   });
 
-  describe('update', function () {
-    describe('does not allow', function () {
-      it('for  non-existent users to be updated', function (done) {
+  describe('update', () => {
+    describe('does not allow', () => {
+      it('for  non-existent users to be updated', (done) => {
         server
           .put('/api/v1/users/507f1f77bcf86cd799439011')
           .set('x-access-token', userToken)
@@ -128,7 +128,7 @@ describe('Users', function () {
             lastName: 'Woke'
           })
           .expect(404)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(404);
             res.body.should.be.type('object');
             res.body.message.should.equal('No user with that id');
@@ -138,8 +138,8 @@ describe('Users', function () {
 
     });
 
-    describe('allows', function () {
-      it('for  users to be updated', function (done) {
+    describe('allows', () => {
+      it('for  users to be updated', (done) => {
         server
           .put('/api/v1/users/' + id)
           .set('x-access-token', userToken)
@@ -155,7 +155,7 @@ describe('Users', function () {
             topics: ['507f1', '507f1f77bcf86cd799439011']
           })
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.firstName.should.equal('Wobe');
@@ -164,7 +164,7 @@ describe('Users', function () {
           });
       });
 
-      it('for  users to be updated (2)', function (done) {
+      it('for  users to be updated (2)', (done) => {
         server
           .put('/api/v1/users/' + id)
           .set('x-access-token', userToken)
@@ -178,7 +178,7 @@ describe('Users', function () {
             topics: ['507f1']
           })
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.firstName.should.equal('Wobe');
@@ -187,7 +187,7 @@ describe('Users', function () {
           });
       });
 
-      it('for  users to be updated (3)', function (done) {
+      it('for  users to be updated (3)', (done) => {
         server
           .put('/api/v1/users/' + id)
           .set('x-access-token', userToken)
@@ -201,7 +201,7 @@ describe('Users', function () {
             topics: ['507f1f77bcf86cd799439011']
           })
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.firstName.should.equal('Wobe');
@@ -210,7 +210,7 @@ describe('Users', function () {
           });
       });
 
-      it('for  users to be updated with photos', function (done) {
+      it('for  users to be updated with photos', (done) => {
         server
           .put('/api/v1/users/' + id)
           .set('x-access-token', userToken)
@@ -218,7 +218,7 @@ describe('Users', function () {
           .field('firstName', 'Wobe')
           .attach('profile', './tests/server/artifacts/sample.png')
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.firstName.should.equal('Wobe');
@@ -229,14 +229,14 @@ describe('Users', function () {
     });
   });
 
-  describe('deletion', function () {
-    describe('does not allow', function () {
-      it('for  the admin to be deleted', function (done) {
+  describe('deletion', () => {
+    describe('does not allow', () => {
+      it('for  the admin to be deleted', (done) => {
         server
           .delete('/api/v1/users/' + id)
           .set('x-access-token', userToken)
           .expect(403)
-          .end(function (err, res) {
+          .end((err, res) => {
             res.status.should.equal(403);
             res.body.message.should.equal('Admin cannot be removed');
             done();
@@ -244,13 +244,13 @@ describe('Users', function () {
       });
     });
 
-    describe('allows', function () {
-      it('for  users to be deleted', function (done) {
+    describe('allows', () => {
+      it('for  users to be deleted', (done) => {
         server
           .get('/api/v1/users')
           .set('x-access-token', adminToken)
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             // HACK: get the id of the second user order is different on CI hence the if block
             if (process.env.NODE_ENV === 'test') {
               id = res.body[1]._id;
@@ -261,7 +261,7 @@ describe('Users', function () {
               .delete('/api/v1/users/' + id)
               .set('x-access-token', userToken)
               .expect(200)
-              .end(function (err, res) {
+              .end((err, res) => {
                 res.status.should.equal(200);
                 res.body.message.should.equal('User successfully removed');
                 done();

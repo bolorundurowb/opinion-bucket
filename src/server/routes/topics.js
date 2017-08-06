@@ -2,9 +2,9 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-const topics = require('./../controllers/topics');
-const authentication = require('./../middleware/authentication');
-const authorization = require('./../middleware/authorization');
+import topics from './../controllers/topics';
+import authentication from './../middleware/authentication';
+import authorization from './../middleware/authorization';
 
 const topicRoutes = function (router) {
   router.route('/topics')
@@ -20,4 +20,4 @@ const topicRoutes = function (router) {
     .get(topics.getOneFull);
 };
 
-module.exports = topicRoutes;
+export default topicRoutes;

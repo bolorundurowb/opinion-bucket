@@ -18,4 +18,4 @@ const categorySchema = new Schema({
 
 const categoryModel = mongoose.model('Category', categorySchema);
 
-module.exports = categoryModel;
+export default categoryModel;

@@ -2,8 +2,8 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-const logger = require('./../config/logger');
-const Categories = require('./../models/category');
+import logger from './../config/logger';
+import Categories from './../models/category';
 
 const categoriesCtrl = {
   getAll: function (req, res) {
@@ -34,7 +34,7 @@ const categoriesCtrl = {
     if (!req.body.title) {
       res.status(400).send({message: 'The category requires a title'});
     } else {
-      Categories.findOne({title: req.body.title}, function (err, result) {
+      Categories.findOne({title: req.body.title}, (err, result) => {
         if (err) {
           logger.error(err);
           res.status(500).send({message: 'An error occurred when retrieving a category'});
@@ -77,7 +77,7 @@ const categoriesCtrl = {
   },
 
   delete: function (req, res) {
-    Categories.findByIdAndRemove(req.params.id, function (err) {
+    Categories.findByIdAndRemove(req.params.id, (err) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when removing a category'});
@@ -88,4 +88,4 @@ const categoriesCtrl = {
   }
 };
 
-module.exports = categoriesCtrl;
+export default categoriesCtrl;

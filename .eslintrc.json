@@ -1,25 +1,56 @@
 {
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module"
-  },
-  "extends": "eslint:recommended",
+  "root": true,
+  "extends": "airbnb",
+  "esversion": 6,
   "env": {
-    "browser": true,
     "node": true,
+    "es6": true,
     "mocha": true
   },
   "rules": {
-    "indent": [
-      2,
-      2
+    "one-var": 0,
+    "one-var-declaration-per-line": 0,
+    "new-cap": 0,
+    "no-underscore-dangle": "off",
+    "consistent-return": 0,
+    "no-param-reassign": 0,
+    "comma-dangle": 0,
+    "curly": [
+      "error",
+      "multi-line"
     ],
-    "semi": 2,
-    "eqeqeq": 2,
-    "curly": 2,
-    "quotes": [
-      2,
-      "single"
+    "no-shadow": [
+      "error",
+      {
+        "allow": [
+          "req",
+          "res",
+          "err"
+        ]
+      }
+    ],
+    "valid-jsdoc": [
+      "error",
+      {
+        "requireReturn": false,
+        "requireReturnType": true,
+        "requireParamDescription": false,
+        "requireReturnDescription": true
+      }
+    ],
+    "require-jsdoc": [
+      "error",
+      {
+        "require": {
+          "FunctionDeclaration": true,
+          "MethodDefinition": true,
+          "ClassDeclaration": true
+        }
+      }
     ]
+  },
+  "globals": {
+    "describe": true,
+    "it": true
   }
 }

@@ -2,18 +2,18 @@
  * Created by bolorundurowb on 1/18/17.
  */
 
-const mongoose = require('mongoose');
-const logger = require('./../config/logger');
-const Opinions = require('./../models/opinion');
-const Topics = require('./../models/topic');
+import mongoose from 'mongoose';
+import logger from './../config/logger';
+import Opinions from './../models/opinion';
+import Topics from './../models/topic';
 
 const opinionsCtrl = {
   getAll: function (req, res) {
-    var filter = {};
-    var limit = req.query.limit || 0;
+    let filter = {};
+    let limit = req.query.limit || 0;
     limit = parseInt(limit);
 
-    var skip = req.query.offset || 0;
+    let skip = req.query.offset || 0;
     skip = parseInt(skip);
 
     if (req.params.topic) {
@@ -22,7 +22,7 @@ const opinionsCtrl = {
       } catch (err) {}
     }
 
-    var sort = {};
+    let sort = {};
     if (req.query.order) {
       if (req.query.order === 'date') {
         sort.date = -1;
@@ -45,7 +45,7 @@ const opinionsCtrl = {
       .limit(limit)
       .sort(sort)
       .skip(skip)
-      .exec(function (err, opinions) {
+      .exec((err, opinions) => {
         if (err) {
           logger.error(err);
           res.status(500).send({message: 'An error occurred when retrieving opinions'});
@@ -56,7 +56,7 @@ const opinionsCtrl = {
   },
 
   getOne: function (req, res) {
-    Opinions.findOne({_id: req.params.id}, function (err, opinion) {
+    Opinions.findOne({_id: req.params.id}, (err, opinion) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving an opinion'});
@@ -75,7 +75,7 @@ const opinionsCtrl = {
     } else if (!req.body.topicId) {
       res.status(400).send({message: 'An opinion must have a parent topic'});
     } else {
-      Topics.findById(req.body.topicId, function (err, topic) {
+      Topics.findById(req.body.topicId, (err, topic) => {
         if (err) {
           logger.error(err);
           res.status(500).send({message: 'An error occurred when retrieving an opinion'});
@@ -99,7 +99,7 @@ const opinionsCtrl = {
   update: function (req, res) {
     const body = req.body;
 
-    Opinions.findById(req.params.id, function (err, opinion) {
+    Opinions.findById(req.params.id, (err, opinion) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving an opinion'});
@@ -118,7 +118,7 @@ const opinionsCtrl = {
   delete: function (req, res) {
     Opinions
       .findOneAndRemove({_id: req.params.id})
-      .exec(function (err) {
+      .exec((err) => {
         if (err) {
           logger.error(err);
           res.status(500).send({message: 'An error occurred when removing an opinion'});
@@ -129,7 +129,7 @@ const opinionsCtrl = {
   },
 
   like: function (req, res) {
-    Opinions.findById(req.params.id, function (err, opinion) {
+    Opinions.findById(req.params.id, (err, opinion) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving an opinion'});
@@ -141,7 +141,7 @@ const opinionsCtrl = {
   },
 
   dislike: function (req, res) {
-    Opinions.findById(req.params.id, function (err, opinion) {
+    Opinions.findById(req.params.id, (err, opinion) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving an opinion'});
@@ -164,4 +164,4 @@ function saveOpinion(opinion, res) {
   });
 }
 
-module.exports = opinionsCtrl;
+export default opinionsCtrl;

@@ -2,9 +2,9 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-const categories = require('./../controllers/categories');
-const authentication = require('./../middleware/authentication');
-const authorization = require('./../middleware/authorization');
+import categories from './../controllers/categories';
+import authentication from './../middleware/authentication';
+import authorization from './../middleware/authorization';
 
 const categoryRoutes = function (router) {
   router.route('/categories')
@@ -17,4 +17,4 @@ const categoryRoutes = function (router) {
     .delete(authentication, authorization.isAdmin, categories.delete);
 };
 
-module.exports = categoryRoutes;
+export default categoryRoutes;

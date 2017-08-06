@@ -30,4 +30,4 @@ const topicSchema = new Schema({
 
 const topicModel = mongoose.model('Topic', topicSchema);
 
-module.exports = topicModel;
+export default topicModel;
