@@ -2,13 +2,12 @@
  * Created by bolorundurowb on 1/18/17.
  */
 
-import mongoose from 'mongoose';
-import logger from './../config/logger';
-import Opinions from './../models/opinion';
-import Topics from './../models/topic';
+import Logger from '../config/Logger';
+import Opinion from '../models/Opinion';
+import Topics from '../models/Topic';
 
-const opinionsCtrl = {
-  getAll: function (req, res) {
+class Opinions {
+  static getAll(req, res) {
     let filter = {};
     let limit = req.query.limit || 0;
     limit = parseInt(limit);
@@ -41,24 +40,24 @@ const opinionsCtrl = {
       filter.topicId = req.query.topic;
     }
 
-    Opinions.find(filter)
+    Opinion.find(filter)
       .limit(limit)
       .sort(sort)
       .skip(skip)
       .exec((err, opinions) => {
         if (err) {
-          logger.error(err);
+          Logger.error(err);
           res.status(500).send({message: 'An error occurred when retrieving opinions'});
         } else {
           res.status(200).send(opinions);
         }
       });
-  },
+  }
 
-  getOne: function (req, res) {
-    Opinions.findOne({_id: req.params.id}, (err, opinion) => {
+  static getOne(req, res) {
+    Opinion.findOne({_id: req.params.id}, (err, opinion) => {
       if (err) {
-        logger.error(err);
+        Logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving an opinion'});
       } else if (!opinion) {
         res.status(400).send({message: 'No opinion exists with that id'});
@@ -66,9 +65,9 @@ const opinionsCtrl = {
         res.status(200).send(opinion);
       }
     });
-  },
+  }
 
-  create: function (req, res) {
+  static create(req, res) {
     req.body.author = req.user._id;
     if (!(req.body.author && req.body.title)) {
       res.status(400).send({message: 'An opinion must have an author and title'});
@@ -77,15 +76,15 @@ const opinionsCtrl = {
     } else {
       Topics.findById(req.body.topicId, (err, topic) => {
         if (err) {
-          logger.error(err);
+          Logger.error(err);
           res.status(500).send({message: 'An error occurred when retrieving an opinion'});
         } else if (!topic) {
           res.status(404).send({message: 'A topic with that id doesn\'t exist'});
         } else {
-          const opinion = new Opinions(req.body);
+          const opinion = new Opinion(req.body);
           opinion.save(function (err, _opinion) {
             if (err) {
-              logger.error(err);
+              Logger.error(err);
               res.status(500).send({message: 'An error occurred when saving an opinion.'});
             } else {
               res.status(201).send(_opinion);
@@ -94,14 +93,14 @@ const opinionsCtrl = {
         }
       });
     }
-  },
+  }
 
-  update: function (req, res) {
+  static update(req, res) {
     const body = req.body;
 
-    Opinions.findById(req.params.id, (err, opinion) => {
+    Opinion.findById(req.params.id, (err, opinion) => {
       if (err) {
-        logger.error(err);
+        Logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving an opinion'});
       } else {
         ['title', 'content', 'showName', 'date'].forEach(function (property) {
@@ -110,58 +109,60 @@ const opinionsCtrl = {
           }
         });
 
-        saveOpinion(opinion, res);
+        Opinions.saveOpinion(opinion, res);
       }
     });
-  },
+  }
 
-  delete: function (req, res) {
-    Opinions
+  static delete(req, res) {
+    Opinion
       .findOneAndRemove({_id: req.params.id})
       .exec((err) => {
         if (err) {
-          logger.error(err);
+          Logger.error(err);
           res.status(500).send({message: 'An error occurred when removing an opinion'});
         } else {
           res.status(200).send({message: 'Opinion successfully removed'});
         }
       });
-  },
+  }
 
-  like: function (req, res) {
-    Opinions.findById(req.params.id, (err, opinion) => {
+  static like(req, res) {
+    Opinion.findById(req.params.id, (err, opinion) => {
       if (err) {
-        logger.error(err);
+        Logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving an opinion'});
       } else {
         opinion.likes += 1;
-        saveOpinion(opinion, res);
-      }
-    });
-  },
-
-  dislike: function (req, res) {
-    Opinions.findById(req.params.id, (err, opinion) => {
-      if (err) {
-        logger.error(err);
-        res.status(500).send({message: 'An error occurred when retrieving an opinion'});
-      } else {
-        opinion.dislikes += 1;
-        saveOpinion(opinion, res);
+        Opinions.saveOpinion(opinion, res);
       }
     });
   }
-};
 
-function saveOpinion(opinion, res) {
-  opinion.save(function (err, _opinion) {
-    if (err) {
-      logger.error(err);
-      res.status(500).send({message: 'An error occurred when saving an opinion'});
-    } else {
-      res.status(200).send(_opinion);
-    }
-  });
+  static dislike(req, res) {
+    Opinion.findById(req.params.id, (err, opinion) => {
+      if (err) {
+        Logger.error(err);
+        res.status(500).send({message: 'An error occurred when retrieving an opinion'});
+      } else {
+        opinion.dislikes += 1;
+        Opinions.saveOpinion(opinion, res);
+      }
+    });
+  }
+
+  static saveOpinion(opinion, res) {
+    opinion.save(function (err, _opinion) {
+      if (err) {
+        Logger.error(err);
+        res.status(500).send({message: 'An error occurred when saving an opinion'});
+      } else {
+        res.status(200).send(_opinion);
+      }
+    });
+  }
 }
 
-export default opinionsCtrl;
+
+
+export default Opinions;

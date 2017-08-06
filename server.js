@@ -6,9 +6,9 @@ import mongoose from 'mongoose';
 import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import routes from './src/server/routes/routes';
+import routes from './src/server/routes/Routes';
 import config from './src/server/config/config';
-import logger from './src/server/config/logger';
+import logger from './src/server/config/Logger';
 
 // Connect to MongoDB
 mongoose.connect(config.database);
@@ -20,13 +20,13 @@ const server = express();
 const router = express.Router();
 
 // direct the router to our routes first
-routes(router);
+routes.route(router);
 
 // log requests with morgan
 server.use(morgan('dev'));
 
 // parse the payload
-server.use(bodyParser.urlencoded({ extended : true }));
+server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 
 // prefix the path with /api/v{version}
@@ -48,7 +48,7 @@ const port = process.env.PORT || 4321;
 server.listen(port);
 
 // indicate server status
-logger.log('Server started on port: ' + port);
+logger.log(`Server started on port: ${port}`);
 
 // expose server to test
 export default server;

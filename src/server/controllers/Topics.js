@@ -3,11 +3,11 @@
  */
 
 import mongoose from 'mongoose';
-import logger from './../config/logger';
-import Topics from './../models/topic';
+import logger from '../config/Logger';
+import Topic from '../models/Topic';
 
-const topicsCtrl = {
-  getAll: function (req, res) {
+class Topics {
+  static getAll(req, res) {
     let limit = req.query.limit || 0;
     limit = parseInt(limit);
 
@@ -32,7 +32,7 @@ const topicsCtrl = {
       }
     }
 
-    Topics.find(filter)
+    Topic.find(filter)
       .limit(limit)
       .sort(sort)
       .skip(skip)
@@ -43,10 +43,10 @@ const topicsCtrl = {
         }
         res.status(200).send(topics);
       });
-  },
+  }
 
-  getOne: function (req, res) {
-    Topics.findOne({_id: req.params.id}, (err, topic) => {
+  static getOne(req, res) {
+    Topic.findOne({_id: req.params.id}, (err, topic) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving a topic'});
@@ -56,10 +56,10 @@ const topicsCtrl = {
         res.status(200).send(topic);
       }
     });
-  },
+  }
 
-  getOneFull: function (req, res) {
-    Topics
+  static getOneFull(req, res) {
+    Topic
       .findOne({_id: req.params.id})
       .populate('opinions categories')
       .exec((err, topic) => {
@@ -72,20 +72,20 @@ const topicsCtrl = {
           res.status(200).send(topic);
         }
       });
-  },
+  }
 
-  create: function (req, res) {
+  static create(req, res) {
     if (!req.body.title) {
       res.status(400).send({message: 'The topic requires a title'});
     } else {
-      Topics.findOne({title: req.body.title}, (err, result) => {
+      Topic.findOne({title: req.body.title}, (err, result) => {
         if (err) {
           logger.error(err);
           res.status(500).send({message: 'An error occurred when retrieving a topic'});
         } else if (result) {
           res.status(409).send({message: 'A topic exists with that title'});
         } else {
-          const _topic = new Topics(req.body);
+          const _topic = new Topic(req.body);
           _topic.save((err, topic) => {
             if (err) {
               logger.error(err);
@@ -96,12 +96,12 @@ const topicsCtrl = {
         }
       });
     }
-  },
+  }
 
-  update: function (req, res) {
+  static update(req, res) {
     const body = req.body;
 
-    Topics.findById(req.params.id, (err, topic) => {
+    Topic.findById(req.params.id, (err, topic) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving a topic'});
@@ -133,10 +133,10 @@ const topicsCtrl = {
         });
       }
     });
-  },
+  }
 
-  delete: function (req, res) {
-    Topics.findByIdAndRemove(req.params.id, (err) => {
+  static delete(req, res) {
+    Topic.findByIdAndRemove(req.params.id, (err) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when removing a topic'});
@@ -145,6 +145,6 @@ const topicsCtrl = {
       }
     });
   }
-};
+}
 
-export default topicsCtrl;
+export default Topics;

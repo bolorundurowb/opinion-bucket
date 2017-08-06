@@ -41,9 +41,8 @@ jspm_packages
 # Multer files
 uploads/
 
-# Typescript typings
-typings/
-
 # Istanbul Files
 coverage/
 
+# *~
+.DS_Store

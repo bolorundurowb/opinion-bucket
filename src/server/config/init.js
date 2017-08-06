@@ -4,13 +4,13 @@
 
 import seeder from 'mongoose-seed';
 import config from './config';
-import logger from './logger';
-import User  from './../models/user';
+import logger from './Logger';
+import User  from '../models/User';
 import data from './seeds/data.json';
 
 seeder.connect(config.database, () => {
   seeder.loadModels([
-    './src/server/models/role.js'
+    './src/server/models/Role.js'
   ]);
 
   seeder.clearModels(['Role'], () => {

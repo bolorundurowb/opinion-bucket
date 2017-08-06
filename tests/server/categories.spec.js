@@ -13,7 +13,7 @@ let id = '';
 let userToken;
 let adminToken;
 
-describe('Categories', () => {
+describe('Category', () => {
   before((done) => {
     server
       .post('/api/v1/signin')

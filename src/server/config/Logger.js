@@ -14,20 +14,14 @@ const tsFormat = function() {
   return (new Date()).toLocaleTimeString();
 };
 
-const errorLogger = new winston.Logger({
-  transports: [
-    new (winston.transports.File)({
-      filename: logDir + '/errors.json',
-      timestamp: tsFormat
-    })
-  ],
-  exitOnError: false
-});
-
-const infoLogger = new winston.Logger({
+const logger = new winston.Logger({
   transports: [
     new (winston.transports.Console)({
       colorize: true,
+      timestamp: tsFormat
+    }),
+    new (winston.transports.File)({
+      filename: logDir + '/errors.log',
       timestamp: tsFormat
     })
   ],
@@ -37,24 +31,24 @@ const infoLogger = new winston.Logger({
 /**
  * Handles all the logging needs of the app
  */
-const logger = {
+class Logger {
   /**
    * A method to print a message to the console
    * @param {String} message
    */
-  log: function(message) {
-    infoLogger.level = 'info';
-    infoLogger.info(message);
-  },
+  static log(message) {
+    logger.level = 'info';
+    logger.info(message);
+  }
 
   /**
    * A method to log errors to the console
    * @param {Object} err
    */
-  error: function(err) {
-    errorLogger.level = 'error';
-    errorLogger.error('\n\n' + err);
+  static error(err) {
+    logger.level = 'error';
+    logger.error('\n\n' + err);
   }
-};
+}
 
-export default logger;
+export default Logger;
