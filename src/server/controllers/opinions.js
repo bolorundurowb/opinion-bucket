@@ -3,7 +3,7 @@
  */
 
 import mongoose from 'mongoose';
-import logger from './../config/logger';
+import logger from '../config/Logger';
 import Opinions from './../models/opinion';
 import Topics from './../models/topic';
 

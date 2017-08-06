@@ -4,7 +4,7 @@
 
 import mongoose from 'mongoose';
 import cloudinary from 'cloudinary';
-import logger from './../config/logger';
+import logger from '../config/Logger';
 import Users from './../models/user';
 
 const usersCtrl = {

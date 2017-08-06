@@ -2,7 +2,7 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-import logger from './../config/logger';
+import logger from '../config/Logger';
 import Categories from './../models/category';
 
 const categoriesCtrl = {

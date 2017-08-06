@@ -4,7 +4,7 @@
 
 import seeder from 'mongoose-seed';
 import config from './config';
-import logger from './logger';
+import logger from './Logger';
 import User  from './../models/user';
 import data from './seeds/data.json';
 

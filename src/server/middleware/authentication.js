@@ -4,7 +4,7 @@
 
 import jwt from 'jsonwebtoken';
 import config from './../config/config';
-import logger from './../config/logger';
+import logger from '../config/Logger';
 import User from './../models/user';
 // eslint-disable-next-line
 import Role from './../models/role';

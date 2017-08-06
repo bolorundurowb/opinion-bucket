@@ -8,7 +8,7 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import routes from './src/server/routes/routes';
 import config from './src/server/config/config';
-import logger from './src/server/config/logger';
+import logger from './src/server/config/Logger';
 
 // Connect to MongoDB
 mongoose.connect(config.database);

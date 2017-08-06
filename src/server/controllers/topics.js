@@ -3,7 +3,7 @@
  */
 
 import mongoose from 'mongoose';
-import logger from './../config/logger';
+import logger from '../config/Logger';
 import Topics from './../models/topic';
 
 const topicsCtrl = {
