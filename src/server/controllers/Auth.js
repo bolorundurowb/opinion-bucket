@@ -5,7 +5,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import cloudinary from 'cloudinary';
-import config from '../config/config';
+import config from '../config/Config';
 import Logger from '../config/Logger';
 import Users from '../models/User';
 

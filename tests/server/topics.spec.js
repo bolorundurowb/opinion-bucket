@@ -6,7 +6,6 @@ import supertest from 'supertest';
 // eslint-disable-next-line
 import should from 'should';
 import app from './../../server';
-import config from '../../src/server/config/config';
 
 const server = supertest.agent(app);
 let id = '';
