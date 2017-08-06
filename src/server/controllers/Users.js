@@ -3,13 +3,13 @@
  */
 
 import mongoose from 'mongoose';
-import cloudinary from 'cloudinary';
 import logger from '../config/Logger';
-import Users from './../models/user';
+import User from './../models/user';
+import Auth from './Auth';
 
-const usersCtrl = {
-  getAll(req, res) {
-    Users.find((err, users) => {
+class Users {
+  static getAll(req, res) {
+    User.find((err, users) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving users'});
@@ -17,10 +17,10 @@ const usersCtrl = {
         res.status(200).send(users);
       }
     });
-  },
+  }
 
-  getOne(req, res) {
-    Users.findOne({_id: req.params.id}, (err, user) => {
+  static getOne(req, res) {
+    User.findOne({_id: req.params.id}, (err, user) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving a user'});
@@ -30,10 +30,10 @@ const usersCtrl = {
         res.status(200).send(user);
       }
     });
-  },
+  }
 
-  getOneFull(req, res) {
-    Users.findOne({_id: req.params.id})
+  static getOneFull(req, res) {
+    User.findOne({_id: req.params.id})
       .populate('topics')
       .exec((err, user) => {
         if (err) {
@@ -45,12 +45,12 @@ const usersCtrl = {
           res.status(200).send(user);
         }
       });
-  },
+  }
 
-  update(req, res) {
+  static update(req, res) {
     const body = req.body;
     
-    Users.findById(req.params.id, (err, user) => {
+    User.findById(req.params.id, (err, user) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving a user'});
@@ -74,27 +74,27 @@ const usersCtrl = {
         }
 
         if (req.file) {
-          uploadImage(req.file, user)
+          Auth.uploadImage(req.file, user)
             .then(function (url) {
               user.profilePhoto = url;
-              saveUser(user, res);
+              Users.saveUser(user, res);
             });
         } else {
-          saveUser(user, res);
+          Users.saveUser(user, res);
         }
       }
     });
-  },
+  }
 
-  delete(req, res) {
-    Users.findById(req.params.id, (err, user) => {
+  static delete(req, res) {
+    User.findById(req.params.id, (err, user) => {
       if (err) {
         logger.error(err);
         res.status(500).send({message: 'An error occurred when retrieving a user'});
       } else if (user.username === 'admin') {
         res.status(403).send({message: 'Admin cannot be removed'});
       } else {
-        Users.findByIdAndRemove(req.params.id, (err) => {
+        User.findByIdAndRemove(req.params.id, (err) => {
           if (err) {
             logger.error(err);
             res.status(500).send({message: 'An error occurred when removing a user'});
@@ -105,35 +105,23 @@ const usersCtrl = {
       }
     });
   }
-};
 
-/**
- * Saves a user to the database
- * @param {Object} user
- * @param {Object} res
- */
-function saveUser(user, res) {
-  user.save(function (err, _user) {
-    if (err) {
-      logger.error(err);
-      res.status(500).send({message: 'An error occurred when saving a user'});
-    } else {
-      res.status(200).send(_user);
-    }
-  });
-}
-
-/**
- * Uploads an image to cloudinary
- * @param {Object} file
- * @return {Promise<Object>}
- */
-function uploadImage(file) {
-  return new Promise(function (resolve) {
-    cloudinary.uploader.upload(file.path, function (result) {
-      resolve(result.url);
+  /**
+   * Saves a user to the database
+   * @param {Object} user
+   * @param {Object} res
+   */
+  static saveUser(user, res) {
+    user.save(function (err, _user) {
+      if (err) {
+        logger.error(err);
+        res.status(500).send({message: 'An error occurred when saving a user'});
+      } else {
+        res.status(200).send(_user);
+      }
     });
-  });
+  }
 }
 
-export default usersCtrl;
+
+export default Users;

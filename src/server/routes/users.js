@@ -3,7 +3,7 @@
  */
 
 import multer from 'multer';
-import users from './../controllers/users';
+import users from '../controllers/Users';
 import authentication from './../middleware/authentication';
 import authorization from './../middleware/authorization';
 

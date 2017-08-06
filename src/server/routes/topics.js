@@ -2,7 +2,7 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-import topics from './../controllers/topics';
+import topics from '../controllers/Topics';
 import authentication from './../middleware/authentication';
 import authorization from './../middleware/authorization';
 

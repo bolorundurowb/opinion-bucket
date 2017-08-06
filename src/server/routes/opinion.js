@@ -2,7 +2,7 @@
  * Created by bolorundurowb on 1/18/17.
  */
 
-import opinions from './../controllers/opinions';
+import opinions from '../controllers/Opinions';
 import authentication from './../middleware/authentication';
 
 const opinionRoutes = function (router) {
