@@ -2,13 +2,13 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-import auth from '../controllers/Auth';
 import multer from 'multer';
-import authentication from './../middleware/authentication';
+import auth from '../controllers/Auth';
+import Authentication from '../middleware/Authentication';
 
 const upload = multer({ dest: 'uploads/' });
 
-const authRoutes = function (router) {
+const authRoutes = (router) => {
   router.route('/signin')
     .post(auth.signin);
 
@@ -16,7 +16,7 @@ const authRoutes = function (router) {
     .post(upload.single('profile'), auth.signup);
 
   router.route('/signout')
-    .post(authentication, auth.signout);
+    .post(Authentication.isAuthenticated, auth.signout);
 };
 
 export default authRoutes;

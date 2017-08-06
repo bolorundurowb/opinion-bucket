@@ -2,11 +2,11 @@
  * Created by bolorundurowb on 1/6/17.
  */
 
-import authRoutes from './auth';
-import userRoutes from './users';
-import categoryRoutes from './categories';
-import topicRoutes from './topics';
-import opinionRoutes from './opinion';
+import authRoutes from './AuthRoutes';
+import userRoutes from './UserRoutes';
+import categoryRoutes from './CategoryRoutes';
+import topicRoutes from './TopicRoutes';
+import opinionRoutes from './OpinionRoutes';
 
 const routes = function (router) {
   authRoutes(router);

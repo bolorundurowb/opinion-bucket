@@ -12,7 +12,7 @@ class Users {
     User.find((err, users) => {
       if (err) {
         logger.error(err);
-        res.status(500).send({message: 'An error occurred when retrieving users'});
+        res.status(500).send({ message: 'An error occurred when retrieving users' });
       } else {
         res.status(200).send(users);
       }
@@ -20,12 +20,12 @@ class Users {
   }
 
   static getOne(req, res) {
-    User.findOne({_id: req.params.id}, (err, user) => {
+    User.findOne({ _id: req.params.id }, (err, user) => {
       if (err) {
         logger.error(err);
-        res.status(500).send({message: 'An error occurred when retrieving a user'});
+        res.status(500).send({ message: 'An error occurred when retrieving a user' });
       } else if (!user) {
-        res.status(400).send({message: 'No user exists with that id'});
+        res.status(400).send({ message: 'No user exists with that id' });
       } else {
         res.status(200).send(user);
       }
@@ -33,14 +33,14 @@ class Users {
   }
 
   static getOneFull(req, res) {
-    User.findOne({_id: req.params.id})
+    User.findOne({ _id: req.params.id })
       .populate('topics')
       .exec((err, user) => {
         if (err) {
           logger.error(err);
-          res.status(500).send({message: 'An error occurred when retrieving a user'});
+          res.status(500).send({ message: 'An error occurred when retrieving a user' });
         } else if (!user) {
-          res.status(400).send({message: 'No user exists with that id'});
+          res.status(400).send({ message: 'No user exists with that id' });
         } else {
           res.status(200).send(user);
         }
@@ -49,25 +49,25 @@ class Users {
 
   static update(req, res) {
     const body = req.body;
-    
+
     User.findById(req.params.id, (err, user) => {
       if (err) {
         logger.error(err);
-        res.status(500).send({message: 'An error occurred when retrieving a user'});
+        res.status(500).send({ message: 'An error occurred when retrieving a user' });
       } else if (!user) {
-        res.status(404).send({message: 'No user with that id'});
-      } else{
-        ['firstName', 'lastName', 'gender', 'dateOfBirth', 'email'].forEach(function (property) { 
+        res.status(404).send({ message: 'No user with that id' });
+      } else {
+        ['firstName', 'lastName', 'gender', 'dateOfBirth', 'email'].forEach((property) => {
           if (body[property]) {
             user[property] = body[property];
           }
         });
-        
+
         if (body.topics) {
           user.topics = [];
-          req.body.topics.forEach(function (topic_id) {
+          req.body.topics.forEach((topic_id) => {
             try {
-              let id = mongoose.Types.ObjectId(topic_id);
+              const id = mongoose.Types.ObjectId(topic_id);
               user.topics.push(id);
             } catch (err) {}
           });
@@ -75,7 +75,7 @@ class Users {
 
         if (req.file) {
           Auth.uploadImage(req.file, user)
-            .then(function (url) {
+            .then((url) => {
               user.profilePhoto = url;
               Users.saveUser(user, res);
             });
@@ -90,16 +90,16 @@ class Users {
     User.findById(req.params.id, (err, user) => {
       if (err) {
         logger.error(err);
-        res.status(500).send({message: 'An error occurred when retrieving a user'});
+        res.status(500).send({ message: 'An error occurred when retrieving a user' });
       } else if (user.username === 'admin') {
-        res.status(403).send({message: 'Admin cannot be removed'});
+        res.status(403).send({ message: 'Admin cannot be removed' });
       } else {
         User.findByIdAndRemove(req.params.id, (err) => {
           if (err) {
             logger.error(err);
-            res.status(500).send({message: 'An error occurred when removing a user'});
+            res.status(500).send({ message: 'An error occurred when removing a user' });
           } else {
-            res.status(200).send({message: 'User successfully removed'});
+            res.status(200).send({ message: 'User successfully removed' });
           }
         });
       }
@@ -112,10 +112,10 @@ class Users {
    * @param {Object} res
    */
   static saveUser(user, res) {
-    user.save(function (err, _user) {
+    user.save((err, _user) => {
       if (err) {
         logger.error(err);
-        res.status(500).send({message: 'An error occurred when saving a user'});
+        res.status(500).send({ message: 'An error occurred when saving a user' });
       } else {
         res.status(200).send(_user);
       }
