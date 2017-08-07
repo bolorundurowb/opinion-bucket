@@ -58,7 +58,7 @@ describe('Auth', () => {
           .end((err, res) => {
             res.status.should.equal(400);
             res.body.should.be.type('object');
-            res.body.message.should.equal('A user must have an email address.');
+            res.body.message.should.equal('An email address is required.');
             done();
           });
       });
@@ -74,7 +74,7 @@ describe('Auth', () => {
           .end((err, res) => {
             res.status.should.equal(400);
             res.body.should.be.type('object');
-            res.body.message.should.equal('A user must have a username.');
+            res.body.message.should.equal('A username is required.');
             done();
           });
       });
@@ -90,7 +90,7 @@ describe('Auth', () => {
           .end((err, res) => {
             res.status.should.equal(400);
             res.body.should.be.type('object');
-            res.body.message.should.equal('A user must have a password.');
+            res.body.message.should.equal('A password is required.');
             done();
           });
       });
@@ -140,7 +140,7 @@ describe('Auth', () => {
           .expect(400)
           .end((err, res) => {
             res.status.should.equal(400);
-            res.body.message.should.equal('A username or email and password are required');
+            res.body.message.should.equal('A password is required.');
             done();
           });
       });
