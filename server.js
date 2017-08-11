@@ -7,7 +7,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import routes from './src/server/routes/Routes';
-import config from './src/server/config/config';
+import config from './src/server/config/Config';
 import logger from './src/server/config/Logger';
 
 // Connect to MongoDB

@@ -9,6 +9,10 @@ import topicRoutes from './TopicRoutes';
 import opinionRoutes from './OpinionRoutes';
 
 class Routes {
+  /**
+   * Route handling method
+   * @param {Object} router
+   */
   static route(router) {
     authRoutes.route(router);
     categoryRoutes.route(router);

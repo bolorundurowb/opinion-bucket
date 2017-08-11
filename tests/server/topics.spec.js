@@ -6,7 +6,6 @@ import supertest from 'supertest';
 // eslint-disable-next-line
 import should from 'should';
 import app from './../../server';
-import config from '../../src/server/config/config';
 
 const server = supertest.agent(app);
 let id = '';
@@ -45,7 +44,7 @@ describe('Topics', () => {
         server
           .post('/api/v1/topics')
           .set('x-access-token', adminToken)
-          .send({title: 'Tech'})
+          .send({ title: 'Tech' })
           .expect(201)
           .end((err, res) => {
             id = res.body._id || '';
@@ -62,7 +61,7 @@ describe('Topics', () => {
         server
           .post('/api/v1/topics')
           .set('x-access-token', adminToken)
-          .send({title: 'Tech'})
+          .send({ title: 'Tech' })
           .expect(409)
           .end((err, res) => {
             res.status.should.equal(409);
@@ -79,7 +78,7 @@ describe('Topics', () => {
           .expect(400)
           .end((err, res) => {
             res.status.should.equal(400);
-            res.body.message.should.equal('The topic requires a title');
+            res.body.message.should.equal('A title is required.');
             done();
           });
       });
@@ -90,7 +89,7 @@ describe('Topics', () => {
     describe('does not allow', () => {
       it('for wrong category ids', (done) => {
         server
-          .put('/api/v1/topics/' + id)
+          .put(`/api/v1/topics/${id}`)
           .set('x-access-token', userToken)
           .send({
             categories: '507f1f77bcf86cd79'
@@ -111,7 +110,7 @@ describe('Topics', () => {
           .end((err, res) => {
             res.status.should.equal(404);
             res.body.should.be.type('object');
-            res.body.message.should.equal('A topic with that id doesn\'t exist');
+            res.body.message.should.equal('A topic with that id doesn\'t exist.');
             done();
           });
       });
@@ -120,7 +119,7 @@ describe('Topics', () => {
     describe('allows', () => {
       it('for topics to be updated', (done) => {
         server
-          .put('/api/v1/topics/' + id)
+          .put(`/api/v1/topics/${id}`)
           .set('x-access-token', userToken)
           .send({
             title: 'Technology',
@@ -141,7 +140,7 @@ describe('Topics', () => {
 
   describe('retrieval', () => {
     describe('does not allow', () => {
-      it('doesnt allow a non-existent topic to be retrieved', (done) => {
+      it('a non-existent topic to be retrieved', (done) => {
         server
           .get('/api/v1/topics/507f1f77bcf86cd799439011')
           .set('x-access-token', userToken)
@@ -153,7 +152,7 @@ describe('Topics', () => {
           });
       });
 
-      it('doesnt allow a non-existent topic to be retrieved with more detail', (done) => {
+      it('a non-existent topic to be retrieved with more detail', (done) => {
         server
           .get('/api/v1/topics/507f1f77bcf86cd799439011/full')
           .set('x-access-token', userToken)
@@ -193,22 +192,22 @@ describe('Topics', () => {
           });
       });
 
-      it('for topics to be retrieved with query options but sanitizes input', (done) => {
+      it('for topics to be retrieved with more query options', (done) => {
         server
-          .get('/api/v1/topics?category=50e76f592&order=opinion')
+          .get('/api/v1/topics?category=50e76f592&order=opinion&skip=5')
           .set('x-access-token', userToken)
           .expect(200)
           .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
-            res.body.length.should.equal(2);
+            res.body.length.should.equal(0);
             done();
           });
       });
 
       it('for a topic to be retrieved', (done) => {
         server
-          .get('/api/v1/topics/' + id)
+          .get(`/api/v1/topics/${id}`)
           .set('x-access-token', userToken)
           .expect(200)
           .end((err, res) => {
@@ -220,7 +219,7 @@ describe('Topics', () => {
 
       it('for a topic to be retrieved with more detail', (done) => {
         server
-          .get('/api/v1/topics/' + id + '/full')
+          .get(`/api/v1/topics/${id}/full`)
           .set('x-access-token', userToken)
           .expect(200)
           .end((err, res) => {
@@ -236,7 +235,7 @@ describe('Topics', () => {
     describe('allows', () => {
       it('for topics to be deleted', (done) => {
         server
-          .delete('/api/v1/topics/' + id)
+          .delete(`/api/v1/topics/${id}`)
           .set('x-access-token', adminToken)
           .expect(200)
           .end((err, res) => {

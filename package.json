@@ -4,7 +4,7 @@
   "description": "A RESTful API and App code for Opinion Bucket",
   "main": "server.js",
   "scripts": {
-    "init": "babel-node ./src/server/config/init.js --presets es2015,stage-2",
+    "init": "babel-node ./src/server/config/Init.js --presets es2015,stage-2",
     "clean": "./teardown.sh",
     "test": "npm run clean && NODE_ENV=test npm run init && NODE_ENV=test mocha --compilers js:babel-core/register tests/server",
     "start": "npm run init && nodemon server.js --exec babel-node --presets es2015,stage-2",

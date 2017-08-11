@@ -7,6 +7,9 @@ import logger from '../config/Logger';
 import User from '../models/User';
 import Auth from './Auth';
 
+/**
+ * Handles users
+ */
 class Users {
   static getAll(req, res) {
     User.find((err, users) => {

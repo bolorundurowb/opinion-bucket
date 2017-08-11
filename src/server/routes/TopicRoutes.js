@@ -4,21 +4,43 @@
 
 import topics from '../controllers/Topics';
 import Authentication from '../middleware/Authentication';
-import authorization from '../middleware/Authorization';
+import Authorization from '../middleware/Authorization';
+import Validations from './../middleware/Validations';
 
 class TopicRoutes {
+  /**
+   * Route handling method
+   * @param {Object} router
+   */
   static route(router) {
     router.route('/topics')
-      .get(topics.getAll)
-      .post(Authentication.isAuthenticated, topics.create);
+      .get(
+        topics.getAll
+      )
+      .post(
+        Authentication.isAuthenticated,
+        Validations.validateCreateTopic,
+        topics.create
+      );
 
     router.route('/topics/:id')
-      .get(topics.getOne)
-      .put(Authentication.isAuthenticated, topics.update)
-      .delete(Authentication.isAuthenticated, authorization.isModerator, topics.delete);
+      .get(
+        topics.getOne
+      )
+      .put(
+        Authentication.isAuthenticated,
+        topics.update
+      )
+      .delete(
+        Authentication.isAuthenticated,
+        Authorization.isModerator,
+        topics.delete
+      );
 
     router.route('/topics/:id/full')
-      .get(topics.getOneFull);
+      .get(
+        topics.getOneFull
+      );
   }
 }
 
