@@ -17,6 +17,7 @@ class Opinions {
    */
   static getAll(req, res) {
     const filter = {};
+
     let limit = req.query.limit || 0;
     limit = parseInt(limit, 10);
 
@@ -24,9 +25,7 @@ class Opinions {
     skip = parseInt(skip, 10);
 
     if (req.params.topic) {
-      try {
-        filter.topicId = req.params.topic;
-      } catch (err) {}
+      filter.topicId = req.params.topic;
     }
 
     const sort = {};

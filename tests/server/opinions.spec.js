@@ -215,13 +215,13 @@ describe('Opinions', () => {
 
       it('for all opinions to be retrieved with even more query options', (done) => {
         server
-          .get('/api/v1/opinions?author=&order=likes')
+          .get('/api/v1/opinions?author=uyeughst&order=likes')
           .set('x-access-token', userToken)
           .expect(200)
           .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
-            res.body.length.should.equal(1);
+            res.body.length.should.equal(0);
             done();
           });
       });
