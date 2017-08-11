@@ -73,6 +73,27 @@ class Validations {
   static validateUpdateCategory(req, res, next) {
     Validations.validateCreateCategory(req, res, next);
   }
+
+  /**
+   * Handles opinion creation validation logic
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Function} next
+   */
+  static validateCreateOpinion(req, res, next) {
+    const body = req.body;
+    body.author = req.user._id;
+
+    if (!body.author) {
+      res.status(400).send({ message: 'An author is required.' });
+    } else if (!body.title) {
+      res.status(400).send({ message: 'A title is required.' });
+    } else if (!body.topicId) {
+      res.status(400).send({ message: 'A topic id is required.' });
+    } else {
+      next();
+    }
+  }
 }
 
 export default Validations;

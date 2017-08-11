@@ -43,7 +43,7 @@ describe('Opinions', () => {
     server
       .post('/api/v1/topics')
       .set('x-access-token', adminToken)
-      .send({title: 'Sports'})
+      .send({ title: 'Sports' })
       .expect(201)
       .end((err, res) => {
         topicId = res.body._id;
@@ -57,11 +57,11 @@ describe('Opinions', () => {
         server
           .post('/api/v1/opinions')
           .set('x-access-token', userToken)
-          .send({topicId: topicId})
+          .send({ topicId })
           .expect(400)
           .end((err, res) => {
             res.status.should.equal(400);
-            res.body.message.should.equal('An opinion must have an author and title');
+            res.body.message.should.equal('A title is required.');
             done();
           });
       });
@@ -70,11 +70,11 @@ describe('Opinions', () => {
         server
           .post('/api/v1/opinions')
           .set('x-access-token', userToken)
-          .send({title: 'Things'})
+          .send({ title: 'Things' })
           .expect(400)
           .end((err, res) => {
             res.status.should.equal(400);
-            res.body.message.should.equal('An opinion must have a parent topic');
+            res.body.message.should.equal('A topic id is required.');
             done();
           });
       });
@@ -103,7 +103,7 @@ describe('Opinions', () => {
           .set('x-access-token', userToken)
           .send({
             title: 'Good Stuff',
-            topicId: topicId
+            topicId
           })
           .expect(201)
           .end((err, res) => {
@@ -121,7 +121,7 @@ describe('Opinions', () => {
     describe('allows', () => {
       it('for opinions to be updated', (done) => {
         server
-          .put('/api/v1/opinions/' + id)
+          .put(`/api/v1/opinions/${id}`)
           .set('x-access-token', userToken)
           .send({
             title: 'Cool Stuff',
@@ -186,7 +186,7 @@ describe('Opinions', () => {
 
       it('for all opinions to be retrieved with other query options', (done) => {
         server
-          .get('/api/v1/opinions?topic=' + topicId + '&order=dislikes')
+          .get(`/api/v1/opinions?topic=${topicId}&order=dislikes`)
           .set('x-access-token', userToken)
           .expect(200)
           .end((err, res) => {
@@ -212,7 +212,7 @@ describe('Opinions', () => {
 
       it('for an opinion to be retrieved', (done) => {
         server
-          .get('/api/v1/opinions/' + id)
+          .get(`/api/v1/opinions/${id}`)
           .set('x-access-token', userToken)
           .expect(200)
           .end((err, res) => {
@@ -228,7 +228,7 @@ describe('Opinions', () => {
     describe('allows', () => {
       it('for opinions to be liked', (done) => {
         server
-          .post('/api/v1/opinions/' + id + '/like')
+          .post(`/api/v1/opinions/${id}/like`)
           .set('x-access-token', userToken)
           .expect(200)
           .end((err, res) => {
@@ -241,7 +241,7 @@ describe('Opinions', () => {
 
       it('for opinions to be disliked', (done) => {
         server
-          .post('/api/v1/opinions/' + id + '/dislike')
+          .post(`/api/v1/opinions/${id}/dislike`)
           .set('x-access-token', userToken)
           .expect(200)
           .end((err, res) => {
@@ -258,7 +258,7 @@ describe('Opinions', () => {
     describe('allows', () => {
       it('for opinions to be deleted', (done) => {
         server
-          .delete('/api/v1/opinions/' + id)
+          .delete(`/api/v1/opinions/${id}`)
           .set('x-access-token', userToken)
           .expect(200)
           .end((err, res) => {

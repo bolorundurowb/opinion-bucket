@@ -7,13 +7,18 @@ import Opinion from '../models/Opinion';
 import Topics from '../models/Topic';
 
 class Opinions {
+  /**
+   * Controller method to handle retrieving a bunch of opinions
+   * @param {Object} req
+   * @param {Object} res
+   */
   static getAll(req, res) {
-    let filter = {};
+    const filter = {};
     let limit = req.query.limit || 0;
-    limit = parseInt(limit);
+    limit = parseInt(limit, 10);
 
     let skip = req.query.offset || 0;
-    skip = parseInt(skip);
+    skip = parseInt(skip, 10);
 
     if (req.params.topic) {
       try {
@@ -21,7 +26,7 @@ class Opinions {
       } catch (err) {}
     }
 
-    let sort = {};
+    const sort = {};
     if (req.query.order) {
       if (req.query.order === 'date') {
         sort.date = -1;
@@ -47,63 +52,73 @@ class Opinions {
       .exec((err, opinions) => {
         if (err) {
           Logger.error(err);
-          res.status(500).send({message: 'An error occurred when retrieving opinions'});
+          res.status(500).send({ message: 'An error occurred when retrieving opinions' });
         } else {
           res.status(200).send(opinions);
         }
       });
   }
 
+  /**
+   * Controller method to handle retrieving one opinion
+   * @param {Object} req
+   * @param {Object} res
+   */
   static getOne(req, res) {
-    Opinion.findOne({_id: req.params.id}, (err, opinion) => {
+    Opinion.findOne({ _id: req.params.id }, (err, opinion) => {
       if (err) {
         Logger.error(err);
-        res.status(500).send({message: 'An error occurred when retrieving an opinion'});
+        res.status(500).send({ message: 'An error occurred when retrieving an opinion' });
       } else if (!opinion) {
-        res.status(400).send({message: 'No opinion exists with that id'});
+        res.status(400).send({ message: 'No opinion exists with that id' });
       } else {
         res.status(200).send(opinion);
       }
     });
   }
 
+  /**
+   * Controller method to handle creating an opinion
+   * @param {Object} req
+   * @param {Object} res
+   */
   static create(req, res) {
-    req.body.author = req.user._id;
-    if (!(req.body.author && req.body.title)) {
-      res.status(400).send({message: 'An opinion must have an author and title'});
-    } else if (!req.body.topicId) {
-      res.status(400).send({message: 'An opinion must have a parent topic'});
-    } else {
-      Topics.findById(req.body.topicId, (err, topic) => {
-        if (err) {
-          Logger.error(err);
-          res.status(500).send({message: 'An error occurred when retrieving an opinion'});
-        } else if (!topic) {
-          res.status(404).send({message: 'A topic with that id doesn\'t exist'});
-        } else {
-          const opinion = new Opinion(req.body);
-          opinion.save(function (err, _opinion) {
-            if (err) {
-              Logger.error(err);
-              res.status(500).send({message: 'An error occurred when saving an opinion.'});
-            } else {
-              res.status(201).send(_opinion);
-            }
-          });
-        }
-      });
-    }
+    Topics.findById(req.body.topicId, (err, topic) => {
+      if (err) {
+        Logger.error(err);
+        res.status(500).send({ message: 'An error occurred when retrieving an opinion' });
+      } else if (!topic) {
+        res.status(404).send({ message: 'A topic with that id doesn\'t exist' });
+      } else {
+        const opinion = new Opinion(req.body);
+        opinion.save((err, _opinion) => {
+          if (err) {
+            Logger.error(err);
+            res.status(500).send({ message: 'An error occurred when saving an opinion.' });
+          } else {
+            res.status(201).send(_opinion);
+          }
+        });
+      }
+    });
   }
 
+  /**
+   * Controller method to handle updating an opinion
+   * @param {Object} req
+   * @param {Object} res
+   */
   static update(req, res) {
     const body = req.body;
 
     Opinion.findById(req.params.id, (err, opinion) => {
       if (err) {
         Logger.error(err);
-        res.status(500).send({message: 'An error occurred when retrieving an opinion'});
+        res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
+      } else if (!opinion) {
+        res.status(404).send({ message: 'An opinion with that id doesn\'t exist.' });
       } else {
-        ['title', 'content', 'showName', 'date'].forEach(function (property) {
+        ['title', 'content', 'showName', 'date'].forEach((property) => {
           if (body[property]) {
             opinion[property] = body[property];
           }
@@ -114,24 +129,39 @@ class Opinions {
     });
   }
 
+  /**
+   * Controller method to handle deleting an opinion
+   * @param {Object} req
+   * @param {Object} res
+   */
   static delete(req, res) {
     Opinion
-      .findOneAndRemove({_id: req.params.id})
+      .findOneAndRemove({
+        _id: req.params.id,
+        author: req.user._id
+      })
       .exec((err) => {
         if (err) {
           Logger.error(err);
-          res.status(500).send({message: 'An error occurred when removing an opinion'});
+          res.status(500).send({ message: 'An error occurred when removing an opinion' });
         } else {
-          res.status(200).send({message: 'Opinion successfully removed'});
+          res.status(200).send({ message: 'Opinion successfully removed' });
         }
       });
   }
 
+  /**
+   * Controller method to handle liking an opinion
+   * @param {Object} req
+   * @param {Object} res
+   */
   static like(req, res) {
     Opinion.findById(req.params.id, (err, opinion) => {
       if (err) {
         Logger.error(err);
-        res.status(500).send({message: 'An error occurred when retrieving an opinion'});
+        res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
+      } else if (!opinion) {
+        res.status(404).send({ message: 'An opinion with that id doesn\'t exist.' });
       } else {
         opinion.likes += 1;
         Opinions.saveOpinion(opinion, res);
@@ -139,11 +169,18 @@ class Opinions {
     });
   }
 
+  /**
+   * Controller method to handle dislikes for an opinion
+   * @param {Object} req
+   * @param {Object} res
+   */
   static dislike(req, res) {
     Opinion.findById(req.params.id, (err, opinion) => {
       if (err) {
         Logger.error(err);
-        res.status(500).send({message: 'An error occurred when retrieving an opinion'});
+        res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
+      } else if (!opinion) {
+        res.status(404).send({ message: 'An opinion with that id doesn\'t exist.' });
       } else {
         opinion.dislikes += 1;
         Opinions.saveOpinion(opinion, res);
@@ -151,18 +188,22 @@ class Opinions {
     });
   }
 
+  /**
+   * Controller method to handle saving opinions
+   * @param {Object} opinion
+   * @param {Object} res
+   */
   static saveOpinion(opinion, res) {
-    opinion.save(function (err, _opinion) {
+    opinion.save((err, _opinion) => {
       if (err) {
         Logger.error(err);
-        res.status(500).send({message: 'An error occurred when saving an opinion'});
+        res.status(500).send({ message: 'An error occurred when saving an opinion' });
       } else {
         res.status(200).send(_opinion);
       }
     });
   }
 }
-
 
 
 export default Opinions;

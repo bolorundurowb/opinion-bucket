@@ -4,6 +4,7 @@
 
 import opinions from '../controllers/Opinions';
 import Authentication from '../middleware/Authentication';
+import Validations from './../middleware/Validations';
 
 class OpinionRoutes {
   /**
@@ -12,19 +13,39 @@ class OpinionRoutes {
    */
   static route(router) {
     router.route('/opinions')
-      .get(opinions.getAll)
-      .post(Authentication.isAuthenticated, opinions.create);
+      .get(
+        opinions.getAll
+      )
+      .post(
+        Authentication.isAuthenticated,
+        Validations.validateCreateOpinion,
+        opinions.create
+      );
 
     router.route('/opinions/:id')
-      .get(opinions.getOne)
-      .put(Authentication.isAuthenticated, opinions.update)
-      .delete(Authentication.isAuthenticated, opinions.delete);
+      .get(
+        opinions.getOne
+      )
+      .put(
+        Authentication.isAuthenticated,
+        opinions.update
+      )
+      .delete(
+        Authentication.isAuthenticated,
+        opinions.delete
+      );
 
     router.route('/opinions/:id/like')
-      .post(Authentication.isAuthenticated, opinions.like);
+      .post(
+        Authentication.isAuthenticated,
+        opinions.like
+      );
 
     router.route('/opinions/:id/dislike')
-      .post(Authentication.isAuthenticated, opinions.dislike);
+      .post(
+        Authentication.isAuthenticated,
+        opinions.dislike
+      );
   }
 }
 
