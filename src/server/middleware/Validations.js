@@ -94,6 +94,22 @@ class Validations {
       next();
     }
   }
+
+  /**
+   * Handles topic creation validation logic
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Function} next
+   */
+  static validateCreateTopic(req, res, next) {
+    const body = req.body;
+
+    if (!body.title) {
+      res.status(400).send({ message: 'A title is required.' });
+    } else {
+      next();
+    }
+  }
 }
 
 export default Validations;

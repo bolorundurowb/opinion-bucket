@@ -95,27 +95,23 @@ class Topics {
    * @param {Object} res
    */
   static create(req, res) {
-    if (!req.body.title) {
-      res.status(400).send({ message: 'The topic requires a title' });
-    } else {
-      Topic.findOne({ title: req.body.title }, (err, result) => {
-        if (err) {
-          logger.error(err);
-          res.status(500).send({ message: 'An error occurred when retrieving a topic' });
-        } else if (result) {
-          res.status(409).send({ message: 'A topic exists with that title' });
-        } else {
-          const _topic = new Topic(req.body);
-          _topic.save((err, topic) => {
-            if (err) {
-              logger.error(err);
-              res.status(500).send({ message: 'An error occurred when saving a topic' });
-            }
-            res.status(201).send(topic);
-          });
-        }
-      });
-    }
+    Topic.findOne({ title: req.body.title }, (err, result) => {
+      if (err) {
+        logger.error(err);
+        res.status(500).send({ message: 'An error occurred when retrieving a topic' });
+      } else if (result) {
+        res.status(409).send({ message: 'A topic exists with that title' });
+      } else {
+        const _topic = new Topic(req.body);
+        _topic.save((err, topic) => {
+          if (err) {
+            logger.error(err);
+            res.status(500).send({ message: 'An error occurred when saving a topic' });
+          }
+          res.status(201).send(topic);
+        });
+      }
+    });
   }
 
   /**
@@ -129,29 +125,20 @@ class Topics {
     Topic.findById(req.params.id, (err, topic) => {
       if (err) {
         logger.error(err);
-        res.status(500).send({ message: 'An error occurred when retrieving a topic' });
+        res.status(500).send({ message: 'An error occurred when retrieving a topic.' });
       } else if (!topic) {
-        res.status(404).send({ message: 'A topic with that id doesn\'t exist' });
+        res.status(404).send({ message: 'A topic with that id doesn\'t exist.' });
       } else {
-        ['title', 'content'].forEach((property) => {
+        ['title', 'content', 'categories'].forEach((property) => {
           if (body[property]) {
             topic[property] = body[property];
           }
         });
-        if (body.categories && Array.isArray(body.categories)) {
-          topic.categories = [];
-          req.body.categories.forEach((catId) => {
-            try {
-              const id = mongoose.Types.ObjectId(catId);
-              topic.categories.push(id);
-            } catch (err) {}
-          });
-        }
 
         topic.save((err, _topic) => {
           if (err) {
             logger.error(err);
-            res.status(500).send({ message: 'An error occurred when saving a topic' });
+            res.status(500).send({ message: 'An error occurred when saving a topic.' });
           } else {
             res.status(200).send(_topic);
           }
