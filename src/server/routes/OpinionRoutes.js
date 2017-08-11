@@ -6,6 +6,10 @@ import opinions from '../controllers/Opinions';
 import Authentication from '../middleware/Authentication';
 
 class OpinionRoutes {
+  /**
+   * Route handling method
+   * @param {Object} router
+   */
   static route(router) {
     router.route('/opinions')
       .get(opinions.getAll)

@@ -10,6 +10,10 @@ import Validations from './../middleware/Validations';
 const upload = multer({ dest: 'uploads/' });
 
 class AuthRoutes {
+  /**
+   * Route handling method
+   * @param {Object} router
+   */
   static route(router) {
     router.route('/signin')
       .post(Validations.validateSignIn, Auth.signin);

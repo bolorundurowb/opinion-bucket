@@ -10,6 +10,10 @@ import authorization from '../middleware/Authorization';
 const upload = multer({ dest: 'uploads/' });
 
 class UserRoutes {
+  /**
+   * Route handling method
+   * @param {Object} router
+   */
   static route(router) {
     router.route('/users')
       .get(Authentication.isAuthenticated, authorization.isAdmin, users.getAll);

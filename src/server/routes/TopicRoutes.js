@@ -7,6 +7,10 @@ import Authentication from '../middleware/Authentication';
 import authorization from '../middleware/Authorization';
 
 class TopicRoutes {
+  /**
+   * Route handling method
+   * @param {Object} router
+   */
   static route(router) {
     router.route('/topics')
       .get(topics.getAll)

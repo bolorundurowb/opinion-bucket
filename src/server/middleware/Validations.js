@@ -47,6 +47,32 @@ class Validations {
       next();
     }
   }
+
+  /**
+   * Handles category creation validation logic
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Function} next
+   */
+  static validateCreateCategory(req, res, next) {
+    const body = req.body;
+
+    if (!body.title) {
+      res.status(400).send({ message: 'The category requires a title' });
+    } else {
+      next();
+    }
+  }
+
+  /**
+   * Handles category update validation logic
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Function} next
+   */
+  static validateUpdateCategory(req, res, next) {
+    Validations.validateCreateCategory(req, res, next);
+  }
 }
 
 export default Validations;
