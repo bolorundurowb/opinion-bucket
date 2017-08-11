@@ -118,6 +118,22 @@ describe('Opinions', () => {
   });
 
   describe('updating', () => {
+    describe('does not allow', () => {
+      it('for updating non-existent opinions', (done) => {
+        server
+          .put('/api/v1/opinions/hsiuei')
+          .set('x-access-token', userToken)
+          .send({})
+          .expect(404)
+          .end((err, res) => {
+            res.status.should.equal(404);
+            res.body.should.be.type('object');
+            res.body.message.should.equal('An opinion with that id doesn\'t exist.');
+            done();
+          });
+      });
+    });
+
     describe('allows', () => {
       it('for opinions to be updated', (done) => {
         server
@@ -248,6 +264,33 @@ describe('Opinions', () => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.dislikes.should.equal(1);
+            done();
+          });
+      });
+    });
+
+
+    describe('does not allow', () => {
+      it('for a non-existent opinions to be liked', (done) => {
+        server
+          .post('/api/v1/opinions/507f1f77bcf86cd799439011/like')
+          .set('x-access-token', userToken)
+          .expect(404)
+          .end((err, res) => {
+            res.status.should.equal(404);
+            res.body.message.should.equal('An opinion with that id doesn\'t exist.');
+            done();
+          });
+      });
+
+      it('for a non-existent opinions to be disliked', (done) => {
+        server
+          .post('/api/v1/opinions/507f1f77bcf86cd799439011/dislike')
+          .set('x-access-token', userToken)
+          .expect(404)
+          .end((err, res) => {
+            res.status.should.equal(404);
+            res.body.message.should.equal('An opinion with that id doesn\'t exist.');
             done();
           });
       });
