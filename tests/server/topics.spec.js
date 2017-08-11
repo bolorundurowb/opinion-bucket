@@ -140,7 +140,7 @@ describe('Topics', () => {
 
   describe('retrieval', () => {
     describe('does not allow', () => {
-      it('doesnt allow a non-existent topic to be retrieved', (done) => {
+      it('a non-existent topic to be retrieved', (done) => {
         server
           .get('/api/v1/topics/507f1f77bcf86cd799439011')
           .set('x-access-token', userToken)
@@ -152,7 +152,7 @@ describe('Topics', () => {
           });
       });
 
-      it('doesnt allow a non-existent topic to be retrieved with more detail', (done) => {
+      it('a non-existent topic to be retrieved with more detail', (done) => {
         server
           .get('/api/v1/topics/507f1f77bcf86cd799439011/full')
           .set('x-access-token', userToken)
@@ -192,15 +192,15 @@ describe('Topics', () => {
           });
       });
 
-      it('for topics to be retrieved with query options but sanitizes input', (done) => {
+      it('for topics to be retrieved with more query options', (done) => {
         server
-          .get('/api/v1/topics?category=50e76f592&order=opinion')
+          .get('/api/v1/topics?category=50e76f592&order=opinion&skip=5')
           .set('x-access-token', userToken)
           .expect(200)
           .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
-            res.body.length.should.equal(2);
+            res.body.length.should.equal(0);
             done();
           });
       });

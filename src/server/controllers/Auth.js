@@ -5,11 +5,15 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import cloudinary from 'cloudinary';
+
 import config from '../config/Config';
 import Logger from '../config/Logger';
 import User from '../models/User';
 
 
+/**
+ * Handles authentication
+ */
 class Auth {
   static signin(req, res) {
     User.findOne({ $or: [{ username: req.body.username }, { email: req.body.username }] })

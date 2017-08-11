@@ -6,6 +6,9 @@ import Logger from '../config/Logger';
 import Opinion from '../models/Opinion';
 import Topics from '../models/Topic';
 
+/**
+ * Handles opinions
+ */
 class Opinions {
   /**
    * Controller method to handle retrieving a bunch of opinions

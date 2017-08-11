@@ -5,6 +5,9 @@
 import logger from '../config/Logger';
 import Category from '../models/Category';
 
+/**
+ * Handles categories
+ */
 class Categories {
   static getAll(req, res) {
     Category.find((err, categories) => {

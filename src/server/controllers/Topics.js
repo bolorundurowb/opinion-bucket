@@ -2,10 +2,12 @@
  * Created by bolorundurowb on 1/11/17.
  */
 
-import mongoose from 'mongoose';
-import logger from '../config/Logger';
+import Logger from '../config/Logger';
 import Topic from '../models/Topic';
 
+/**
+ * Handles topics
+ */
 class Topics {
   /**
    * Controller method to handle
@@ -13,19 +15,18 @@ class Topics {
    * @param {Object} res
    */
   static getAll(req, res) {
+    const filter = {};
     let limit = req.query.limit || 0;
+
     limit = parseInt(limit, 10);
 
     let skip = req.query.offset || 0;
     skip = parseInt(skip, 10);
 
-    const filter = {};
     if (req.query.category) {
-      try {
-        filter.categories = {
-          $in: [mongoose.Types.ObjectId(req.query.category)]
-        };
-      } catch (err) {}
+      filter.categories = {
+        $in: [req.query.category]
+      };
     }
 
     const sort = {};
@@ -43,7 +44,7 @@ class Topics {
       .skip(skip)
       .exec((err, topics) => {
         if (err) {
-          logger.error(err);
+          Logger.error(err);
           res.status(500).send({ message: 'An error occurred when retrieving topics' });
         }
         res.status(200).send(topics);
@@ -58,7 +59,7 @@ class Topics {
   static getOne(req, res) {
     Topic.findOne({ _id: req.params.id }, (err, topic) => {
       if (err) {
-        logger.error(err);
+        Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a topic' });
       } else if (!topic) {
         res.status(404).send({ message: 'No topic exists with that id' });
@@ -79,7 +80,7 @@ class Topics {
       .populate('opinions categories')
       .exec((err, topic) => {
         if (err) {
-          logger.error(err);
+          Logger.error(err);
           res.status(500).send({ message: 'An error occurred when retrieving a topic' });
         } else if (!topic) {
           res.status(404).send({ message: 'No topic exists with that id' });
@@ -97,7 +98,7 @@ class Topics {
   static create(req, res) {
     Topic.findOne({ title: req.body.title }, (err, result) => {
       if (err) {
-        logger.error(err);
+        Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a topic' });
       } else if (result) {
         res.status(409).send({ message: 'A topic exists with that title' });
@@ -105,7 +106,7 @@ class Topics {
         const _topic = new Topic(req.body);
         _topic.save((err, topic) => {
           if (err) {
-            logger.error(err);
+            Logger.error(err);
             res.status(500).send({ message: 'An error occurred when saving a topic' });
           }
           res.status(201).send(topic);
@@ -124,7 +125,7 @@ class Topics {
 
     Topic.findById(req.params.id, (err, topic) => {
       if (err) {
-        logger.error(err);
+        Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a topic.' });
       } else if (!topic) {
         res.status(404).send({ message: 'A topic with that id doesn\'t exist.' });
@@ -137,7 +138,7 @@ class Topics {
 
         topic.save((err, _topic) => {
           if (err) {
-            logger.error(err);
+            Logger.error(err);
             res.status(500).send({ message: 'An error occurred when saving a topic.' });
           } else {
             res.status(200).send(_topic);
@@ -155,7 +156,7 @@ class Topics {
   static delete(req, res) {
     Topic.findByIdAndRemove(req.params.id, (err) => {
       if (err) {
-        logger.error(err);
+        Logger.error(err);
         res.status(500).send({ message: 'An error occurred when removing a topic' });
       } else {
         res.status(200).send({ message: 'Topic successfully removed' });
