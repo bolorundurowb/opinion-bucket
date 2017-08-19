@@ -12,9 +12,14 @@ import User from '../models/User';
 
 
 /**
- * Handles authentication
+ * Authentication Controller
  */
 class Auth {
+  /**
+   * Controller method for handling sign in requests
+   * @param {Object} req
+   * @param {Object} res
+   */
   static signin(req, res) {
     User.findOne({ $or: [{ username: req.body.username }, { email: req.body.username }] })
       .exec((err, user) => {
@@ -35,6 +40,11 @@ class Auth {
       });
   }
 
+  /**
+   * Controller method for handling sign up requests
+   * @param {Object} req
+   * @param {Object} res
+   */
   static signup(req, res) {
     const body = req.body;
 
@@ -63,6 +73,11 @@ class Auth {
     });
   }
 
+  /**
+   * Controller method for handling sign out requests
+   * @param {Object} req
+   * @param {Object} res
+   */
   static signout(req, res) {
     res.status(200).send({ message: 'sign out successful' });
   }
