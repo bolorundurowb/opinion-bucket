@@ -18,6 +18,7 @@ class Auth {
   static signin(req, res) {
     User.findOne({ $or: [{ username: req.body.username }, { email: req.body.username }] })
       .exec((err, user) => {
+        /* istanbul ignore if */
         if (err) {
           Logger.error(err);
           res.status(500).send({ message: 'An error occurred when retrieving users' });
@@ -41,6 +42,7 @@ class Auth {
         { username: body.username },
         { email: body.email }
     ] }, (err, result) => {
+      /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving users' });
@@ -86,6 +88,7 @@ class Auth {
    */
   static saveUser(user, res) {
     user.save((err, _user) => {
+      /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when saving users' });

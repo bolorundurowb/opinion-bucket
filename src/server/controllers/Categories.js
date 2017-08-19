@@ -11,6 +11,7 @@ import Category from '../models/Category';
 class Categories {
   static getAll(req, res) {
     Category.find((err, categories) => {
+      /* istanbul ignore if */
       if (err) {
         logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving categories' });
@@ -22,6 +23,7 @@ class Categories {
 
   static getOne(req, res) {
     Category.findOne({ _id: req.params.id }, (err, category) => {
+      /* istanbul ignore if */
       if (err) {
         logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a category' });
@@ -35,6 +37,7 @@ class Categories {
 
   static create(req, res) {
     Category.findOne({ title: req.body.title }, (err, result) => {
+      /* istanbul ignore if */
       if (err) {
         logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a category' });
@@ -43,6 +46,7 @@ class Categories {
       } else {
         const _category = new Category(req.body);
         _category.save((err, category) => {
+          /* istanbul ignore if */
           if (err) {
             logger.error(err);
             res.status(500).send({ message: 'An error occurred when saving a category' });
@@ -56,6 +60,7 @@ class Categories {
 
   static update(req, res) {
     Category.findById(req.params.id, (err, category) => {
+      /* istanbul ignore if */
       if (err) {
         logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a category' });
@@ -65,6 +70,7 @@ class Categories {
         category.title = req.body.title;
 
         category.save((err, _category) => {
+          /* istanbul ignore if */
           if (err) {
             logger.error(err);
             res.status(500).send({ message: 'An error occurred when saving a category' });
@@ -78,6 +84,7 @@ class Categories {
 
   static delete(req, res) {
     Category.findByIdAndRemove(req.params.id, (err) => {
+      /* istanbul ignore if */
       if (err) {
         logger.error(err);
         res.status(500).send({ message: 'An error occurred when removing a category' });

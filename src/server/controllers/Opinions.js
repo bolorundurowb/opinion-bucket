@@ -52,6 +52,7 @@ class Opinions {
       .sort(sort)
       .skip(skip)
       .exec((err, opinions) => {
+        /* istanbul ignore if */
         if (err) {
           Logger.error(err);
           res.status(500).send({ message: 'An error occurred when retrieving opinions' });
@@ -68,6 +69,7 @@ class Opinions {
    */
   static getOne(req, res) {
     Opinion.findOne({ _id: req.params.id }, (err, opinion) => {
+      /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving an opinion' });
@@ -86,6 +88,7 @@ class Opinions {
    */
   static create(req, res) {
     Topics.findById(req.body.topicId, (err, topic) => {
+      /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving an opinion' });
@@ -114,6 +117,7 @@ class Opinions {
     const body = req.body;
 
     Opinion.findById(req.params.id, (err, opinion) => {
+      /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
@@ -143,6 +147,7 @@ class Opinions {
         author: req.user._id
       })
       .exec((err) => {
+        /* istanbul ignore if */
         if (err) {
           Logger.error(err);
           res.status(500).send({ message: 'An error occurred when removing an opinion' });
@@ -159,6 +164,7 @@ class Opinions {
    */
   static like(req, res) {
     Opinion.findById(req.params.id, (err, opinion) => {
+      /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
@@ -178,6 +184,7 @@ class Opinions {
    */
   static dislike(req, res) {
     Opinion.findById(req.params.id, (err, opinion) => {
+      /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
@@ -197,6 +204,7 @@ class Opinions {
    */
   static saveOpinion(opinion, res) {
     opinion.save((err, _opinion) => {
+      /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when saving an opinion' });
