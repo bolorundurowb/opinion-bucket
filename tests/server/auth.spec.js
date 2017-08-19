@@ -189,13 +189,18 @@ describe('Auth', () => {
           .set('x-access-token', userToken)
           .expect(200)
           .end((err, res) => {
-            console.log(res.body);
             res.status.should.equal(200);
             res.body.should.be.type('object');
             res.body.message.should.equal('sign out successful');
             done();
           });
       });
+    });
+  });
+
+  describe('auth methods', () => {
+    it('returns false when password is empty', () => {
+      Auth.verifyPassword(null, null).should.equal(false);
     });
   });
 });

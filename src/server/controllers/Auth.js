@@ -12,12 +12,18 @@ import User from '../models/User';
 
 
 /**
- * Handles authentication
+ * Authentication Controller
  */
 class Auth {
+  /**
+   * Controller method for handling sign in requests
+   * @param {Object} req
+   * @param {Object} res
+   */
   static signin(req, res) {
     User.findOne({ $or: [{ username: req.body.username }, { email: req.body.username }] })
       .exec((err, user) => {
+        /* istanbul ignore if */
         if (err) {
           Logger.error(err);
           res.status(500).send({ message: 'An error occurred when retrieving users' });
@@ -34,6 +40,11 @@ class Auth {
       });
   }
 
+  /**
+   * Controller method for handling sign up requests
+   * @param {Object} req
+   * @param {Object} res
+   */
   static signup(req, res) {
     const body = req.body;
 
@@ -41,6 +52,7 @@ class Auth {
         { username: body.username },
         { email: body.email }
     ] }, (err, result) => {
+      /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving users' });
@@ -61,6 +73,11 @@ class Auth {
     });
   }
 
+  /**
+   * Controller method for handling sign out requests
+   * @param {Object} req
+   * @param {Object} res
+   */
   static signout(req, res) {
     res.status(200).send({ message: 'sign out successful' });
   }
@@ -72,6 +89,7 @@ class Auth {
    * @return {Promise<String>} the url of the uploaded file
    */
   static uploadImage(file) {
+    /* istanbul ignore next */
     return new Promise((resolve) => {
       cloudinary.uploader.upload(file.path, (result) => {
         resolve(result.url);
@@ -86,6 +104,7 @@ class Auth {
    */
   static saveUser(user, res) {
     user.save((err, _user) => {
+      /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when saving users' });

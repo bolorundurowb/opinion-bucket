@@ -9,7 +9,16 @@ import User from '../models/User';
 // eslint-disable-next-line
 import Role from '../models/Role';
 
+/**
+ * Holds all logic for authentication
+ */
 class Authentication {
+  /**
+   * Middleware method for checking user authentication
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Function} next
+   */
   static isAuthenticated(req, res, next) {
     const token = req.headers['x-access-token'] || req.headers.token || req.body.token;
 
@@ -22,6 +31,7 @@ class Authentication {
             .findOne({ _id: decoded.uid })
             .populate('role')
             .exec((err, user) => {
+              /* istanbul ignore if */
               if (err) {
                 logger.error(err);
                 res.status(500).send({ message: 'An error occurred when retrieving the user' });

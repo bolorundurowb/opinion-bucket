@@ -43,6 +43,7 @@ class Topics {
       .sort(sort)
       .skip(skip)
       .exec((err, topics) => {
+        /* istanbul ignore if */
         if (err) {
           Logger.error(err);
           res.status(500).send({ message: 'An error occurred when retrieving topics' });
@@ -58,6 +59,7 @@ class Topics {
    */
   static getOne(req, res) {
     Topic.findOne({ _id: req.params.id }, (err, topic) => {
+      /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a topic' });
@@ -79,6 +81,7 @@ class Topics {
       .findOne({ _id: req.params.id })
       .populate('opinions categories')
       .exec((err, topic) => {
+        /* istanbul ignore if */
         if (err) {
           Logger.error(err);
           res.status(500).send({ message: 'An error occurred when retrieving a topic' });
@@ -97,6 +100,7 @@ class Topics {
    */
   static create(req, res) {
     Topic.findOne({ title: req.body.title }, (err, result) => {
+      /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a topic' });
@@ -124,6 +128,7 @@ class Topics {
     const body = req.body;
 
     Topic.findById(req.params.id, (err, topic) => {
+      /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a topic.' });
@@ -155,6 +160,7 @@ class Topics {
    */
   static delete(req, res) {
     Topic.findByIdAndRemove(req.params.id, (err) => {
+      /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when removing a topic' });

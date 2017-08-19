@@ -13,6 +13,7 @@ import Auth from './Auth';
 class Users {
   static getAll(req, res) {
     User.find((err, users) => {
+      /* istanbul ignore if */
       if (err) {
         logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving users' });
@@ -24,6 +25,7 @@ class Users {
 
   static getOne(req, res) {
     User.findOne({ _id: req.params.id }, (err, user) => {
+      /* istanbul ignore if */
       if (err) {
         logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a user' });
@@ -39,6 +41,7 @@ class Users {
     User.findOne({ _id: req.params.id })
       .populate('topics')
       .exec((err, user) => {
+        /* istanbul ignore if */
         if (err) {
           logger.error(err);
           res.status(500).send({ message: 'An error occurred when retrieving a user' });
@@ -54,27 +57,18 @@ class Users {
     const body = req.body;
 
     User.findById(req.params.id, (err, user) => {
+      /* istanbul ignore if */
       if (err) {
         logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a user' });
       } else if (!user) {
         res.status(404).send({ message: 'No user with that id' });
       } else {
-        ['firstName', 'lastName', 'gender', 'dateOfBirth', 'email'].forEach((property) => {
+        ['firstName', 'lastName', 'gender', 'dateOfBirth', 'email', 'topics'].forEach((property) => {
           if (body[property]) {
             user[property] = body[property];
           }
         });
-
-        if (body.topics) {
-          user.topics = [];
-          req.body.topics.forEach((topic_id) => {
-            try {
-              const id = mongoose.Types.ObjectId(topic_id);
-              user.topics.push(id);
-            } catch (err) {}
-          });
-        }
 
         if (req.file) {
           Auth.uploadImage(req.file, user)
@@ -91,6 +85,7 @@ class Users {
 
   static delete(req, res) {
     User.findById(req.params.id, (err, user) => {
+      /* istanbul ignore if */
       if (err) {
         logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a user' });
@@ -98,6 +93,7 @@ class Users {
         res.status(403).send({ message: 'Admin cannot be removed' });
       } else {
         User.findByIdAndRemove(req.params.id, (err) => {
+          /* istanbul ignore if */
           if (err) {
             logger.error(err);
             res.status(500).send({ message: 'An error occurred when removing a user' });
@@ -116,6 +112,7 @@ class Users {
    */
   static saveUser(user, res) {
     user.save((err, _user) => {
+      /* istanbul ignore if */
       if (err) {
         logger.error(err);
         res.status(500).send({ message: 'An error occurred when saving a user' });
