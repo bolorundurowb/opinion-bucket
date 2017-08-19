@@ -6,11 +6,13 @@ const winston = require('winston');
 const fs = require('fs');
 
 const logDir = './logs';
+
+/* istanbul ignore if  */
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
 
-const tsFormat = function() {
+const tsFormat = function () {
   return (new Date()).toLocaleTimeString();
 };
 
@@ -21,7 +23,7 @@ const logger = new winston.Logger({
       timestamp: tsFormat
     }),
     new (winston.transports.File)({
-      filename: logDir + '/errors.log',
+      filename: `${logDir}/errors.log`,
       timestamp: tsFormat
     })
   ],
@@ -47,7 +49,7 @@ class Logger {
    */
   static error(err) {
     logger.level = 'error';
-    logger.error('\n\n' + err);
+    logger.error(`\n\n${err}`);
   }
 }
 

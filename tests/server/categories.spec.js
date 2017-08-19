@@ -44,7 +44,7 @@ describe('Category', () => {
         server
           .post('/api/v1/categories')
           .set('x-access-token', adminToken)
-          .send({title: 'Tech'})
+          .send({ title: 'Tech' })
           .expect(201)
           .end((err, res) => {
             id = res.body._id || '';
@@ -61,7 +61,7 @@ describe('Category', () => {
         server
           .post('/api/v1/categories')
           .set('x-access-token', adminToken)
-          .send({title: 'Tech'})
+          .send({ title: 'Tech' })
           .expect(409)
           .end((err, res) => {
             res.status.should.equal(409);
@@ -116,7 +116,7 @@ describe('Category', () => {
 
       it('for  a category to be retrieved', (done) => {
         server
-          .get('/api/v1/categories/' + id)
+          .get(`/api/v1/categories/${id}`)
           .set('x-access-token', userToken)
           .expect(200)
           .end((err, res) => {
@@ -132,7 +132,7 @@ describe('Category', () => {
     describe('does not allow', () => {
       it('for categories to be title-less', (done) => {
         server
-          .put('/api/v1/categories/' + id)
+          .put(`/api/v1/categories/${id}`)
           .set('x-access-token', adminToken)
           .send({})
           .expect(400)
@@ -142,14 +142,29 @@ describe('Category', () => {
             done();
           });
       });
+
+      it('for a non-existent category to be updated', (done) => {
+        server
+          .put(`/api/v1/categories/tiu56`)
+          .set('x-access-token', adminToken)
+          .send({
+            title: 'hello World'
+          })
+          .expect(404)
+          .end((err, res) => {
+            res.status.should.equal(404);
+            res.body.message.should.equal('A category with that id doesn\'t exist.');
+            done();
+          });
+      });
     });
 
     describe('allows', () => {
       it('for  categories to be updated', (done) => {
         server
-          .put('/api/v1/categories/' + id)
+          .put(`/api/v1/categories/${id}`)
           .set('x-access-token', adminToken)
-          .send({title: 'Technology'})
+          .send({ title: 'Technology' })
           .expect(200)
           .end((err, res) => {
             res.status.should.equal(200);
@@ -165,7 +180,7 @@ describe('Category', () => {
     describe('allows', () => {
       it('for  categories to be deleted', (done) => {
         server
-          .delete('/api/v1/categories/' + id)
+          .delete(`/api/v1/categories/${id}`)
           .set('x-access-token', adminToken)
           .expect(200)
           .end((err, res) => {

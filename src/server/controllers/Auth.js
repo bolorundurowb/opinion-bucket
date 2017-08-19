@@ -74,6 +74,7 @@ class Auth {
    * @return {Promise<String>} the url of the uploaded file
    */
   static uploadImage(file) {
+    /* istanbul ignore next */
     return new Promise((resolve) => {
       cloudinary.uploader.upload(file.path, (result) => {
         resolve(result.url);

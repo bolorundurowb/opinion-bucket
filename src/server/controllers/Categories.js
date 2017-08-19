@@ -64,8 +64,8 @@ class Categories {
       if (err) {
         logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a category' });
-      } else if (!req.body.title) {
-        res.status(400).send({ message: 'The category requires a title' });
+      } else if (!category) {
+        res.status(404).send({ message: 'A category with that id doesn\'t exist.' });
       } else {
         category.title = req.body.title;
 
