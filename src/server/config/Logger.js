@@ -1,7 +1,3 @@
-/**
- * Created by winner-timothybolorunduro on 01/07/2017.
- */
-
 const winston = require('winston');
 const fs = require('fs');
 

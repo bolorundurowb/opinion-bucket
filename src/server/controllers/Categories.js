@@ -1,7 +1,3 @@
-/**
- * Created by bolorundurowb on 1/11/17.
- */
-
 import logger from '../config/Logger';
 import Category from '../models/Category';
 

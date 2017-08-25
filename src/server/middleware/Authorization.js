@@ -1,8 +1,4 @@
 /**
- * Created by bolorundurowb on 1/24/17.
- */
-
-/**
  * Holds all logic for authorization
  */
 class Authorization {

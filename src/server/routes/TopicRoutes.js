@@ -1,12 +1,11 @@
-/**
- * Created by bolorundurowb on 1/11/17.
- */
-
 import topics from '../controllers/Topics';
 import Authentication from '../middleware/Authentication';
 import Authorization from '../middleware/Authorization';
 import Validations from './../middleware/Validations';
 
+/**
+ * Holds all topic routing logic
+ */
 class TopicRoutes {
   /**
    * Route handling method
