@@ -1,8 +1,4 @@
 /**
- * Created by winner-timothybolorunduro on 07/08/2017.
- */
-
-/**
  * Holds all validation logic
  */
 class Validations {

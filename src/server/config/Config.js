@@ -1,7 +1,3 @@
-/**
- * Created by bolorundurowb on 1/13/17.
- */
-
 import dotenv from 'dotenv';
 import cloudinary from 'cloudinary';
 
