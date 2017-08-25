@@ -1,7 +1,3 @@
-/**
- * Created by bolorundurowb on 1/27/17.
- */
-
 import seeder from 'mongoose-seed';
 import config from './Config';
 import logger from './Logger';
@@ -22,7 +18,7 @@ seeder.connect(config.database, () => {
 
           process.exit(1);
         } else if (!user) {
-          const user = new User({
+          user = new User({
             username: process.env.ADMIN_USERNAME,
             password: process.env.ADMIN_PASS,
             email: process.env.ADMIN_EMAIL,

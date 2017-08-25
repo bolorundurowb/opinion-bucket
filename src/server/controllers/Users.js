@@ -1,8 +1,3 @@
-/**
- * Created by bolorundurowb on 1/11/17.
- */
-
-import mongoose from 'mongoose';
 import logger from '../config/Logger';
 import User from '../models/User';
 import Auth from './Auth';
