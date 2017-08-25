@@ -55,6 +55,19 @@ describe('Middleware', () => {
 
   describe('authorization', () => {
     describe('does not allow', () => {
+      it('non-moderators access moderator routes', (done) => {
+        server
+          .post('/api/v1/categories')
+          .set('x-access-token', userToken)
+          .expect(403)
+          .end((err, res) => {
+            res.status.should.equal(403);
+            res.body.should.be.type('object');
+            res.body.message.should.equal('You need to be an admin or moderator to access that information');
+            done();
+          });
+      });
+
       it('non-admins access admin-only routes', (done) => {
         server
           .get('/api/v1/users')
