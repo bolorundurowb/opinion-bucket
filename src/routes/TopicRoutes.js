@@ -1,7 +1,7 @@
 import topics from '../controllers/Topics';
 import Authentication from '../middleware/Authentication';
 import Authorization from '../middleware/Authorization';
-import Validations from './../middleware/Validations';
+import Validations from '../middleware/Validations';
 
 /**
  * Holds all topic routing logic

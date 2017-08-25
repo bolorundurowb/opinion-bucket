@@ -6,8 +6,8 @@ import supertest from 'supertest';
 // eslint-disable-next-line
 import should from 'should';
 import sinon from 'sinon';
-import app from './../../server';
-import Auth from '../../src/server/controllers/Auth';
+import app from '../src/server';
+import Auth from '../src/controllers/Auth';
 
 const server = supertest.agent(app);
 let userToken;
@@ -32,7 +32,7 @@ describe('Auth', () => {
           .field('username', 'john.doe')
           .field('email', 'john.doe@gmail.com')
           .field('password', 'john.doe')
-          .attach('profile', './tests/server/artifacts/sample.png')
+          .attach('profile', './tests/artifacts/sample.png')
           .expect(201)
           .end((err, res) => {
             res.status.should.equal(201);

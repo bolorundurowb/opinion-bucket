@@ -5,7 +5,7 @@
 import multer from 'multer';
 import Auth from '../controllers/Auth';
 import Authentication from '../middleware/Authentication';
-import Validations from './../middleware/Validations';
+import Validations from '../middleware/Validations';
 
 const upload = multer({ dest: 'uploads/' });
 

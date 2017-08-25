@@ -5,7 +5,7 @@
 import supertest from 'supertest';
 // eslint-disable-next-line
 import should from 'should';
-import app from './../../server';
+import app from '../src/server';
 
 const server = supertest.agent(app);
 const expiredToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRlT2ZCaXJ0aCI6IjIwMTctMDItMDRUMTM6NTg6MDkuNTk1WiIsImdlbmRlciI6IkRlY2xpbmUiLCJ0b3BpY3MiOltdLCJ0eXBlIjoiVXNlciIsIl9pZCI6IjU4OTVkZGYxNzljZDFmN2U5MWYyMDRiOSIsImVtYWlsIjoiam9obkBkb2Uub3JnIiwiaGFzaGVkUGFzc3dvcmQiOiIkMmEkMTAkaWliMHlGLzRidWZGLjAwUTVCWU5MZTFpckRtSlYvSy5EblVKd1V6ZzJhT1h1VDZsekJnUjIiLCJ1c2VybmFtZSI6ImpvaG4uZG9lIiwiam9pbmVkIjoiMjAxNy0wMi0wNFQxMzo1ODowOS44ODRaIiwiX192IjowLCJpYXQiOjE0ODYyMTY2OTAsImV4cCI6MTQ4NjQ3NTg5MH0.Mrr0MucJPfdiotWayK-Z6FeKsVzxJoCMn40vX9cR3xo';

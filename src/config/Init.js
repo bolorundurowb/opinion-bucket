@@ -1,4 +1,5 @@
 import seeder from 'mongoose-seed';
+import path from 'path';
 import config from './Config';
 import logger from './Logger';
 import User  from '../models/User';
@@ -6,7 +7,7 @@ import data from './seeds/data.json';
 
 seeder.connect(config.database, () => {
   seeder.loadModels([
-    './src/server/models/Role.js'
+    path.join(path.dirname(__dirname), '/models/Role.js'),
   ]);
 
   seeder.clearModels(['Role'], () => {

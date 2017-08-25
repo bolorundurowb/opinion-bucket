@@ -6,8 +6,8 @@ import supertest from 'supertest';
 // eslint-disable-next-line
 import should from 'should';
 import sinon from 'sinon';
-import app from './../../server';
-import Auth from '../../src/server/controllers/Auth';
+import app from '../src/server';
+import Auth from '../src/controllers/Auth';
 
 const server = supertest.agent(app);
 let id = '';
@@ -106,7 +106,7 @@ describe('Users', () => {
 
       it('for  a user to be retrieved', (done) => {
         server
-          .get('/api/v1/users/' + id)
+          .get(`/api/v1/users/${id}`)
           .set('x-access-token', adminToken)
           .expect(200)
           .end((err, res) => {
@@ -118,7 +118,7 @@ describe('Users', () => {
 
       it('for  a user to be retrieved with more detail', (done) => {
         server
-          .get('/api/v1/users/' + id + '/full')
+          .get(`/api/v1/users/${id}/full`)
           .set('x-access-token', adminToken)
           .expect(200)
           .end((err, res) => {
@@ -147,13 +147,12 @@ describe('Users', () => {
             done();
           });
       });
-
     });
 
     describe('allows', () => {
       it('for  users to be updated', (done) => {
         server
-          .put('/api/v1/users/' + id)
+          .put(`/api/v1/users/${id}`)
           .set('x-access-token', userToken)
           .send({
             lastName: 'Woke',
@@ -178,7 +177,7 @@ describe('Users', () => {
 
       it('for  users to be updated (2)', (done) => {
         server
-          .put('/api/v1/users/' + id)
+          .put(`/api/v1/users/${id}`)
           .set('x-access-token', userToken)
           .send({
             lastName: 'Woke',
@@ -201,7 +200,7 @@ describe('Users', () => {
 
       it('for  users to be updated (3)', (done) => {
         server
-          .put('/api/v1/users/' + id)
+          .put(`/api/v1/users/${id}`)
           .set('x-access-token', userToken)
           .send({
             lastName: 'Woke',
@@ -224,11 +223,11 @@ describe('Users', () => {
 
       it('for  users to be updated with photos', (done) => {
         server
-          .put('/api/v1/users/' + id)
+          .put(`/api/v1/users/${id}`)
           .set('x-access-token', userToken)
           .field('lastName', 'Woke')
           .field('firstName', 'Wobe')
-          .attach('profile', './tests/server/artifacts/sample.png')
+          .attach('profile', './tests/artifacts/sample.png')
           .expect(200)
           .end((err, res) => {
             res.status.should.equal(200);
@@ -245,7 +244,7 @@ describe('Users', () => {
     describe('does not allow', () => {
       it('for  the admin to be deleted', (done) => {
         server
-          .delete('/api/v1/users/' + id)
+          .delete(`/api/v1/users/${id}`)
           .set('x-access-token', userToken)
           .expect(403)
           .end((err, res) => {
@@ -270,7 +269,7 @@ describe('Users', () => {
               id = res.body[0]._id;
             }
             server
-              .delete('/api/v1/users/' + id)
+              .delete(`/api/v1/users/${id}`)
               .set('x-access-token', userToken)
               .expect(200)
               .end((err, res) => {

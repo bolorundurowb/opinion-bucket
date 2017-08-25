@@ -1,7 +1,7 @@
 import categories from '../controllers/Categories';
 import Authentication from '../middleware/Authentication';
 import Authorization from '../middleware/Authorization';
-import Validations from './../middleware/Validations';
+import Validations from '../middleware/Validations';
 
 /**
  * Holds all category routing logic
