@@ -1,7 +1,3 @@
-/**
- * Created by bolorundurowb on 1/11/17.
- */
-
 import Logger from '../config/Logger';
 import Topic from '../models/Topic';
 

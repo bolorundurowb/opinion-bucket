@@ -1,7 +1,3 @@
-/**
- * Created by bolorundurowb on 1/24/17.
- */
-
 import jwt from 'jsonwebtoken';
 import config from '../config/Config';
 import logger from '../config/Logger';

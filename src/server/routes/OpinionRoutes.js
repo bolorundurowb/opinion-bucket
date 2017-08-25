@@ -1,11 +1,10 @@
-/**
- * Created by bolorundurowb on 1/18/17.
- */
-
 import opinions from '../controllers/Opinions';
 import Authentication from '../middleware/Authentication';
 import Validations from './../middleware/Validations';
 
+/**
+ * Holds all opinion routing logic
+ */
 class OpinionRoutes {
   /**
    * Route handling method

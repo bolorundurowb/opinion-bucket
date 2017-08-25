@@ -1,7 +1,3 @@
-/**
- * Created by bolorundurowb on 1/18/17.
- */
-
 import Logger from '../config/Logger';
 import Opinion from '../models/Opinion';
 import Topics from '../models/Topic';

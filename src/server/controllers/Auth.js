@@ -1,7 +1,3 @@
-/**
- * Created by bolorundurowb on 1/11/17.
- */
-
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import cloudinary from 'cloudinary';

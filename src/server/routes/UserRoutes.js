@@ -1,7 +1,3 @@
-/**
- * Created by bolorundurowb on 1/11/17.
- */
-
 import multer from 'multer';
 import users from '../controllers/Users';
 import Authentication from '../middleware/Authentication';
@@ -9,6 +5,9 @@ import authorization from '../middleware/Authorization';
 
 const upload = multer({ dest: 'uploads/' });
 
+/**
+ * Holds all user routing logic
+ */
 class UserRoutes {
   /**
    * Route handling method
