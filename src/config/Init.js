@@ -6,7 +6,7 @@ import data from './seeds/data.json';
 
 seeder.connect(config.database, () => {
   seeder.loadModels([
-    './src/server/models/Role.js'
+    './src/models/Role.js'
   ]);
 
   seeder.clearModels(['Role'], () => {

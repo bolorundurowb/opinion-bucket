@@ -6,9 +6,9 @@ import mongoose from 'mongoose';
 import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import routes from './src/server/routes/Routes';
-import config from './src/server/config/Config';
-import logger from './src/server/config/Logger';
+import routes from './routes/Routes';
+import config from './config/Config';
+import logger from './config/Logger';
 
 // Connect to MongoDB
 mongoose.connect(config.database);

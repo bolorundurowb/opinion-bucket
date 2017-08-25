@@ -4,13 +4,13 @@
   "description": "A RESTful API and App code for Opinion Bucket",
   "main": "server.js",
   "scripts": {
-    "init": "babel-node ./src/server/config/Init.js --presets es2015,stage-2",
+    "init": "babel-node ./src/config/Init.js --presets es2015,stage-2",
     "clean": "./teardown.sh",
-    "test": "npm run clean && NODE_ENV=test npm run init && NODE_ENV=test mocha --compilers js:babel-core/register tests/server",
+    "test": "npm run clean && NODE_ENV=test npm run init && NODE_ENV=test mocha --compilers js:babel-core/register tests",
     "start": "npm run init && nodemon server.js --exec babel-node --presets es2015,stage-2",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "coverage": "rm -rf /coverage && npm run clean && npm run init && node_modules/.bin/babel-node node_modules/.bin/babel-istanbul cover node_modules/.bin/_mocha tests/server",
-    "build": "babel src/server -d dist",
+    "coverage": "rm -rf /coverage && npm run clean && npm run init && node_modules/.bin/babel-node node_modules/.bin/babel-istanbul cover node_modules/.bin/_mocha tests",
+    "build": "babel src -d dist",
     "serve": "node dist/config/Init.js && node dist/server.js"
   },
   "repository": {
