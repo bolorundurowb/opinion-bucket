@@ -1,12 +1,11 @@
-/**
- * Created by bolorundurowb on 1/11/17.
- */
-
 import categories from '../controllers/Categories';
 import Authentication from '../middleware/Authentication';
 import Authorization from '../middleware/Authorization';
 import Validations from './../middleware/Validations';
 
+/**
+ * Holds all category routing logic
+ */
 class CategoryRoutes {
   /**
    * Route handling method
