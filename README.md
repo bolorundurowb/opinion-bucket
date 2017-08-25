@@ -1,8 +1,8 @@
 # opinion-bucket
 
-[![Build Status](https://travis-ci.org/bolorundurowb/opinion-bucket.svg?branch=feature%2F%239%2Ftravis-ci)](https://travis-ci.org/bolorundurowb/opinion-bucket) [![Coverage Status](https://coveralls.io/repos/github/bolorundurowb/opinion-bucket/badge.svg?branch=develop)](https://coveralls.io/github/bolorundurowb/opinion-bucket?branch=develop)
+[![Build Status](https://travis-ci.org/bolorundurowb/opinion-bucket-api.svg?branch=master)](https://travis-ci.org/bolorundurowb/opinion-bucket-api) [![Coverage Status](https://coveralls.io/repos/github/bolorundurowb/opinion-bucket-api/badge.svg?branch=develop)](https://coveralls.io/github/bolorundurowb/opinion-bucket-api?branch=develop)
 
-RESTful API and App for the upcoming site http://opinionbucket.io
+RESTful API and App for the upcoming site [http://opinionbucket.io](http://opinionbucket.io)
 
 **NB: prefix all routes with `/api/v1`**
 
