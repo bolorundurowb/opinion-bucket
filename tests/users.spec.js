@@ -273,6 +273,7 @@ describe('Users', () => {
               .set('x-access-token', userToken)
               .expect(200)
               .end((err, res) => {
+              console.log(res.body);
                 res.status.should.equal(200);
                 res.body.message.should.equal('User successfully removed');
                 done();
