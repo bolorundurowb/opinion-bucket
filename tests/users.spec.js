@@ -268,7 +268,7 @@ describe('Users', () => {
             } else {
               id = res.body[0]._id;
             }
-            id = res.body[0]._id;
+            id = res.body[1]._id;
             server
               .delete(`/api/v1/users/${id}`)
               .set('x-access-token', userToken)
