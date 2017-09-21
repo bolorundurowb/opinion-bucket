@@ -262,12 +262,12 @@ describe('Users', () => {
           .set('x-access-token', adminToken)
           .expect(200)
           .end((err, res) => {
-            // HACK: get the id of the second user order is different on CI hence the if block
-            if (process.env.NODE_ENV === 'test') {
-              id = res.body[1]._id;
-            } else {
+            // // HACK: get the id of the second user order is different on CI hence the if block
+            // if (process.env.NODE_ENV === 'test') {
+            //   id = res.body[1]._id;
+            // } else {
               id = res.body[0]._id;
-            }
+            // }
             server
               .delete(`/api/v1/users/${id}`)
               .set('x-access-token', userToken)
