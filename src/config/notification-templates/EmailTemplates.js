@@ -8,10 +8,9 @@ import ejs from 'ejs';
 class EmailTemplates {
   /**
    * Returns the email for a new user signup
-   * @param {object}user
    * @returns {object} - a new user welcome email
    */
-  static getSignUpMail(user) {
+  static getSignUpMail() {
     return user;
   }
 }
