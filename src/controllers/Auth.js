@@ -5,6 +5,8 @@ import config from '../config/Config';
 import Logger from '../config/Logger';
 import User from '../models/User';
 import ImageHandler from '../util/ImageHandler';
+import EmailTemplates from '../config/notification-templates/EmailTemplates';
+import Email from '../config/Email';
 
 
 /**
@@ -69,6 +71,9 @@ class Auth {
                   user: _user,
                   token: Auth.tokenify(_user)
                 });
+
+                const payload = EmailTemplates.getSignUpMail(user.email);
+                Email.send(payload);
               }
             });
           });
