@@ -28,7 +28,7 @@ describe('Auth', () => {
     describe('allows', () => {
       it('for users to be created', (done) => {
         server
-          .post('/api/v1/signup')
+          .post('/api/v1/signUp')
           .field('username', 'john.doe')
           .field('email', 'john.doe@gmail.com')
           .field('password', 'john.doe')
@@ -49,7 +49,7 @@ describe('Auth', () => {
     describe('does not allow', () => {
       it('for users without an email address to be created', (done) => {
         server
-          .post('/api/v1/signup')
+          .post('/api/v1/signUp')
           .send({
             username: 'john.doe',
             password: 'john.doe'
@@ -65,7 +65,7 @@ describe('Auth', () => {
 
       it('for users without a username to be created', (done) => {
         server
-          .post('/api/v1/signup')
+          .post('/api/v1/signUp')
           .send({
             email: 'john@doe.org',
             password: 'john.doe'
@@ -81,7 +81,7 @@ describe('Auth', () => {
 
       it('for users without a password to be created', (done) => {
         server
-          .post('/api/v1/signup')
+          .post('/api/v1/signUp')
           .send({
             email: 'john@doe.org',
             username: 'john.doe'
@@ -97,7 +97,7 @@ describe('Auth', () => {
 
       it('for duplicate users to be created', (done) => {
         server
-          .post('/api/v1/signup')
+          .post('/api/v1/signUp')
           .send({
             username: 'john.doe',
             email: 'john.doe@yahoo.org',
@@ -118,7 +118,7 @@ describe('Auth', () => {
     describe('does not allow', () => {
       it(' for invalid users to be signed in', (done) => {
         server
-          .post('/api/v1/signin')
+          .post('/api/v1/signIn')
           .send({
             username: 'jane.doe',
             password: 'john.doe'
@@ -133,7 +133,7 @@ describe('Auth', () => {
 
       it(' for users without password to be signed in', (done) => {
         server
-          .post('/api/v1/signin')
+          .post('/api/v1/signIn')
           .send({
             username: 'jane.doe'
           })
@@ -147,7 +147,7 @@ describe('Auth', () => {
 
       it(' for users with a wrong password to be signed in', (done) => {
         server
-          .post('/api/v1/signin')
+          .post('/api/v1/signIn')
           .send({
             username: 'john.doe',
             password: 'john.do'
@@ -164,7 +164,7 @@ describe('Auth', () => {
     describe('allows', () => {
       it('for users to be signed in', (done) => {
         server
-          .post('/api/v1/signin')
+          .post('/api/v1/signIn')
           .send({
             username: 'john.doe',
             password: 'john.doe'
@@ -185,7 +185,7 @@ describe('Auth', () => {
     describe('allows', () => {
       it('for users to be signed out', (done) => {
         server
-          .post('/api/v1/signout')
+          .post('/api/v1/signOut')
           .set('x-access-token', userToken)
           .expect(200)
           .end((err, res) => {

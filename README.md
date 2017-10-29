@@ -11,9 +11,9 @@ RESTful API and App for the upcoming site [http://opinion-bucket.io](http://opin
 
 |Endpoints                    |Verb      | Authentication | Authorization | Description |
 |---|:---|:---:|:---:|:---|
-| /signin                | `POST`   | no    | no    | Get authenticated from this route        |
-| /signup                | `POST`   | no    | no    | Create a new user via this route        |
-| /signout               | `POST`   | yes   | no    | Log a user out of the service        |
+| /signIn                | `POST`   | no    | no    | Get authenticated from this route        |
+| /signUp                | `POST`   | no    | no    | Create a new user via this route        |
+| /signOut               | `POST`   | yes   | no    | Log a user out of the service        |
 | /users                      | `GET`    | yes   | yes   | Get a list of all users on the platform        |
 | /users/:uid                 | `GET`    | yes   | no    | Get a particular user        |
 | /users/:uid                 | `PUT`    | yes   | no    | Updates a particular users' information        |

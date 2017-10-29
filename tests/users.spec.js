@@ -28,7 +28,7 @@ describe('Users', () => {
 
   before((done) => {
     server
-      .post('/api/v1/signin')
+      .post('/api/v1/signIn')
       .send({
         username: 'john.doe',
         password: 'john.doe'
@@ -38,7 +38,7 @@ describe('Users', () => {
         userToken = res.body.token;
 
         server
-          .post('/api/v1/signin')
+          .post('/api/v1/signIn')
           .send({
             username: process.env.ADMIN_USERNAME,
             password: process.env.ADMIN_PASS

@@ -7,7 +7,7 @@ import ejs from 'ejs';
  */
 class EmailTemplates {
   /**
-   * Returns the email for a new user signup
+   * Returns the email for a new user signUp
    * @param {string} recipient
    * @returns {object} - a new user welcome email
    */

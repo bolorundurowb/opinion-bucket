@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import cloudinary from 'cloudinary';
 
 import config from '../config/Config';
 import Logger from '../config/Logger';
 import User from '../models/User';
+import ImageHandler from '../util/ImageHandler';
 
 
 /**
@@ -16,7 +16,7 @@ class Auth {
    * @param {Object} req
    * @param {Object} res
    */
-  static signin(req, res) {
+  static signIn(req, res) {
     User.findOne({ $or: [{ username: req.body.username }, { email: req.body.username }] })
       .exec((err, user) => {
         /* istanbul ignore if */
@@ -41,7 +41,7 @@ class Auth {
    * @param {Object} req
    * @param {Object} res
    */
-  static signup(req, res) {
+  static signUp(req, res) {
     const body = req.body;
 
     User.find({ $or: [
@@ -56,15 +56,22 @@ class Auth {
         res.status(409).send({ message: 'A user exists with that username or email address' });
       } else {
         const user = new User(body);
-        if (req.file) {
-          Auth.uploadImage(req.file)
-              .then((url) => {
-                user.profilePhoto = url;
-                Auth.saveUser(user, res);
-              });
-        } else {
-          Auth.saveUser(user, res);
-        }
+        ImageHandler.uploadImage(req.file)
+          .then((url) => {
+            user.profilePhoto = url;
+            user.save((err, _user) => {
+              /* istanbul ignore if */
+              if (err) {
+                Logger.error(err);
+                res.status(500).send({ message: 'An error occurred when saving users' });
+              } else {
+                res.status(201).send({
+                  user: _user,
+                  token: Auth.tokenify(_user)
+                });
+              }
+            });
+          });
       }
     });
   }
@@ -74,43 +81,8 @@ class Auth {
    * @param {Object} req
    * @param {Object} res
    */
-  static signout(req, res) {
+  static signOut(req, res) {
     res.status(200).send({ message: 'sign out successful' });
-  }
-
-
-  /**
-   * Uploads an image to cloudinary
-   * @param {Object} file
-   * @return {Promise<String>} the url of the uploaded file
-   */
-  static uploadImage(file) {
-    /* istanbul ignore next */
-    return new Promise((resolve) => {
-      cloudinary.uploader.upload(file.path, (result) => {
-        resolve(result.url);
-      });
-    });
-  }
-
-  /**
-   * Saves a user to the database
-   * @param {Object} user
-   * @param {Object} res
-   */
-  static saveUser(user, res) {
-    user.save((err, _user) => {
-      /* istanbul ignore if */
-      if (err) {
-        Logger.error(err);
-        res.status(500).send({ message: 'An error occurred when saving users' });
-      } else {
-        res.status(201).send({
-          user,
-          token: Auth.tokenify(_user)
-        });
-      }
-    });
   }
 
   /**
