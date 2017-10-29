@@ -3,7 +3,7 @@ import cloudinary from 'cloudinary';
 
 const env = process.env.NODE_ENV || 'development';
 if (env !== 'production') {
-  dotenv.Config({ silent: true });
+  dotenv.config({ silent: true });
 }
 
 const Config = {
