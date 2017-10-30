@@ -7,7 +7,7 @@ import User from '../models/User';
  */
 class Users {
   static getAll(req, res) {
-    User.find((err, users) => {
+    User.find({}, (err, users) => {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
