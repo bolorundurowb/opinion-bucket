@@ -14,7 +14,7 @@ let userToken;
 describe('Middleware', () => {
   before((done) => {
     server
-      .post('/api/v1/signin')
+      .post('/api/v1/signIn')
       .send({
         username: 'john.doe',
         password: 'john.doe'

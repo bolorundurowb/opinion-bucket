@@ -6,19 +6,21 @@ import supertest from 'supertest';
 // eslint-disable-next-line
 import should from 'should';
 import sinon from 'sinon';
+
 import app from '../src/server';
-import Auth from '../src/controllers/Auth';
+import Auth from './../src/controllers/Auth';
+import ImageHandler from '../src/util/ImageHandler';
 
 const server = supertest.agent(app);
 let userToken;
 
 describe('Auth', () => {
   after(() => {
-    Auth.uploadImage.restore();
+    ImageHandler.uploadImage.restore();
   });
 
   before(() => {
-    sinon.stub(Auth, 'uploadImage').callsFake(() =>
+    sinon.stub(ImageHandler, 'uploadImage').callsFake(() =>
       new Promise((resolve) => {
         resolve('http://sample-url.jpg');
       }));
@@ -28,7 +30,7 @@ describe('Auth', () => {
     describe('allows', () => {
       it('for users to be created', (done) => {
         server
-          .post('/api/v1/signup')
+          .post('/api/v1/signUp')
           .field('username', 'john.doe')
           .field('email', 'john.doe@gmail.com')
           .field('password', 'john.doe')
@@ -49,7 +51,7 @@ describe('Auth', () => {
     describe('does not allow', () => {
       it('for users without an email address to be created', (done) => {
         server
-          .post('/api/v1/signup')
+          .post('/api/v1/signUp')
           .send({
             username: 'john.doe',
             password: 'john.doe'
@@ -65,7 +67,7 @@ describe('Auth', () => {
 
       it('for users without a username to be created', (done) => {
         server
-          .post('/api/v1/signup')
+          .post('/api/v1/signUp')
           .send({
             email: 'john@doe.org',
             password: 'john.doe'
@@ -81,7 +83,7 @@ describe('Auth', () => {
 
       it('for users without a password to be created', (done) => {
         server
-          .post('/api/v1/signup')
+          .post('/api/v1/signUp')
           .send({
             email: 'john@doe.org',
             username: 'john.doe'
@@ -97,7 +99,7 @@ describe('Auth', () => {
 
       it('for duplicate users to be created', (done) => {
         server
-          .post('/api/v1/signup')
+          .post('/api/v1/signUp')
           .send({
             username: 'john.doe',
             email: 'john.doe@yahoo.org',
@@ -118,7 +120,7 @@ describe('Auth', () => {
     describe('does not allow', () => {
       it(' for invalid users to be signed in', (done) => {
         server
-          .post('/api/v1/signin')
+          .post('/api/v1/signIn')
           .send({
             username: 'jane.doe',
             password: 'john.doe'
@@ -133,7 +135,7 @@ describe('Auth', () => {
 
       it(' for users without password to be signed in', (done) => {
         server
-          .post('/api/v1/signin')
+          .post('/api/v1/signIn')
           .send({
             username: 'jane.doe'
           })
@@ -147,7 +149,7 @@ describe('Auth', () => {
 
       it(' for users with a wrong password to be signed in', (done) => {
         server
-          .post('/api/v1/signin')
+          .post('/api/v1/signIn')
           .send({
             username: 'john.doe',
             password: 'john.do'
@@ -164,7 +166,7 @@ describe('Auth', () => {
     describe('allows', () => {
       it('for users to be signed in', (done) => {
         server
-          .post('/api/v1/signin')
+          .post('/api/v1/signIn')
           .send({
             username: 'john.doe',
             password: 'john.doe'
@@ -185,7 +187,7 @@ describe('Auth', () => {
     describe('allows', () => {
       it('for users to be signed out', (done) => {
         server
-          .post('/api/v1/signout')
+          .post('/api/v1/signOut')
           .set('x-access-token', userToken)
           .expect(200)
           .end((err, res) => {
