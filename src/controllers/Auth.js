@@ -91,6 +91,34 @@ class Auth {
   }
 
   /**
+   * Controller method for handling forgot password requests
+   * @param {Object} req
+   * @param {Object} res
+   */
+  static forgotPassword(req, res) {
+    const body = req.body;
+
+    User
+      .findOne({ $or: [{ username: body.data }, { email: body.data }] })
+      .exec((err, user) => {
+        /* istanbul ignore if */
+        if (err) {
+          Logger.error(err);
+          res.status(500).send({ message: 'An error occurred when checking for the user.' });
+        } else if (!user) {
+          res.status(404).send({ message: 'A user with that username or email doesn\'t exist.' });
+        } else {
+          const resetToken = Auth.generateResetToken(user.username);
+          const resetLink = `${config.frontendUrl}/auth/reset-password?token=${resetToken}`;
+          const payload = EmailTemplates.getForgotPasswordMail(user.email, resetLink);
+          Email.send(payload);
+
+          res.status(200).send({ message: 'A password recovery email has been sent.' });
+        }
+      });
+  }
+
+  /**
    * Generate a JWT token
    * @param {Object} user
    * @return {String} - an object with the user and token
@@ -98,6 +126,17 @@ class Auth {
   static tokenify(user) {
     return jwt.sign({ uid: user._id }, config.secret, {
       expiresIn: '48h'
+    });
+  }
+
+  /**
+   * Generate a reset token
+   * @param {string} username
+   * @return {string} - a reset token
+   */
+  static generateResetToken(username) {
+    return jwt.sign({ username }, config.secret, {
+      expiresIn: '12h'
     });
   }
 

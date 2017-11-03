@@ -37,18 +37,21 @@ describe('Users', () => {
       .expect(200)
       .end((err, res) => {
         userToken = res.body.token;
+        done();
+      });
+  });
 
-        server
-          .post('/api/v1/signIn')
-          .send({
-            username: process.env.ADMIN_USERNAME,
-            password: process.env.ADMIN_PASS
-          })
-          .expect(200)
-          .end((err, res) => {
-            adminToken = res.body.token;
-            done();
-          });
+  before((done) => {
+    server
+      .post('/api/v1/signIn')
+      .send({
+        username: process.env.ADMIN_USERNAME,
+        password: process.env.ADMIN_PASS
+      })
+      .expect(200)
+      .end((err, res) => {
+        adminToken = res.body.token;
+        done();
       });
   });
 

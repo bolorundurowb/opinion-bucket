@@ -200,6 +200,49 @@ describe('Auth', () => {
     });
   });
 
+  describe('forgot password', () => {
+    describe('doesn\'t allow for', () => {
+      it('making a request without a username or email', (done) => {
+        server
+          .post('/api/v1/forgotPassword')
+          .send({})
+          .end((err, res) => {
+            res.status.should.equal(400);
+            res.body.message.should.equal('A username or email address is required.');
+            done();
+          });
+      });
+
+      it('making a request with a non-existent username', (done) => {
+        server
+          .post('/api/v1/forgotPassword')
+          .send({
+            data: 'hhjeiuw'
+          })
+          .end((err, res) => {
+            res.status.should.equal(404);
+            res.body.message.should.equal('A user with that username or email doesn\'t exist.');
+            done();
+          });
+      });
+    });
+
+    describe('allows for', () => {
+      it('resetting a valid users password', (done) => {
+        server
+          .post('/api/v1/forgotPassword')
+          .send({
+            data: 'john.doe'
+          })
+          .end((err, res) => {
+            res.status.should.equal(200);
+            res.body.message.should.equal('A password recovery email has been sent.');
+            done();
+          });
+      });
+    });
+  });
+
   describe('auth methods', () => {
     it('returns false when password is empty', () => {
       Auth.verifyPassword(null, null).should.equal(false);

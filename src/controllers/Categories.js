@@ -5,6 +5,11 @@ import Category from '../models/Category';
  * Handles categories
  */
 class Categories {
+  /**
+   * Controller method to handle retrieving all categories
+   * @param {object} req
+   * @param {object} res
+   */
   static getAll(req, res) {
     Category.find((err, categories) => {
       /* istanbul ignore if */
@@ -17,6 +22,11 @@ class Categories {
     });
   }
 
+  /**
+   * Controller method to handle retrieving  a category
+   * @param {object} req
+   * @param {object} res
+   */
   static getOne(req, res) {
     Category.findOne({ _id: req.params.id }, (err, category) => {
       /* istanbul ignore if */
@@ -31,6 +41,12 @@ class Categories {
     });
   }
 
+
+  /**
+   * Controller method to handle creating  a category
+   * @param {object} req
+   * @param {object} res
+   */
   static create(req, res) {
     Category.findOne({ title: req.body.title }, (err, result) => {
       /* istanbul ignore if */
@@ -54,6 +70,12 @@ class Categories {
     });
   }
 
+
+  /**
+   * Controller method to handle updating  a category
+   * @param {object} req
+   * @param {object} res
+   */
   static update(req, res) {
     Category.findById(req.params.id, (err, category) => {
       /* istanbul ignore if */
@@ -78,6 +100,12 @@ class Categories {
     });
   }
 
+
+  /**
+   * Controller method to handle deleting  a category
+   * @param {object} req
+   * @param {object} res
+   */
   static delete(req, res) {
     Category.findByIdAndRemove(req.params.id, (err) => {
       /* istanbul ignore if */

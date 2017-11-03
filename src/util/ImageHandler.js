@@ -1,7 +1,7 @@
 import Config from '../config/Config';
 
 /**
- * Holds shared logic
+ * Holds shared image manipulation logic
  */
 class ImageHandler {
   /**

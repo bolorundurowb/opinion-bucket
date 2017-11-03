@@ -9,6 +9,9 @@ import Validations from '../middleware/Validations';
 
 const upload = multer({ dest: 'uploads/' });
 
+/**
+ * Handles all authentication routing logic
+ */
 class AuthRoutes {
   /**
    * Route handling method
@@ -23,6 +26,9 @@ class AuthRoutes {
 
     router.route('/signOut')
       .post(Authentication.isAuthenticated, Auth.signOut);
+
+    router.route('/forgotPassword')
+      .post(Validations.validateForgotPassword, Auth.forgotPassword);
   }
 }
 
