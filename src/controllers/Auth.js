@@ -91,6 +91,15 @@ class Auth {
   }
 
   /**
+   * Controller method for handling forgot password requests
+   * @param {Object} req
+   * @param {Object} res
+   */
+  static forgotPassword(req, res) {
+
+  }
+
+  /**
    * Generate a JWT token
    * @param {Object} user
    * @return {String} - an object with the user and token

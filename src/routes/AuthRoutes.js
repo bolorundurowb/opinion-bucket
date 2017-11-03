@@ -26,6 +26,9 @@ class AuthRoutes {
 
     router.route('/signOut')
       .post(Authentication.isAuthenticated, Auth.signOut);
+
+    router.route('/forgotPassword')
+      .post(Validations.validateForgotPassword, Auth.forgotPassword);
   }
 }
 

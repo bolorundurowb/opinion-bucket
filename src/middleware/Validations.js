@@ -106,6 +106,22 @@ class Validations {
       next();
     }
   }
+
+  /**
+   * Handles forgot password validation logic
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Function} next
+   */
+  static validateForgotPassword(req, res, next) {
+    const body = req.body;
+
+    if (!body.data) {
+      res.status(400).send({ message: 'A username or email address is required.' });
+    } else {
+      next();
+    }
+  }
 }
 
 export default Validations;
