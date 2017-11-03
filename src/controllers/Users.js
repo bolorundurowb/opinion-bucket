@@ -6,6 +6,11 @@ import User from '../models/User';
  * Handles users
  */
 class Users {
+  /**
+   * Controller method to handle retrieving all users
+   * @param {object} req
+   * @param {object} res
+   */
   static getAll(req, res) {
     User.find({}, (err, users) => {
       /* istanbul ignore if */
@@ -18,6 +23,11 @@ class Users {
     });
   }
 
+  /**
+   * Controller method to handle retrieving a user
+   * @param {object} req
+   * @param {object} res
+   */
   static getOne(req, res) {
     User.findOne({ _id: req.params.id }, (err, user) => {
       /* istanbul ignore if */
@@ -32,6 +42,11 @@ class Users {
     });
   }
 
+  /**
+   * Controller method to handle retrieving a user with all data populated
+   * @param {object} req
+   * @param {object} res
+   */
   static getOneFull(req, res) {
     User.findOne({ _id: req.params.id })
       .populate('topics')
@@ -48,7 +63,11 @@ class Users {
       });
   }
 
-
+  /**
+   * Controller method to handle updating a user
+   * @param {object} req
+   * @param {object} res
+   */
   static update(req, res) {
     const body = req.body;
 
@@ -83,6 +102,11 @@ class Users {
     });
   }
 
+  /**
+   * Controller method to handle deleting a user
+   * @param {object} req
+   * @param {object} res
+   */
   static delete(req, res) {
     User.findById(req.params.id, (err, user) => {
       /* istanbul ignore if */
