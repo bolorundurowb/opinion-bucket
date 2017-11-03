@@ -9,6 +9,9 @@ import Validations from '../middleware/Validations';
 
 const upload = multer({ dest: 'uploads/' });
 
+/**
+ * Handles all authentication routing logic
+ */
 class AuthRoutes {
   /**
    * Route handling method
