@@ -96,7 +96,21 @@ class Auth {
    * @param {Object} res
    */
   static forgotPassword(req, res) {
+    const body = req.body;
 
+    User
+      .findOne({ $or: [{ username: body.data }, { email: body.data }] })
+      .exec((err, user) => {
+        /* istanbul ignore if */
+        if (err) {
+          Logger.error(err);
+          res.status(500).send({ message: 'An error occurred when checking for the user.' });
+        } else if (!user) {
+          res.status(404).send({ message: 'A user with that username or email doesn\'t exist.' });
+        } else {
+          res.status(200).send({ message: 'A password recovery email has been sent.' });
+        }
+      });
   }
 
   /**
