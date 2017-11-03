@@ -19,7 +19,8 @@ const Config = {
     user: process.env.MAILGUN_SMTP_LOGIN,
     pass: process.env.MAILGUN_SMTP_PASSWORD
   },
-  cloudinary
+  cloudinary,
+  frontendUrl: process.env.FRONTEND_URL
 };
 
 if (env === 'test') {

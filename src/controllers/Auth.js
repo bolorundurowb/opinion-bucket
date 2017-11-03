@@ -108,6 +108,11 @@ class Auth {
         } else if (!user) {
           res.status(404).send({ message: 'A user with that username or email doesn\'t exist.' });
         } else {
+          const resetToken = Auth.generateResetToken(user.username);
+          const resetLink = `${config.frontendUrl}/auth/reset-password?token=${resetToken}`;
+          const payload = EmailTemplates.getForgotPasswordMail(user.email, resetLink);
+          Email.send(payload);
+
           res.status(200).send({ message: 'A password recovery email has been sent.' });
         }
       });
@@ -121,6 +126,17 @@ class Auth {
   static tokenify(user) {
     return jwt.sign({ uid: user._id }, config.secret, {
       expiresIn: '48h'
+    });
+  }
+
+  /**
+   * Generate a reset token
+   * @param {string} username
+   * @return {string} - a reset token
+   */
+  static generateResetToken(username) {
+    return jwt.sign({ username }, config.secret, {
+      expiresIn: '12h'
     });
   }
 
