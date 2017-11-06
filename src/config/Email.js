@@ -14,7 +14,7 @@ class Email {
    * @param {string} driver
    */
   static send(payload, driver = 'mailgun') {
-    InlineCss(payload.html, {})
+    InlineCss(payload.html, { url: ' ' })
       .then((html) => {
         payload.html = html;
 
