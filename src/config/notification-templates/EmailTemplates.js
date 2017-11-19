@@ -40,8 +40,28 @@ class EmailTemplates {
       subject: 'Password Recovery',
       text: `Sorry you forgot your password. We made a reset link just for you 'cause you are special to us. You can reset your password by visiting ${resetLink}. The reset link expires in 12 hours.
           Yours, <br>
-          The Fitted Team.`,
+          The Opinion Bucket Team.`,
       html: ejs.render(templateString, { resetLink })
+    };
+  }
+
+  /**
+   * Returns the email for a new user signUp
+   * @param {string} recipient
+   * @param {string} resetLink
+   * @returns {object} - a new user welcome email
+   */
+  static getResetPasswordMail(recipient) {
+    const templateString = fs.readFileSync(path.join(path.dirname(path.dirname(__dirname)), 'templates', 'reset-password.ejs'), 'utf8');
+
+    return {
+      from: 'admin@opinion-bucket.io',
+      to: recipient,
+      subject: 'Reset Successful',
+      text: `hey there, you have successfully reset your password
+          Yours, <br>
+          The Fitted Team.`,
+      html: ejs.render(templateString, {})
     };
   }
 }
