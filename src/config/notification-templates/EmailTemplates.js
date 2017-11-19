@@ -60,7 +60,7 @@ class EmailTemplates {
       subject: 'Reset Successful',
       text: `hey there, you have successfully reset your password
           Yours, <br>
-          The Fitted Team.`,
+          The Opinion Bucket Team.`,
       html: ejs.render(templateString, {})
     };
   }
