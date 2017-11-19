@@ -119,6 +119,48 @@ class Auth {
   }
 
   /**
+   * Controller method for handling reset password requests
+   * @param {Object} req
+   * @param {Object} res
+   */
+  static resetPassword(req, res) {
+    const body = req.body;
+
+    jwt.verify(body.token, config.secret, (err, decoded) => {
+      if (err) {
+        res.status(400).send({ message: 'The provided token is either expired or invalid.' });
+      } else {
+        User.findById(decoded.id, (err, user) => {
+          /* istanbul ignore if */
+          if (err) {
+            Logger.error(err);
+            res.status(500).send({ message: 'An error occurred when retrieving the user.' });
+          } else if (!user) {
+            res.status(404).send({ message: 'A user with that id doesn\'t exist.' });
+          } else if (Auth.verifyPassword(body.password, user.hashedPassword)) {
+            res.status(400).send({ message: 'The new password cannot be the same as the old.' });
+          } else {
+            user.password = body.password;
+            user.save((err) => {
+              /* istanbul ignore if */
+              if (err) {
+                Logger.error(err);
+                res.status(500).send({ message: 'An error occurred when updating the user.' });
+              } else {
+                res.status(200).send({ message: 'Your password has been reset.' });
+
+                // send notifications
+                const payload = EmailTemplates.getResetPasswordMail(user.email);
+                Email.send(payload);
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+
+  /**
    * Generate a JWT token
    * @param {Object} user
    * @return {String} - an object with the user and token

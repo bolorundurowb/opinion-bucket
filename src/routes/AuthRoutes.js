@@ -29,6 +29,9 @@ class AuthRoutes {
 
     router.route('/forgotPassword')
       .post(Validations.validateForgotPassword, Auth.forgotPassword);
+
+    router.route('/resetPassword')
+      .post(Validations.validateResetPassword, Auth.resetPassword);
   }
 }
 
