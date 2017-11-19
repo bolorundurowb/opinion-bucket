@@ -24,6 +24,10 @@ class Email {
       });
   }
 
+  /**
+   * Sends the payload using Mailgun as the driver
+   * @param {object} payload
+   */
   static sendWithMailgun(payload) {
     const credentials = {
       service: 'MailGun',

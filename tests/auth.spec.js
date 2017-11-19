@@ -6,17 +6,23 @@ import supertest from 'supertest';
 // eslint-disable-next-line
 import should from 'should';
 import sinon from 'sinon';
+import jwt from 'jsonwebtoken';
 
 import app from '../src/server';
+import Config from './../src/config/Config';
+import Logger from './../src/config/Logger';
 import Auth from './../src/controllers/Auth';
+import Email from './../src/config/Email';
 import ImageHandler from '../src/util/ImageHandler';
 
 const server = supertest.agent(app);
 let userToken;
+let userId;
 
 describe('Auth', () => {
   after(() => {
     ImageHandler.uploadImage.restore();
+    Email.sendWithMailgun.restore();
   });
 
   before(() => {
@@ -24,6 +30,10 @@ describe('Auth', () => {
       new Promise((resolve) => {
         resolve('http://sample-url.jpg');
       }));
+
+    sinon.stub(Email, 'sendWithMailgun').callsFake(() => {
+      Logger.log('Email sent.');
+    });
   });
 
   describe('sign up', () => {
@@ -33,7 +43,7 @@ describe('Auth', () => {
           .post('/api/v1/signUp')
           .field('username', 'john.doe')
           .field('email', 'john.doe@gmail.com')
-          .field('password', 'john.doe')
+          .field('password', 'john.do')
           .attach('profile', './tests/artifacts/sample.png')
           .expect(201)
           .end((err, res) => {
@@ -43,6 +53,7 @@ describe('Auth', () => {
             res.body.token.should.be.type('string');
 
             userToken = res.body.token;
+            userId = res.body.user._id;
             done();
           });
       });
@@ -152,7 +163,7 @@ describe('Auth', () => {
           .post('/api/v1/signIn')
           .send({
             username: 'john.doe',
-            password: 'john.do'
+            password: 'john.d'
           })
           .expect(403)
           .end((err, res) => {
@@ -169,7 +180,7 @@ describe('Auth', () => {
           .post('/api/v1/signIn')
           .send({
             username: 'john.doe',
-            password: 'john.doe'
+            password: 'john.do'
           })
           .expect(200)
           .end((err, res) => {
@@ -228,7 +239,7 @@ describe('Auth', () => {
     });
 
     describe('allows for', () => {
-      it('resetting a valid users password', (done) => {
+      it('requesting a reset for a valid user', (done) => {
         server
           .post('/api/v1/forgotPassword')
           .send({
@@ -237,6 +248,124 @@ describe('Auth', () => {
           .end((err, res) => {
             res.status.should.equal(200);
             res.body.message.should.equal('A password recovery email has been sent.');
+            done();
+          });
+      });
+    });
+  });
+
+  describe('reset password', () => {
+    let existingUserToken;
+    let expiredToken;
+    let nonExistentUserToken;
+
+    before(() => {
+      expiredToken = jwt.sign({ id: 'xxxxx' }, Config.secret, {
+        expiresIn: '0s'
+      });
+
+      nonExistentUserToken = jwt.sign({ id: 'xxxxx' }, Config.secret, {
+        expiresIn: '12m'
+      });
+
+      existingUserToken = jwt.sign({ id: userId }, Config.secret, {
+        expiresIn: '12m'
+      });
+    });
+
+    describe('doesn\'t allow', () => {
+      it('for resetting without a token', (done) => {
+        server
+          .post('/api/v1/resetPassword')
+          .send({})
+          .end((err, res) => {
+            res.status.should.equal(400);
+            res.body.message.should.equal('A reset token is required.');
+            done();
+          });
+      });
+
+      it('for resetting without a password', (done) => {
+        server
+          .post('/api/v1/resetPassword')
+          .send({
+            token: 'xxxxxx'
+          })
+          .end((err, res) => {
+            res.status.should.equal(400);
+            res.body.message.should.equal('A new password is required.');
+            done();
+          });
+      });
+
+      it('for resetting with an invalid token', (done) => {
+        server
+          .post('/api/v1/resetPassword')
+          .send({
+            token: 'xxxxxx',
+            password: 'xxxxxxxxx'
+          })
+          .end((err, res) => {
+            res.status.should.equal(400);
+            res.body.message.should.equal('The provided token is either expired or invalid.');
+            done();
+          });
+      });
+
+      it('for resetting with an expired token', (done) => {
+        server
+          .post('/api/v1/resetPassword')
+          .send({
+            token: expiredToken,
+            password: 'xxxxxxxxx'
+          })
+          .end((err, res) => {
+            res.status.should.equal(400);
+            res.body.message.should.equal('The provided token is either expired or invalid.');
+            done();
+          });
+      });
+
+      it('for resetting with a non-existent user', (done) => {
+        server
+          .post('/api/v1/resetPassword')
+          .send({
+            token: nonExistentUserToken,
+            password: 'xxxxxxxxx'
+          })
+          .end((err, res) => {
+            res.status.should.equal(404);
+            res.body.message.should.equal('A user with that id doesn\'t exist.');
+            done();
+          });
+      });
+
+      it('for resetting with a new password same as the old password', (done) => {
+        server
+          .post('/api/v1/resetPassword')
+          .send({
+            token: existingUserToken,
+            password: 'john.do'
+          })
+          .end((err, res) => {
+            res.status.should.equal(400);
+            res.body.message.should.equal('The new password cannot be the same as the old.');
+            done();
+          });
+      });
+    });
+
+    describe('allows', () => {
+      it('for an existing user to get his/api/v1/her password reset', (done) => {
+        server
+          .post('/api/v1/resetPassword')
+          .send({
+            token: existingUserToken,
+            password: 'john.doe'
+          })
+          .end((err, res) => {
+            res.status.should.equal(200);
+            res.body.message.should.equal('Your password has been reset.');
             done();
           });
       });
