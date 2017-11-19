@@ -131,6 +131,7 @@ class Auth {
         res.status(400).send({ message: 'The provided token is either expired or invalid.' });
       } else {
         User.findById(decoded.id, (err, user) => {
+          /* istanbul ignore if */
           if (err) {
             Logger.error(err);
             res.status(500).send({ message: 'An error occurred when retrieving the user.' });
@@ -141,6 +142,7 @@ class Auth {
           } else {
             user.password = body.password;
             user.save((err) => {
+              /* istanbul ignore if */
               if (err) {
                 Logger.error(err);
                 res.status(500).send({ message: 'An error occurred when updating the user.' });
