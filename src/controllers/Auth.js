@@ -119,6 +119,15 @@ class Auth {
   }
 
   /**
+   * Controller method for handling reset password requests
+   * @param {Object} req
+   * @param {Object} res
+   */
+  static resetPassword(req, res) {
+
+  }
+
+  /**
    * Generate a JWT token
    * @param {Object} user
    * @return {String} - an object with the user and token

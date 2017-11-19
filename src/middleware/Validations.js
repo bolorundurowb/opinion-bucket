@@ -122,6 +122,24 @@ class Validations {
       next();
     }
   }
+
+  /**
+   * Validate if all fields necessary for resetting are filled in
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Function} next
+   */
+  static validateResetPassword(req, res, next) {
+    const body = req.body;
+
+    if (!body.token) {
+      res.status(400).send({ message: 'A reset token is required.' });
+    } else if (!body.password) {
+      res.status(400).send({ message: 'A new password is required.' });
+    } else {
+      next();
+    }
+  }
 }
 
 export default Validations;
