@@ -37,7 +37,7 @@ seeder.connect(config.database, () => {
 
               process.exit(0);
             }
-          })
+          });
         } else {
           logger.log('default admin already exists');
 

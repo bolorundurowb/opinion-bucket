@@ -6,8 +6,9 @@ import supertest from 'supertest';
 // eslint-disable-next-line
 import should from 'should';
 import sinon from 'sinon';
+
 import app from '../src/server';
-import Auth from '../src/controllers/Auth';
+import ImageHandler from './../src/util/ImageHandler';
 
 const server = supertest.agent(app);
 let id = '';
@@ -16,11 +17,11 @@ let adminToken;
 
 describe('Users', () => {
   after(() => {
-    Auth.uploadImage.restore();
+    ImageHandler.uploadImage.restore();
   });
 
   before(() => {
-    sinon.stub(Auth, 'uploadImage').callsFake(() =>
+    sinon.stub(ImageHandler, 'uploadImage').callsFake(() =>
       new Promise((resolve) => {
         resolve('http://sample-url.jpg');
       }));
@@ -28,7 +29,7 @@ describe('Users', () => {
 
   before((done) => {
     server
-      .post('/api/v1/signin')
+      .post('/api/v1/signIn')
       .send({
         username: 'john.doe',
         password: 'john.doe'
@@ -36,18 +37,21 @@ describe('Users', () => {
       .expect(200)
       .end((err, res) => {
         userToken = res.body.token;
+        done();
+      });
+  });
 
-        server
-          .post('/api/v1/signin')
-          .send({
-            username: process.env.ADMIN_USERNAME,
-            password: process.env.ADMIN_PASS
-          })
-          .expect(200)
-          .end((err, res) => {
-            adminToken = res.body.token;
-            done();
-          });
+  before((done) => {
+    server
+      .post('/api/v1/signIn')
+      .send({
+        username: process.env.ADMIN_USERNAME,
+        password: process.env.ADMIN_PASS
+      })
+      .expect(200)
+      .end((err, res) => {
+        adminToken = res.body.token;
+        done();
       });
   });
 
@@ -262,12 +266,7 @@ describe('Users', () => {
           .set('x-access-token', adminToken)
           .expect(200)
           .end((err, res) => {
-            // HACK: get the id of the second user order is different on CI hence the if block
-            if (process.env.NODE_ENV === 'test') {
-              id = res.body[1]._id;
-            } else {
-              id = res.body[0]._id;
-            }
+            id = res.body[1]._id;
             server
               .delete(`/api/v1/users/${id}`)
               .set('x-access-token', userToken)

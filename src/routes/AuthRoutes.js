@@ -9,20 +9,29 @@ import Validations from '../middleware/Validations';
 
 const upload = multer({ dest: 'uploads/' });
 
+/**
+ * Handles all authentication routing logic
+ */
 class AuthRoutes {
   /**
    * Route handling method
    * @param {Object} router
    */
   static route(router) {
-    router.route('/signin')
-      .post(Validations.validateSignIn, Auth.signin);
+    router.route('/signIn')
+      .post(Validations.validateSignIn, Auth.signIn);
 
-    router.route('/signup')
-      .post(upload.single('profile'), Validations.validateSignUp, Auth.signup);
+    router.route('/signUp')
+      .post(upload.single('profile'), Validations.validateSignUp, Auth.signUp);
 
-    router.route('/signout')
-      .post(Authentication.isAuthenticated, Auth.signout);
+    router.route('/signOut')
+      .post(Authentication.isAuthenticated, Auth.signOut);
+
+    router.route('/forgotPassword')
+      .post(Validations.validateForgotPassword, Auth.forgotPassword);
+
+    router.route('/resetPassword')
+      .post(Validations.validateResetPassword, Auth.resetPassword);
   }
 }
 

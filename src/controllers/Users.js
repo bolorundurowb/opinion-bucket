@@ -1,16 +1,21 @@
-import logger from '../config/Logger';
+import Logger from '../config/Logger';
+import ImageHandler from './../util/ImageHandler';
 import User from '../models/User';
-import Auth from './Auth';
 
 /**
  * Handles users
  */
 class Users {
+  /**
+   * Controller method to handle retrieving all users
+   * @param {object} req
+   * @param {object} res
+   */
   static getAll(req, res) {
-    User.find((err, users) => {
+    User.find({}, (err, users) => {
       /* istanbul ignore if */
       if (err) {
-        logger.error(err);
+        Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving users' });
       } else {
         res.status(200).send(users);
@@ -18,11 +23,16 @@ class Users {
     });
   }
 
+  /**
+   * Controller method to handle retrieving a user
+   * @param {object} req
+   * @param {object} res
+   */
   static getOne(req, res) {
     User.findOne({ _id: req.params.id }, (err, user) => {
       /* istanbul ignore if */
       if (err) {
-        logger.error(err);
+        Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a user' });
       } else if (!user) {
         res.status(400).send({ message: 'No user exists with that id' });
@@ -32,13 +42,18 @@ class Users {
     });
   }
 
+  /**
+   * Controller method to handle retrieving a user with all data populated
+   * @param {object} req
+   * @param {object} res
+   */
   static getOneFull(req, res) {
     User.findOne({ _id: req.params.id })
       .populate('topics')
       .exec((err, user) => {
         /* istanbul ignore if */
         if (err) {
-          logger.error(err);
+          Logger.error(err);
           res.status(500).send({ message: 'An error occurred when retrieving a user' });
         } else if (!user) {
           res.status(400).send({ message: 'No user exists with that id' });
@@ -48,13 +63,18 @@ class Users {
       });
   }
 
+  /**
+   * Controller method to handle updating a user
+   * @param {object} req
+   * @param {object} res
+   */
   static update(req, res) {
     const body = req.body;
 
     User.findById(req.params.id, (err, user) => {
       /* istanbul ignore if */
       if (err) {
-        logger.error(err);
+        Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a user' });
       } else if (!user) {
         res.status(404).send({ message: 'No user with that id' });
@@ -65,24 +85,33 @@ class Users {
           }
         });
 
-        if (req.file) {
-          Auth.uploadImage(req.file, user)
-            .then((url) => {
-              user.profilePhoto = url;
-              Users.saveUser(user, res);
+        ImageHandler.uploadImage(req.file)
+          .then((url) => {
+            user.profilePhoto = url || user.profilePhoto;
+            user.save((err, _user) => {
+              /* istanbul ignore if */
+              if (err) {
+                Logger.error(err);
+                res.status(500).send({ message: 'An error occurred when saving a user' });
+              } else {
+                res.status(200).send(_user);
+              }
             });
-        } else {
-          Users.saveUser(user, res);
-        }
+          });
       }
     });
   }
 
+  /**
+   * Controller method to handle deleting a user
+   * @param {object} req
+   * @param {object} res
+   */
   static delete(req, res) {
     User.findById(req.params.id, (err, user) => {
       /* istanbul ignore if */
       if (err) {
-        logger.error(err);
+        Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving a user' });
       } else if (user.username === 'admin') {
         res.status(403).send({ message: 'Admin cannot be removed' });
@@ -90,29 +119,12 @@ class Users {
         User.findByIdAndRemove(req.params.id, (err) => {
           /* istanbul ignore if */
           if (err) {
-            logger.error(err);
+            Logger.error(err);
             res.status(500).send({ message: 'An error occurred when removing a user' });
           } else {
             res.status(200).send({ message: 'User successfully removed' });
           }
         });
-      }
-    });
-  }
-
-  /**
-   * Saves a user to the database
-   * @param {Object} user
-   * @param {Object} res
-   */
-  static saveUser(user, res) {
-    user.save((err, _user) => {
-      /* istanbul ignore if */
-      if (err) {
-        logger.error(err);
-        res.status(500).send({ message: 'An error occurred when saving a user' });
-      } else {
-        res.status(200).send(_user);
       }
     });
   }

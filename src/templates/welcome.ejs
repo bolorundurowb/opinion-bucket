@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <link href="https://fonts.googleapis.com/css?family=Saira+Semi+Condensed" rel="stylesheet">
+    <style  media="screen" type="text/css">
+        html, body {
+            height: 100%;
+        }
+        body {
+            margin: 0;
+            font-family: 'Saira Semi Condensed', sans-serif;
+            font-weight: 300;
+        }
+        .center-horizontally {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .center-vertically {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            width: 500px;
+            border: solid 1px lightgray;
+            box-shadow: gray;
+        }
+        .container .top-bar {
+            height: 10px;
+            background-color: #339933;
+            margin: 5px;
+        }
+        .container .bottom-bar {
+            height: 120px;
+            background-color: #339933;
+            margin: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .container .bottom-bar .signature a {
+            color: white;
+        }
+        .container .bottom-bar .signature a:link {
+            text-decoration: none;
+        }
+        .container .bottom-bar .signature a:visited {
+            text-decoration: none;
+            font-weight: bold;
+            color: #1080ff;
+        }
+        .container .bottom-bar .signature a:hover {
+            text-decoration: underline;
+            color: darkslateblue;
+        }
+        .container .bottom-bar .signature a:active {
+            text-decoration: underline;
+            color: cadetblue;
+        }
+        .container .bottom-bar .logo {
+            height: 100%;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .container .bottom-bar .signature {
+            font-size: 90%;
+            line-height: 1.7em;
+            list-style: none;
+            margin: auto 15px;
+            text-align: right;
+        }
+        .container .bottom-bar .logo img {
+            height: 100px;
+            width: 100px;
+        }
+        .content {
+            padding: 10px;
+        }
+        .content .header {
+            font-size: 200%;
+            margin: 15px;
+        }
+        .content .message {
+            font-size: 100%;
+            margin: 30px 15px 35px;
+            text-align: justify;
+            line-height: 2;
+        }
+        .content .footer {
+            margin: 15px;
+            font-size: 110%;
+            font-weight: 300 !important;
+        }
+    </style>
+</head>
+<body>
+<div class="center-vertically">
+    <div class="center-horizontally">
+        <div class="container">
+            <div class="top-bar"></div>
+
+            <div class="content">
+                <div class="header">Hey there,</div>
+
+                <div class="message">
+                    Welcome to Opinion Bucket. This is a place to share your opinion and thoughts on pertinent issues. It is a platform for you to share and gain knowledge, to see other points of view and learn.
+                    <br>
+                    Looking forward to a productive and informative experience with us.
+                </div>
+
+                <div class="footer">
+                    Yours, <br>
+                    The Opinion Bucket Team.
+                </div>
+            </div>
+
+            <div class="bottom-bar">
+                <div class="logo">
+                    <img src="http://gbizway.com/assets/microsites/theme1/img/microsite-logo-placeholder.png">
+                </div>
+                <ul class="signature">
+                    <li><a href="https://fitted.com">Opinion Bucket.</a></li>
+                    <li><a href="mailto:admin@opinion-bucket.io">admin@opinion-bucket.io</a></li>
+                    <li><a href="tel:+2348167737818">+2348167737818</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
