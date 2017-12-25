@@ -20,7 +20,8 @@ const Config = {
     pass: process.env.MAILGUN_SMTP_PASSWORD
   },
   cloudinary,
-  frontendUrl: process.env.FRONTEND_URL
+  frontendUrl: process.env.FRONTEND_URL,
+  fcmServerKey: process.env.FCM_SERVER_KEY
 };
 
 if (env === 'test') {
