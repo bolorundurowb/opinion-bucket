@@ -151,7 +151,9 @@ class Topics {
    * @param {Object} res
    */
   static getOpinions(req, res) {
-    const filter = {};
+    const filter = {
+      topicId: req.params.tid
+    };
 
     let limit = req.query.limit || 0;
     limit = parseInt(limit, 10);
@@ -159,15 +161,11 @@ class Topics {
     let skip = req.query.offset || 0;
     skip = parseInt(skip, 10);
 
-    if (req.params.topic) {
-      filter.topicId = req.params.topic;
-    }
-
-    const sort = {};
+    const sort = {
+      date: -1
+    };
     if (req.query.order) {
-      if (req.query.order === 'date') {
-        sort.date = -1;
-      } else if (req.query.order === 'likes') {
+      if (req.query.order === 'likes') {
         sort.likes = -1;
       } else if (req.query.order === 'dislikes') {
         sort.dislikes = -1;
@@ -176,10 +174,6 @@ class Topics {
 
     if (req.query.author) {
       filter.author = req.query.author;
-    }
-
-    if (req.query.topic) {
-      filter.topicId = req.query.topic;
     }
 
     Opinion.find(filter)
