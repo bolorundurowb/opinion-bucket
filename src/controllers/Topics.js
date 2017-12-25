@@ -239,15 +239,15 @@ class Topics {
   static updateOpinion(req, res) {
     const body = req.body;
 
-    Opinion.findById(req.params.id, (err, opinion) => {
+    Opinion.findOne({ _id: req.params.oid, topicId: req.params.tid }, (err, opinion) => {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
       } else if (!opinion) {
-        res.status(404).send({ message: 'An opinion with that id doesn\'t exist.' });
+        res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
       } else {
-        ['title', 'content', 'showName', 'date'].forEach((property) => {
+        ['title', 'content', 'showName'].forEach((property) => {
           if (body[property]) {
             opinion[property] = body[property];
           }
