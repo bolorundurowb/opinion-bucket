@@ -42,6 +42,7 @@ class TopicRoutes {
       )
       .post(
         Authentication.isAuthenticated,
+        Validations.validateCreateOpinion,
         Topics.createOpinion
       );
 

@@ -164,6 +164,7 @@ class Topics {
     const sort = {
       date: -1
     };
+
     if (req.query.order) {
       if (req.query.order === 'likes') {
         sort.likes = -1;
@@ -197,7 +198,7 @@ class Topics {
    * @param {Object} res
    */
   static getOpinion(req, res) {
-    Opinion.findOne({ _id: req.params.id }, (err, opinion) => {
+    Opinion.findOne({ _id: req.params.oid, topicId: req.params.tid }, (err, opinion) => {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
@@ -216,23 +217,16 @@ class Topics {
    * @param {Object} res
    */
   static createOpinion(req, res) {
-    Topics.findById(req.body.topicId, (err, topic) => {
-      /* istanbul ignore if */
+    const body = req.body;
+    body.topicId = req.params.tid;
+
+    const opinion = new Opinion(body);
+    opinion.save((err, _opinion) => {
       if (err) {
         Logger.error(err);
-        res.status(500).send({ message: 'An error occurred when retrieving an opinion' });
-      } else if (!topic) {
-        res.status(404).send({ message: 'A topic with that id doesn\'t exist' });
+        res.status(500).send({ message: 'An error occurred when saving an opinion.' });
       } else {
-        const opinion = new Opinion(req.body);
-        opinion.save((err, _opinion) => {
-          if (err) {
-            Logger.error(err);
-            res.status(500).send({ message: 'An error occurred when saving an opinion.' });
-          } else {
-            res.status(201).send(_opinion);
-          }
-        });
+        res.status(201).send(_opinion);
       }
     });
   }
