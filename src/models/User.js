@@ -56,11 +56,7 @@ const userSchema = new Schema({
   }
 });
 
-userSchema.virtual('name').get(() => {
-  return this.firstName + ' ' + this.lastName;
-});
-
-userSchema.virtual('password').get(() => {
+userSchema.virtual('password').get(function () {
   return this.hashedPassword;
 });
 

@@ -216,18 +216,6 @@ describe('Topics', () => {
             done();
           });
       });
-
-      it('for a topic to be retrieved with more detail', (done) => {
-        server
-          .get(`/api/v1/topics/${id}/full`)
-          .set('x-access-token', userToken)
-          .expect(200)
-          .end((err, res) => {
-            res.status.should.equal(200);
-            res.body.should.be.type('object');
-            done();
-          });
-      });
     });
   });
 
