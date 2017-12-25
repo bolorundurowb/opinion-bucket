@@ -2,9 +2,9 @@
  * Created by bolorundurowb on 1/7/17.
  */
 
-const bcrypt = require('bcryptjs');
-const mongoose = require('mongoose');
-const shortid = require('shortid');
+import bcrypt from 'bcryptjs';
+import mongoose from 'mongoose';
+import shortid from 'shortid';
 
 const Schema = mongoose.Schema;
 
