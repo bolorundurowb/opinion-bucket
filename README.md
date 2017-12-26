@@ -23,13 +23,15 @@ RESTful API and App for the upcoming site [http://opinion-bucket.io](http://opin
 | /topics              | `POST`   | yes    | yes    | Create a new topic        |
 | /topics/:tid         | `PUT`    | yes    | yes    | Update a specified topic        |
 | /topics/:tid         | `DELETE` | yes    | yes    | Remove a specified topic        |
-| /topics/:tid/opinions              | `GET`    | yes    | no     | Get all opinions        |
-| /topics/:tid/opinions/:oid         | `GET`    | yes    | no     | Get a specific opinion        |
+| /topics/:tid/opinions              | `GET`    | no    | no     | Get all opinions        |
+| /topics/:tid/opinions/:oid         | `GET`    | no    | no     | Get a specific opinion        |
 | /topics/:tid/opinions              | `POST`   | yes    | no    | Create a new opinion        |
 | /topics/:tid/opinions/:oid         | `PUT`    | yes    | no    | Update a specified opinion        |
 | /topics/:tid/opinions/:oid         | `DELETE` | yes    | no    | Remove a specified opinion        |
 | /topics/:tid/opinions/:oid/like         | `PUT`    | yes    | no    | Like a specified opinion        |
-| /topics/:tid/opinions/:oid/dislike         | `PUT` | yes    | no    | Dislike a specified opinion        |
+| /topics/:tid/opinions/:oid/dislike         | `PUT` | yes    | no    | Dislike a specified opinion      
+| /topics/:tid/opinions/:oid/like         | `DELETE`    | yes    | no    | Unlike a specific opinion        |
+| /topics/:tid/opinions/:oid/dislike         | `DELETE` | yes    | no    | Undislike a specified opinion        |
 | /categories             | `GET`    | yes    | no    | Get all categories        |
 | /categories/:cid        | `GET`    | yes    | no     | Get a specific category        |
 | /categories             | `POST`   | yes    | yes    | Create a new category        |
