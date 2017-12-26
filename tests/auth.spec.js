@@ -376,5 +376,7 @@ describe('Auth', () => {
     it('returns false when password is empty', () => {
       Auth.verifyPassword(null, null).should.equal(false);
     });
+
+
   });
 });

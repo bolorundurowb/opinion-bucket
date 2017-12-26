@@ -84,6 +84,7 @@ class Topics {
       } else {
         const _topic = new Topic(req.body);
         _topic.save((err, topic) => {
+          /* istanbul ignore if */
           if (err) {
             Logger.error(err);
             res.status(500).send({ message: 'An error occurred when saving a topic' });
@@ -117,6 +118,7 @@ class Topics {
         });
 
         topic.save((err, _topic) => {
+          /* istanbul ignore if */
           if (err) {
             Logger.error(err);
             res.status(500).send({ message: 'An error occurred when saving a topic.' });
@@ -259,6 +261,7 @@ class Topics {
 
     const opinion = new Opinion(body);
     opinion.save((err, _opinion) => {
+      /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when saving an opinion.' });
