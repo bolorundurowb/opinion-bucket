@@ -266,8 +266,9 @@ class Topics {
   static removeOpinion(req, res) {
     Opinion
       .findOneAndRemove({
-        _id: req.params.id,
-        author: req.user._id
+        _id: req.params.oid,
+        author: req.user._id,
+        topicId: req.params.tid
       })
       .exec((err) => {
         /* istanbul ignore if */
@@ -286,13 +287,13 @@ class Topics {
    * @param {Object} res
    */
   static likeOpinion(req, res) {
-    Opinion.findById(req.params.id, (err, opinion) => {
+    Opinion.findOne({ _id: req.params.oid, topicId: req.params.tid }, (err, opinion) => {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
       } else if (!opinion) {
-        res.status(404).send({ message: 'An opinion with that id doesn\'t exist.' });
+        res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this tpic.' });
       } else {
         opinion.likes += 1;
         Topics.saveOpinion(opinion, res);
@@ -306,13 +307,13 @@ class Topics {
    * @param {Object} res
    */
   static dislikeOpinion(req, res) {
-    Opinion.findById(req.params.id, (err, opinion) => {
+    Opinion.findOne({ _id: req.params.oid, topicId: req.params.tid }, (err, opinion) => {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
       } else if (!opinion) {
-        res.status(404).send({ message: 'An opinion with that id doesn\'t exist.' });
+        res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
       } else {
         opinion.dislikes += 1;
         Topics.saveOpinion(opinion, res);
