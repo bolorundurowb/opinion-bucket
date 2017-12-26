@@ -32,19 +32,31 @@ const opinionSchema = new Schema({
     default: Date.now
   },
   likes: {
-    type: Number,
-    default: 0
+    number: {
+      type: Number,
+      default: 0
+    },
+    users: [{
+      type: String,
+      ref: 'User'
+    }]
   },
   dislikes: {
-    type: Number,
-    default: 0
+    number: {
+      type: Number,
+      default: 0
+    },
+    users: [{
+      type: String,
+      ref: 'User'
+    }]
   },
   topicId: {
     type: String,
     required: true,
     ref: 'Topic'
   }
-});
+}, { usePushEach: true });
 
 const opinionModel = mongoose.model('Opinion', opinionSchema);
 

@@ -45,6 +45,34 @@ class Authentication {
       res.status(403).send({ message: 'You need to be logged in to access that information.' });
     }
   }
+
+  /**
+   * Middleware method for voluntary checking user authentication
+   * @param {Object} req
+   * @param {Object} res
+   * @param {Function} next
+   */
+  static ifIsAuthenticated(req, res, next) {
+    const token = req.headers['x-access-token'] || req.headers.token || req.body.token;
+
+    if (token) {
+      jwt.verify(token, config.secret, (err, decoded) => {
+        if (decoded) {
+          User
+            .findOne({ _id: decoded.uid })
+            .populate('role')
+            .exec((err, user) => {
+              req.user = user;
+              next();
+            });
+        } else {
+          next();
+        }
+      });
+    } else {
+      next();
+    }
+  }
 }
 
 export default Authentication;

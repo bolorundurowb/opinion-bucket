@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/bolorundurowb/opinion-bucket#readme",
   "devDependencies": {
+    "babel-core": "^6.26.0",
     "babel-istanbul": "^0.12.2",
     "coveralls": "^2.11.14",
     "eslint": "^3.9.1",

@@ -2,7 +2,8 @@
  * Created by winner-timothybolorunduro on 15/07/2017.
  */
 
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+
 const Schema = mongoose.Schema;
 
 const roleSchema = new Schema({
