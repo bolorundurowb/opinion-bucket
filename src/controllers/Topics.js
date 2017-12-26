@@ -319,7 +319,7 @@ class Topics {
         opinion.likes.number -= 1;
         const index = opinion.likes.users.indexOf(req.user._id);
         if (index !== -1) {
-          opinion.likes.users = opinion.likes.users.splice(index, 1);
+          opinion.likes.users.splice(index, 1);
         }
 
         Topics.saveOpinion(opinion, res);
@@ -365,7 +365,7 @@ class Topics {
         opinion.dislikes.number -= 1;
         const index = opinion.dislikes.users.indexOf(req.user._id);
         if (index !== -1) {
-          opinion.dislikes.users = opinion.dislikes.users.splice(index, 1);
+          opinion.dislikes.users.splice(index, 1);
         }
 
         Topics.saveOpinion(opinion, res);

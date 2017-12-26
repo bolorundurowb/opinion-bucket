@@ -408,7 +408,8 @@ describe('Topics', () => {
             .end((err, res) => {
               res.status.should.equal(200);
               res.body.should.be.type('object');
-              res.body.likes.should.equal(1);
+              res.body.likes.number.should.equal(1);
+              res.body.likes.users.length.should.equal(1);
               done();
             });
         });
@@ -421,7 +422,8 @@ describe('Topics', () => {
             .end((err, res) => {
               res.status.should.equal(200);
               res.body.should.be.type('object');
-              res.body.dislikes.should.equal(1);
+              res.body.dislikes.number.should.equal(1);
+              res.body.dislikes.users.length.should.equal(1);
               done();
             });
         });
@@ -444,6 +446,65 @@ describe('Topics', () => {
         it('for a non-existent opinions to be disliked', (done) => {
           server
             .put(`/api/v1/topics/${topicId}/opinions/507f1f77bcf86cd799439011/dislike`)
+            .set('x-access-token', userToken)
+            .expect(404)
+            .end((err, res) => {
+              res.status.should.equal(404);
+              res.body.message.should.equal('An opinion with that id doesn\'t exist for this topic.');
+              done();
+            });
+        });
+      });
+    });
+
+    describe('unlikes and undislikes', () => {
+      describe('allows', () => {
+        it('for opinions to be liked', (done) => {
+          server
+            .delete(`/api/v1/topics/${topicId}/opinions/${opinionId}/like`)
+            .set('x-access-token', userToken)
+            .expect(200)
+            .end((err, res) => {
+              res.status.should.equal(200);
+              res.body.should.be.type('object');
+              res.body.likes.number.should.equal(0);
+              res.body.likes.users.length.should.equal(0);
+              done();
+            });
+        });
+
+        it('for opinions to be disliked', (done) => {
+          server
+            .delete(`/api/v1/topics/${topicId}/opinions/${opinionId}/dislike`)
+            .set('x-access-token', userToken)
+            .expect(200)
+            .end((err, res) => {
+              res.status.should.equal(200);
+              res.body.should.be.type('object');
+              res.body.dislikes.number.should.equal(0);
+              res.body.dislikes.users.length.should.equal(0);
+              done();
+            });
+        });
+      });
+
+
+      describe('does not allow', () => {
+        it('for a non-existent opinions to be liked', (done) => {
+          server
+            .delete(`/api/v1/topics/${topicId}/opinions/507f1f77bcf86cd799439011/like`)
+            .set('x-access-token', userToken)
+            .expect(404)
+            .end((err, res) => {
+              res.status.should.equal(404);
+              res.body.message.should.equal('An opinion with that id doesn\'t exist for this topic.');
+              done();
+            });
+        });
+
+        it('for a non-existent opinions to be disliked', (done) => {
+          server
+            .delete(`/api/v1/topics/${topicId}/opinions/507f1f77bcf86cd799439011/dislike`)
             .set('x-access-token', userToken)
             .expect(404)
             .end((err, res) => {

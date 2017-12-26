@@ -56,7 +56,7 @@ const opinionSchema = new Schema({
     required: true,
     ref: 'Topic'
   }
-});
+}, { usePushEach: true });
 
 const opinionModel = mongoose.model('Opinion', opinionSchema);
 
