@@ -108,6 +108,23 @@ describe('Auth', () => {
           });
       });
 
+      it('for users with a short password to be created', (done) => {
+        server
+          .post('/api/v1/signUp')
+          .send({
+            email: 'john@doe.org',
+            username: 'john.doe',
+            password: '12345'
+          })
+          .expect(400)
+          .end((err, res) => {
+            res.status.should.equal(400);
+            res.body.should.be.type('object');
+            res.body.message.should.equal('A password must be six characters or greater.');
+            done();
+          });
+      });
+
       it('for duplicate users to be created', (done) => {
         server
           .post('/api/v1/signUp')
@@ -144,6 +161,19 @@ describe('Auth', () => {
           });
       });
 
+      it(' for users without a username or email to be signed in', (done) => {
+        server
+          .post('/api/v1/signIn')
+          .send({
+          })
+          .expect(400)
+          .end((err, res) => {
+            res.status.should.equal(400);
+            res.body.message.should.equal('A username or email is required.');
+            done();
+          });
+      });
+
       it(' for users without password to be signed in', (done) => {
         server
           .post('/api/v1/signIn')
@@ -154,6 +184,21 @@ describe('Auth', () => {
           .end((err, res) => {
             res.status.should.equal(400);
             res.body.message.should.equal('A password is required.');
+            done();
+          });
+      });
+
+      it(' for users with short passwords to be signed in', (done) => {
+        server
+          .post('/api/v1/signIn')
+          .send({
+            username: 'jane.doe',
+            password: '12345'
+          })
+          .expect(400)
+          .end((err, res) => {
+            res.status.should.equal(400);
+            res.body.message.should.equal('A password must be six characters or greater.');
             done();
           });
       });
