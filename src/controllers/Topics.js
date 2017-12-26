@@ -293,7 +293,7 @@ class Topics {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
       } else if (!opinion) {
-        res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this tpic.' });
+        res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
       } else {
         opinion.likes += 1;
         Topics.saveOpinion(opinion, res);

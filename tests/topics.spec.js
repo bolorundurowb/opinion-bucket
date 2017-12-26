@@ -164,7 +164,7 @@ describe('Topics', () => {
           .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
-            res.body.length.should.equal(2);
+            res.body.length.should.equal(1);
             done();
           });
       });
@@ -286,7 +286,7 @@ describe('Topics', () => {
             .end((err, res) => {
               res.status.should.equal(404);
               res.body.should.be.type('object');
-              res.body.message.should.equal('An opinion with that id doesn\'t exist.');
+              res.body.message.should.equal('An opinion with that id doesn\'t exist for this topic.');
               done();
             });
         });
@@ -436,7 +436,7 @@ describe('Topics', () => {
             .expect(404)
             .end((err, res) => {
               res.status.should.equal(404);
-              res.body.message.should.equal('An opinion with that id doesn\'t exist.');
+              res.body.message.should.equal('An opinion with that id doesn\'t exist for this topic.');
               done();
             });
         });
@@ -448,7 +448,7 @@ describe('Topics', () => {
             .expect(404)
             .end((err, res) => {
               res.status.should.equal(404);
-              res.body.message.should.equal('An opinion with that id doesn\'t exist.');
+              res.body.message.should.equal('An opinion with that id doesn\'t exist for this topic.');
               done();
             });
         });
