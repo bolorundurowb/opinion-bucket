@@ -151,18 +151,6 @@ describe('Topics', () => {
             done();
           });
       });
-
-      it('a non-existent topic to be retrieved with more detail', (done) => {
-        server
-          .get('/api/v1/topics/507f1f77bcf86cd799439011/full')
-          .set('x-access-token', userToken)
-          .expect(404)
-          .end((err, res) => {
-            res.status.should.equal(404);
-            res.body.message.should.equal('No topic exists with that id');
-            done();
-          });
-      });
     });
 
     describe('allows', () => {
