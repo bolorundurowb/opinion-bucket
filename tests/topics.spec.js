@@ -383,6 +383,19 @@ describe('Topics', () => {
             });
         });
 
+        it('for all opinions to be retrieved with even more query options', (done) => {
+          server
+            .get(`/api/v1/topics/${topicId}/opinions?author=uyeughst&order=likes`)
+            .set('x-access-token', 'xxxxx')
+            .expect(200)
+            .end((err, res) => {
+              res.status.should.equal(200);
+              res.body.should.be.type('object');
+              res.body.length.should.equal(0);
+              done();
+            });
+        });
+
         it('for an opinion to be retrieved', (done) => {
           server
             .get(`/api/v1/topics/${topicId}/opinions/${opinionId}`)
