@@ -302,6 +302,26 @@ class Topics {
   }
 
   /**
+   * Controller method to handle unliking an opinion
+   * @param {Object} req
+   * @param {Object} res
+   */
+  static unlikeOpinion(req, res) {
+    Opinion.findOne({ _id: req.params.oid, topicId: req.params.tid }, (err, opinion) => {
+      /* istanbul ignore if */
+      if (err) {
+        Logger.error(err);
+        res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
+      } else if (!opinion) {
+        res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
+      } else {
+        opinion.likes -= 1;
+        Topics.saveOpinion(opinion, res);
+      }
+    });
+  }
+
+  /**
    * Controller method to handle dislikes for an opinion
    * @param {Object} req
    * @param {Object} res
@@ -316,6 +336,26 @@ class Topics {
         res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
       } else {
         opinion.dislikes += 1;
+        Topics.saveOpinion(opinion, res);
+      }
+    });
+  }
+
+  /**
+   * Controller method to handle undislikes for an opinion
+   * @param {Object} req
+   * @param {Object} res
+   */
+  static undislikeOpinion(req, res) {
+    Opinion.findOne({ _id: req.params.oid, topicId: req.params.tid }, (err, opinion) => {
+      /* istanbul ignore if */
+      if (err) {
+        Logger.error(err);
+        res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
+      } else if (!opinion) {
+        res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
+      } else {
+        opinion.dislikes -= 1;
         Topics.saveOpinion(opinion, res);
       }
     });

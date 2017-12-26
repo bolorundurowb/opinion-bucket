@@ -63,12 +63,20 @@ class TopicRoutes {
       .put(
         Authentication.isAuthenticated,
         Topics.likeOpinion
+      )
+      .delete(
+        Authentication.isAuthenticated,
+        Topics.unlikeOpinion
       );
 
     router.route('/topics/:tid/opinions/:oid/dislike')
       .put(
         Authentication.isAuthenticated,
         Topics.dislikeOpinion
+      )
+      .delete(
+        Authentication.isAuthenticated,
+        Topics.undlikeOpinion
       );
   }
 }
