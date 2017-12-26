@@ -368,6 +368,9 @@ class Topics {
         res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
       } else {
         opinion.likes.number -= 1;
+        if (opinion.likes.number < 0) {
+          opinion.likes.number = 0;
+        }
         const index = opinion.likes.users.indexOf(req.user._id);
         if (index !== -1) {
           opinion.likes.users.splice(index, 1);
@@ -414,6 +417,9 @@ class Topics {
         res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
       } else {
         opinion.dislikes.number -= 1;
+        if (opinion.dislikes.number < 0) {
+          opinion.dislikes.number = 0;
+        }
         const index = opinion.dislikes.users.indexOf(req.user._id);
         if (index !== -1) {
           opinion.dislikes.users.splice(index, 1);
