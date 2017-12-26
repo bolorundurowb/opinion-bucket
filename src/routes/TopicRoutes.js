@@ -76,7 +76,7 @@ class TopicRoutes {
       )
       .delete(
         Authentication.isAuthenticated,
-        Topics.undlikeOpinion
+        Topics.undislikeOpinion
       );
   }
 }

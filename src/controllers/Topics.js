@@ -295,7 +295,8 @@ class Topics {
       } else if (!opinion) {
         res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
       } else {
-        opinion.likes += 1;
+        opinion.likes.number += 1;
+        opinion.likes.users.push(req.user._id);
         Topics.saveOpinion(opinion, res);
       }
     });
@@ -315,7 +316,12 @@ class Topics {
       } else if (!opinion) {
         res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
       } else {
-        opinion.likes -= 1;
+        opinion.likes.number -= 1;
+        const index = opinion.likes.users.indexOf(req.user._id);
+        if (index !== -1) {
+          opinion.likes.users = opinion.likes.users.splice(index, 1);
+        }
+
         Topics.saveOpinion(opinion, res);
       }
     });
@@ -335,7 +341,8 @@ class Topics {
       } else if (!opinion) {
         res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
       } else {
-        opinion.dislikes += 1;
+        opinion.dislikes.number += 1;
+        opinion.dislikes.users.push(req.user._id);
         Topics.saveOpinion(opinion, res);
       }
     });
@@ -355,7 +362,12 @@ class Topics {
       } else if (!opinion) {
         res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
       } else {
-        opinion.dislikes -= 1;
+        opinion.dislikes.number -= 1;
+        const index = opinion.dislikes.users.indexOf(req.user._id);
+        if (index !== -1) {
+          opinion.dislikes.users = opinion.dislikes.users.splice(index, 1);
+        }
+
         Topics.saveOpinion(opinion, res);
       }
     });
