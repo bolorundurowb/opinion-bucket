@@ -392,6 +392,8 @@ describe('Topics', () => {
             .end((err, res) => {
               res.status.should.equal(200);
               res.body.should.be.type('object');
+              res.body.should.have.property('isLiked');
+              res.body.should.have.property('isDisliked');
               done();
             });
         });

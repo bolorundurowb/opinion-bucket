@@ -38,6 +38,7 @@ class TopicRoutes {
 
     router.route('/topics/:tid/opinions')
       .get(
+        Authentication.ifIsAuthenticated,
         Topics.getOpinions
       )
       .post(
@@ -48,6 +49,7 @@ class TopicRoutes {
 
     router.route('/topics/:tid/opinions/:oid')
       .get(
+        Authentication.ifIsAuthenticated,
         Topics.getOpinion
       )
       .put(

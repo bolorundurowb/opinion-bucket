@@ -187,7 +187,27 @@ class Topics {
           Logger.error(err);
           res.status(500).send({ message: 'An error occurred when retrieving opinions' });
         } else {
-          res.status(200).send(opinions);
+          const response = opinions.map((opinion) => {
+            const value = {
+              _id: opinion._id,
+              author: opinion.author,
+              showName: opinion.showName,
+              content: opinion.content,
+              title: opinion.title,
+              date: opinion.date,
+              likes: opinion.likes,
+              dislikes: opinion.dislikes,
+              topicId: opinion.topicId
+            };
+
+            if (req.user) {
+              value.isLiked = opinion.likes.users.includes(req.user._id);
+              value.isDisliked = opinion.dislikes.users.includes(req.user._id);
+            }
+
+            return value;
+          });
+          res.status(200).send(response);
         }
       });
   }
@@ -206,7 +226,24 @@ class Topics {
       } else if (!opinion) {
         res.status(400).send({ message: 'No opinion exists with that id' });
       } else {
-        res.status(200).send(opinion);
+        const response = {
+          _id: opinion._id,
+          author: opinion.author,
+          showName: opinion.showName,
+          content: opinion.content,
+          title: opinion.title,
+          date: opinion.date,
+          likes: opinion.likes,
+          dislikes: opinion.dislikes,
+          topicId: opinion.topicId
+        };
+
+        if (req.user) {
+          response.isLiked = opinion.likes.users.includes(req.user._id);
+          response.isDisliked = opinion.dislikes.users.includes(req.user._id);
+        }
+
+        res.status(200).send(response);
       }
     });
   }
@@ -226,7 +263,21 @@ class Topics {
         Logger.error(err);
         res.status(500).send({ message: 'An error occurred when saving an opinion.' });
       } else {
-        res.status(201).send(_opinion);
+        const response = {
+          _id: _opinion._id,
+          author: _opinion.author,
+          showName: _opinion.showName,
+          content: _opinion.content,
+          title: _opinion.title,
+          date: _opinion.date,
+          likes: _opinion.likes,
+          dislikes: _opinion.dislikes,
+          topicId: _opinion.topicId,
+          isLiked: _opinion.likes.users.includes(req.user._id),
+          isDisliked: _opinion.dislikes.users.includes(req.user._id)
+        };
+
+        res.status(201).send(response);
       }
     });
   }
