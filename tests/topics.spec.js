@@ -374,7 +374,6 @@ describe('Topics', () => {
         it('for all opinions to be retrieved with even more query options', (done) => {
           server
             .get(`/api/v1/topics/${topicId}/opinions?author=uyeughst&order=likes`)
-            .set('x-access-token', userToken)
             .expect(200)
             .end((err, res) => {
               res.status.should.equal(200);
