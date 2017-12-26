@@ -2,8 +2,9 @@
  * Created by bolorundurowb on 1/7/17.
  */
 
-const mongoose = require('mongoose');
-const shortid = require('shortid');
+import mongoose from 'mongoose';
+import shortid from 'shortid';
+
 const Schema = mongoose.Schema;
 
 const opinionSchema = new Schema({
@@ -31,19 +32,31 @@ const opinionSchema = new Schema({
     default: Date.now
   },
   likes: {
-    type: Number,
-    default: 0
+    number: {
+      type: Number,
+      default: 0
+    },
+    users: [{
+      type: String,
+      ref: 'User'
+    }]
   },
   dislikes: {
-    type: Number,
-    default: 0
+    number: {
+      type: Number,
+      default: 0
+    },
+    users: [{
+      type: String,
+      ref: 'User'
+    }]
   },
   topicId: {
     type: String,
     required: true,
     ref: 'Topic'
   }
-});
+}, { usePushEach: true });
 
 const opinionModel = mongoose.model('Opinion', opinionSchema);
 

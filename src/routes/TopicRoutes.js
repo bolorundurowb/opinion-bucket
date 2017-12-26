@@ -1,4 +1,4 @@
-import topics from '../controllers/Topics';
+import Topics from '../controllers/Topics';
 import Authentication from '../middleware/Authentication';
 import Authorization from '../middleware/Authorization';
 import Validations from '../middleware/Validations';
@@ -14,31 +14,71 @@ class TopicRoutes {
   static route(router) {
     router.route('/topics')
       .get(
-        topics.getAll
+        Topics.getAll
       )
       .post(
         Authentication.isAuthenticated,
         Validations.validateCreateTopic,
-        topics.create
+        Topics.create
       );
 
-    router.route('/topics/:id')
+    router.route('/topics/:tid')
       .get(
-        topics.getOne
+        Topics.getOne
       )
       .put(
         Authentication.isAuthenticated,
-        topics.update
+        Topics.update
       )
       .delete(
         Authentication.isAuthenticated,
         Authorization.isModerator,
-        topics.delete
+        Topics.delete
       );
 
-    router.route('/topics/:id/full')
+    router.route('/topics/:tid/opinions')
       .get(
-        topics.getOneFull
+        Authentication.ifIsAuthenticated,
+        Topics.getOpinions
+      )
+      .post(
+        Authentication.isAuthenticated,
+        Validations.validateCreateOpinion,
+        Topics.createOpinion
+      );
+
+    router.route('/topics/:tid/opinions/:oid')
+      .get(
+        Authentication.ifIsAuthenticated,
+        Topics.getOpinion
+      )
+      .put(
+        Authentication.isAuthenticated,
+        Topics.updateOpinion
+      )
+      .delete(
+        Authentication.isAuthenticated,
+        Topics.removeOpinion
+      );
+
+    router.route('/topics/:tid/opinions/:oid/like')
+      .put(
+        Authentication.isAuthenticated,
+        Topics.likeOpinion
+      )
+      .delete(
+        Authentication.isAuthenticated,
+        Topics.unlikeOpinion
+      );
+
+    router.route('/topics/:tid/opinions/:oid/dislike')
+      .put(
+        Authentication.isAuthenticated,
+        Topics.dislikeOpinion
+      )
+      .delete(
+        Authentication.isAuthenticated,
+        Topics.undislikeOpinion
       );
   }
 }
