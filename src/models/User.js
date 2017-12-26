@@ -53,7 +53,10 @@ const userSchema = new Schema({
     type: Number,
     ref: 'Role',
     default: 1
-  }
+  },
+  deviceIds: [{
+    type: String
+  }]
 });
 
 userSchema.virtual('password').get(function () {
