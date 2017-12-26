@@ -402,7 +402,7 @@ describe('Topics', () => {
       describe('allows', () => {
         it('for opinions to be liked', (done) => {
           server
-            .post(`/api/v1/topics/${topicId}/opinions/${opinionId}/like`)
+            .put(`/api/v1/topics/${topicId}/opinions/${opinionId}/like`)
             .set('x-access-token', userToken)
             .expect(200)
             .end((err, res) => {
@@ -415,7 +415,7 @@ describe('Topics', () => {
 
         it('for opinions to be disliked', (done) => {
           server
-            .post(`/api/v1/topics/${topicId}/opinions/${opinionId}/dislike`)
+            .put(`/api/v1/topics/${topicId}/opinions/${opinionId}/dislike`)
             .set('x-access-token', userToken)
             .expect(200)
             .end((err, res) => {
@@ -431,7 +431,7 @@ describe('Topics', () => {
       describe('does not allow', () => {
         it('for a non-existent opinions to be liked', (done) => {
           server
-            .post(`/api/v1/topics/${topicId}/opinions/507f1f77bcf86cd799439011/like`)
+            .put(`/api/v1/topics/${topicId}/opinions/507f1f77bcf86cd799439011/like`)
             .set('x-access-token', userToken)
             .expect(404)
             .end((err, res) => {
@@ -443,7 +443,7 @@ describe('Topics', () => {
 
         it('for a non-existent opinions to be disliked', (done) => {
           server
-            .post(`/api/v1/topics/${topicId}/opinions/507f1f77bcf86cd799439011/dislike`)
+            .put(`/api/v1/topics/${topicId}/opinions/507f1f77bcf86cd799439011/dislike`)
             .set('x-access-token', userToken)
             .expect(404)
             .end((err, res) => {
