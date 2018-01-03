@@ -2,6 +2,7 @@
  * Created by bolorundurowb on 11/11/16.
  */
 
+import cors from 'cors';
 import mongoose from 'mongoose';
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -13,8 +14,13 @@ import logger from './config/Logger';
 // Connect to MongoDB
 mongoose.connect(config.database);
 
+// use default ES6 promise implementation
+mongoose.promise = Promise;
+
 // initialize an express object
 const server = express();
+
+server.use(cors());
 
 // create a router object
 const router = express.Router();
