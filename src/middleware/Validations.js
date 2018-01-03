@@ -84,8 +84,6 @@ class Validations {
       res.status(400).send({ message: 'An author is required.' });
     } else if (!body.title) {
       res.status(400).send({ message: 'A title is required.' });
-    } else if (!body.topicId) {
-      res.status(400).send({ message: 'A topic id is required.' });
     } else {
       next();
     }

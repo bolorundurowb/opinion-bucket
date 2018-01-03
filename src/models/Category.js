@@ -2,8 +2,8 @@
  * Created by bolorundurowb on 1/7/17.
  */
 
-const mongoose = require('mongoose');
-const shortid = require('shortid');
+import mongoose from 'mongoose';
+import shortid from 'shortid';
 
 const Schema = mongoose.Schema;
 
