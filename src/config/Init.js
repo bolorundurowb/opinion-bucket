@@ -36,14 +36,10 @@ seeder.connect(config.database, () => {
               process.exit(1);
             } else {
               logger.log('The default admin added successfully');
-
-              process.exit(0);
             }
           });
         } else {
           logger.log('default admin already exists');
-
-          process.exit(0);
         }
       });
 
