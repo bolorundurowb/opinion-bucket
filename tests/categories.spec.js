@@ -109,7 +109,7 @@ describe('Category', () => {
           .end((err, res) => {
             res.status.should.equal(200);
             res.body.should.be.type('object');
-            res.body.length.should.equal(1);
+            res.body.length.should.equal(11);
             done();
           });
       });
@@ -145,7 +145,7 @@ describe('Category', () => {
 
       it('for a non-existent category to be updated', (done) => {
         server
-          .put(`/api/v1/categories/tiu56`)
+          .put('/api/v1/categories/tiu56')
           .set('x-access-token', adminToken)
           .send({
             title: 'hello World'

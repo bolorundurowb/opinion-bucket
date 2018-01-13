@@ -36,6 +36,7 @@ class Topics {
     }
 
     Topic.find(filter)
+      .populate('categories')
       .limit(limit)
       .sort(sort)
       .skip(skip)
@@ -43,9 +44,11 @@ class Topics {
         /* istanbul ignore if */
         if (err) {
           Logger.error(err);
-          res.status(500).send({ message: 'An error occurred when retrieving topics' });
+          res.status(500)
+            .send({ message: 'An error occurred when retrieving topics' });
         }
-        res.status(200).send(topics);
+        res.status(200)
+          .send(topics);
       });
   }
 
@@ -55,15 +58,21 @@ class Topics {
    * @param {Object} res
    */
   static getOne(req, res) {
-    Topic.findOne({ _id: req.params.tid }, (err, topic) => {
+    Topic
+    .findOne({ _id: req.params.tid })
+    .populate('categories')
+    .exec((err, topic) => {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
-        res.status(500).send({ message: 'An error occurred when retrieving a topic' });
+        res.status(500)
+        .send({ message: 'An error occurred when retrieving a topic' });
       } else if (!topic) {
-        res.status(404).send({ message: 'No topic exists with that id' });
+        res.status(404)
+        .send({ message: 'No topic exists with that id' });
       } else {
-        res.status(200).send(topic);
+        res.status(200)
+        .send(topic);
       }
     });
   }
@@ -78,18 +87,22 @@ class Topics {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
-        res.status(500).send({ message: 'An error occurred when retrieving a topic' });
+        res.status(500)
+          .send({ message: 'An error occurred when retrieving a topic' });
       } else if (result) {
-        res.status(409).send({ message: 'A topic exists with that title' });
+        res.status(409)
+          .send({ message: 'A topic exists with that title' });
       } else {
         const _topic = new Topic(req.body);
         _topic.save((err, topic) => {
           /* istanbul ignore if */
           if (err) {
             Logger.error(err);
-            res.status(500).send({ message: 'An error occurred when saving a topic' });
+            res.status(500)
+              .send({ message: 'An error occurred when saving a topic' });
           }
-          res.status(201).send(topic);
+          res.status(201)
+            .send(topic);
         });
       }
     });
@@ -107,9 +120,11 @@ class Topics {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
-        res.status(500).send({ message: 'An error occurred when retrieving a topic.' });
+        res.status(500)
+          .send({ message: 'An error occurred when retrieving a topic.' });
       } else if (!topic) {
-        res.status(404).send({ message: 'A topic with that id doesn\'t exist.' });
+        res.status(404)
+          .send({ message: 'A topic with that id doesn\'t exist.' });
       } else {
         ['title', 'content', 'categories'].forEach((property) => {
           if (body[property]) {
@@ -121,9 +136,11 @@ class Topics {
           /* istanbul ignore if */
           if (err) {
             Logger.error(err);
-            res.status(500).send({ message: 'An error occurred when saving a topic.' });
+            res.status(500)
+              .send({ message: 'An error occurred when saving a topic.' });
           } else {
-            res.status(200).send(_topic);
+            res.status(200)
+              .send(_topic);
           }
         });
       }
@@ -140,9 +157,11 @@ class Topics {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
-        res.status(500).send({ message: 'An error occurred when removing a topic' });
+        res.status(500)
+          .send({ message: 'An error occurred when removing a topic' });
       } else {
-        res.status(200).send({ message: 'Topic successfully removed' });
+        res.status(200)
+          .send({ message: 'Topic successfully removed' });
       }
     });
   }
@@ -187,7 +206,8 @@ class Topics {
         /* istanbul ignore if */
         if (err) {
           Logger.error(err);
-          res.status(500).send({ message: 'An error occurred when retrieving opinions' });
+          res.status(500)
+            .send({ message: 'An error occurred when retrieving opinions' });
         } else {
           const response = opinions.map((opinion) => {
             const value = {
@@ -209,7 +229,8 @@ class Topics {
 
             return value;
           });
-          res.status(200).send(response);
+          res.status(200)
+            .send(response);
         }
       });
   }
@@ -224,9 +245,11 @@ class Topics {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
-        res.status(500).send({ message: 'An error occurred when retrieving an opinion' });
+        res.status(500)
+          .send({ message: 'An error occurred when retrieving an opinion' });
       } else if (!opinion) {
-        res.status(400).send({ message: 'No opinion exists with that id' });
+        res.status(400)
+          .send({ message: 'No opinion exists with that id' });
       } else {
         const response = {
           _id: opinion._id,
@@ -245,7 +268,8 @@ class Topics {
           response.isDisliked = opinion.dislikes.users.includes(req.user._id);
         }
 
-        res.status(200).send(response);
+        res.status(200)
+          .send(response);
       }
     });
   }
@@ -264,7 +288,8 @@ class Topics {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
-        res.status(500).send({ message: 'An error occurred when saving an opinion.' });
+        res.status(500)
+          .send({ message: 'An error occurred when saving an opinion.' });
       } else {
         const response = {
           _id: _opinion._id,
@@ -280,7 +305,8 @@ class Topics {
           isDisliked: _opinion.dislikes.users.includes(req.user._id)
         };
 
-        res.status(201).send(response);
+        res.status(201)
+          .send(response);
       }
     });
   }
@@ -293,23 +319,26 @@ class Topics {
   static updateOpinion(req, res) {
     const body = req.body;
 
-    Opinion.findOne({ _id: req.params.oid, topicId: req.params.tid }, (err, opinion) => {
+    Opinion
+      .findOne({ _id: req.params.oid, topicId: req.params.tid }, (err, opinion) => {
       /* istanbul ignore if */
-      if (err) {
-        Logger.error(err);
-        res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
-      } else if (!opinion) {
-        res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
-      } else {
-        ['title', 'content', 'showName'].forEach((property) => {
-          if (body[property]) {
-            opinion[property] = body[property];
-          }
-        });
+        if (err) {
+          Logger.error(err);
+          res.status(500)
+          .send({ message: 'An error occurred when retrieving an opinion.' });
+        } else if (!opinion) {
+          res.status(404)
+          .send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
+        } else {
+          ['title', 'content', 'showName'].forEach((property) => {
+            if (body[property]) {
+              opinion[property] = body[property];
+            }
+          });
 
-        Topics.saveOpinion(opinion, res);
-      }
-    });
+          Topics.saveOpinion(opinion, res);
+        }
+      });
   }
 
   /**
@@ -328,9 +357,11 @@ class Topics {
         /* istanbul ignore if */
         if (err) {
           Logger.error(err);
-          res.status(500).send({ message: 'An error occurred when removing an opinion' });
+          res.status(500)
+            .send({ message: 'An error occurred when removing an opinion' });
         } else {
-          res.status(200).send({ message: 'Opinion successfully removed' });
+          res.status(200)
+            .send({ message: 'Opinion successfully removed' });
         }
       });
   }
@@ -345,9 +376,11 @@ class Topics {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
-        res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
+        res.status(500)
+          .send({ message: 'An error occurred when retrieving an opinion.' });
       } else if (!opinion) {
-        res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
+        res.status(404)
+          .send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
       } else {
         opinion.likes.number += 1;
         opinion.likes.users.push(req.user._id);
@@ -366,9 +399,11 @@ class Topics {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
-        res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
+        res.status(500)
+          .send({ message: 'An error occurred when retrieving an opinion.' });
       } else if (!opinion) {
-        res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
+        res.status(404)
+          .send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
       } else {
         opinion.likes.number -= 1;
         if (opinion.likes.number < 0) {
@@ -394,9 +429,11 @@ class Topics {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
-        res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
+        res.status(500)
+          .send({ message: 'An error occurred when retrieving an opinion.' });
       } else if (!opinion) {
-        res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
+        res.status(404)
+          .send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
       } else {
         opinion.dislikes.number += 1;
         opinion.dislikes.users.push(req.user._id);
@@ -415,9 +452,11 @@ class Topics {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
-        res.status(500).send({ message: 'An error occurred when retrieving an opinion.' });
+        res.status(500)
+          .send({ message: 'An error occurred when retrieving an opinion.' });
       } else if (!opinion) {
-        res.status(404).send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
+        res.status(404)
+          .send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
       } else {
         opinion.dislikes.number -= 1;
         if (opinion.dislikes.number < 0) {
@@ -443,9 +482,11 @@ class Topics {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
-        res.status(500).send({ message: 'An error occurred when saving an opinion' });
+        res.status(500)
+          .send({ message: 'An error occurred when saving an opinion' });
       } else {
-        res.status(200).send(_opinion);
+        res.status(200)
+          .send(_opinion);
       }
     });
   }
