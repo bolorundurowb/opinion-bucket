@@ -4,7 +4,7 @@ import config from './Config';
 import logger from './Logger';
 import User from '../models/User';
 import data from './seeds/data.json';
-import categories from './seeds/categories';
+import categories from './seeds/categories.json';
 import Category from './../models/Category';
 
 seeder.connect(config.database, () => {
