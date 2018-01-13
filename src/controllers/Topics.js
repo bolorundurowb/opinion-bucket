@@ -36,6 +36,7 @@ class Topics {
     }
 
     Topic.find(filter)
+      .populate('categories')
       .limit(limit)
       .sort(sort)
       .skip(skip)
@@ -315,25 +316,26 @@ class Topics {
   static updateOpinion(req, res) {
     const body = req.body;
 
-    Opinion.findOne({ _id: req.params.oid, topicId: req.params.tid }, (err, opinion) => {
+    Opinion
+      .findOne({ _id: req.params.oid, topicId: req.params.tid }, (err, opinion) => {
       /* istanbul ignore if */
-      if (err) {
-        Logger.error(err);
-        res.status(500)
+        if (err) {
+          Logger.error(err);
+          res.status(500)
           .send({ message: 'An error occurred when retrieving an opinion.' });
-      } else if (!opinion) {
-        res.status(404)
+        } else if (!opinion) {
+          res.status(404)
           .send({ message: 'An opinion with that id doesn\'t exist for this topic.' });
-      } else {
-        ['title', 'content', 'showName'].forEach((property) => {
-          if (body[property]) {
-            opinion[property] = body[property];
-          }
-        });
+        } else {
+          ['title', 'content', 'showName'].forEach((property) => {
+            if (body[property]) {
+              opinion[property] = body[property];
+            }
+          });
 
-        Topics.saveOpinion(opinion, res);
-      }
-    });
+          Topics.saveOpinion(opinion, res);
+        }
+      });
   }
 
   /**
