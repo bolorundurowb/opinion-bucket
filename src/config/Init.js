@@ -2,7 +2,7 @@ import seeder from 'mongoose-seed';
 import path from 'path';
 import config from './Config';
 import logger from './Logger';
-import User  from '../models/User';
+import User from '../models/User';
 import data from './seeds/data.json';
 
 seeder.connect(config.database, () => {
