@@ -58,18 +58,21 @@ class Topics {
    * @param {Object} res
    */
   static getOne(req, res) {
-    Topic.findOne({ _id: req.params.tid }, (err, topic) => {
+    Topic
+    .findOne({ _id: req.params.tid })
+    .populate('categories')
+    .exec((err, topic) => {
       /* istanbul ignore if */
       if (err) {
         Logger.error(err);
         res.status(500)
-          .send({ message: 'An error occurred when retrieving a topic' });
+        .send({ message: 'An error occurred when retrieving a topic' });
       } else if (!topic) {
         res.status(404)
-          .send({ message: 'No topic exists with that id' });
+        .send({ message: 'No topic exists with that id' });
       } else {
         res.status(200)
-          .send(topic);
+        .send(topic);
       }
     });
   }
