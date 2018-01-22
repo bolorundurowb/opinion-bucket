@@ -18,7 +18,7 @@ class UserRoutes {
       .get(Authentication.isAuthenticated, authorization.isAdmin, users.getAll);
 
     router.route('/users/:id')
-      .get(Authentication.isAuthenticated, users.getOne)
+      .get(users.getOne)
       .put(Authentication.isAuthenticated, upload.single('profile'), users.update)
       .delete(Authentication.isAuthenticated, users.delete);
 
