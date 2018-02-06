@@ -37,6 +37,7 @@ class Topics {
 
     Topic.find(filter)
       .populate('categories')
+      .populate('author')
       .limit(limit)
       .sort(sort)
       .skip(skip)
@@ -61,6 +62,7 @@ class Topics {
     Topic
     .findOne({ _id: req.params.tid })
     .populate('categories')
+    .populate('author')
     .exec((err, topic) => {
       /* istanbul ignore if */
       if (err) {

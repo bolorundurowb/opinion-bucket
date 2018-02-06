@@ -77,8 +77,9 @@ class Validations {
    * @param {Function} next
    */
   static validateCreateOpinion(req, res, next) {
+    // insert the author data
+    req.body.author = req.user._id;
     const body = req.body;
-    body.author = req.user._id;
 
     if (!body.author) {
       res.status(400).send({ message: 'An author is required.' });
@@ -96,9 +97,13 @@ class Validations {
    * @param {Function} next
    */
   static validateCreateTopic(req, res, next) {
+    // insert the author data
+    req.body.author = req.user._id;
     const body = req.body;
 
-    if (!body.title) {
+    if (!body.author) {
+      res.status(400).send({ message: 'An author is required.' });
+    } else if (!body.title) {
       res.status(400).send({ message: 'A title is required.' });
     } else {
       next();
