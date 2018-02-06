@@ -26,7 +26,11 @@ const topicSchema = new Schema({
   categories: [{
     type: String,
     ref: 'Category'
-  }]
+  }],
+  author: {
+    type: String,
+    ref: 'User'
+  }
 });
 
 const topicModel = mongoose.model('Topic', topicSchema);
