@@ -37,6 +37,7 @@ class Topics {
 
     Topic.find(filter)
       .populate('categories')
+      .populate('author')
       .limit(limit)
       .sort(sort)
       .skip(skip)
@@ -61,6 +62,7 @@ class Topics {
     Topic
     .findOne({ _id: req.params.tid })
     .populate('categories')
+    .populate('author')
     .exec((err, topic) => {
       /* istanbul ignore if */
       if (err) {
@@ -202,6 +204,7 @@ class Topics {
       .limit(limit)
       .sort(sort)
       .skip(skip)
+      .populate('author')
       .exec((err, opinions) => {
         /* istanbul ignore if */
         if (err) {
@@ -241,37 +244,39 @@ class Topics {
    * @param {Object} res
    */
   static getOpinion(req, res) {
-    Opinion.findOne({ _id: req.params.oid, topicId: req.params.tid }, (err, opinion) => {
-      /* istanbul ignore if */
-      if (err) {
-        Logger.error(err);
-        res.status(500)
-          .send({ message: 'An error occurred when retrieving an opinion' });
-      } else if (!opinion) {
-        res.status(400)
-          .send({ message: 'No opinion exists with that id' });
-      } else {
-        const response = {
-          _id: opinion._id,
-          author: opinion.author,
-          showName: opinion.showName,
-          content: opinion.content,
-          title: opinion.title,
-          date: opinion.date,
-          likes: opinion.likes,
-          dislikes: opinion.dislikes,
-          topicId: opinion.topicId
-        };
+    Opinion.findOne({ _id: req.params.oid, topicId: req.params.tid })
+      .populate('author')
+      .exec((err, opinion) => {
+        /* istanbul ignore if */
+        if (err) {
+          Logger.error(err);
+          res.status(500)
+            .send({ message: 'An error occurred when retrieving an opinion' });
+        } else if (!opinion) {
+          res.status(400)
+            .send({ message: 'No opinion exists with that id' });
+        } else {
+          const response = {
+            _id: opinion._id,
+            author: opinion.author,
+            showName: opinion.showName,
+            content: opinion.content,
+            title: opinion.title,
+            date: opinion.date,
+            likes: opinion.likes,
+            dislikes: opinion.dislikes,
+            topicId: opinion.topicId
+          };
 
-        if (req.user) {
-          response.isLiked = opinion.likes.users.includes(req.user._id);
-          response.isDisliked = opinion.dislikes.users.includes(req.user._id);
+          if (req.user) {
+            response.isLiked = opinion.likes.users.includes(req.user._id);
+            response.isDisliked = opinion.dislikes.users.includes(req.user._id);
+          }
+
+          res.status(200)
+            .send(response);
         }
-
-        res.status(200)
-          .send(response);
-      }
-    });
+      });
   }
 
   /**
